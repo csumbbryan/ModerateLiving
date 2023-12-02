@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    mLoggedInUser = null; //TODO: Remove this or enhance its functionality (time based)
 
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
@@ -78,9 +79,14 @@ public class MainActivity extends AppCompatActivity {
         getModerateLivingDAO();
 
     //TODO: User Logged In? (Separate Method?)
-    if(!checkUserStatus()) {
+    if(!checkUserStatus(mModerateLivingDAO)) {
       Intent intent = LoginActivity.intentFactory(getApplicationContext(), 0); //Update userHash
+      Log.d(TAG, "Switching to LoginActivity View");
       startActivity(intent);
+    }
+
+    if(mLoggedInUser != null) {
+      mWelcomeUserMessage.setText("Weclome " + mLoggedInUser.toString());
     }
 
     /*
@@ -111,28 +117,55 @@ public class MainActivity extends AppCompatActivity {
       public void onClick(View view) {
         //TODO: intent factory and send to Admin Tools view
       }
-    });
+    });*/
 
     mButtonMainClose.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         //TODO: set application to logout and exit app
-        //CALL: Clear User Credentials
+        finish();
+        mLoggedInUser = null;
         //CALL: Close App
       }
-    });*/
+    });
 
     refreshDisplay();
   }
 
   //TODO: use code returns instead of boolean
-  private boolean checkUserStatus() {
+  private boolean checkUserStatus(ModerateLivingDAO mModerateLivingDAO) {
+    //TODO: Review if userPassHash is really needed
     int userPassHash = getIntent().getIntExtra(USER_PASSWORD_HASH, 0);
+    mUserIDList = mModerateLivingDAO.getUserIDs();
+    mLoggedInUser = LoggedInToken.getLoggedInToken();
     if(mLoggedInUser != null) {
       return true;
     }
     if(userPassHash > 0 ) {
       return true;
+    }
+    if(mUserIDList.isEmpty()) {
+      UserID user1 = new UserID(
+      00001,
+      "user01",
+      "Bob Ross",
+      0,
+      "supersecret",
+      false,
+      178.0,
+      "1965-03-35");
+      UserID user2 = new UserID(
+          00002,
+          "user02",
+          "Tony Stark",
+          0,
+          "notsecret",
+          true,
+          185.0,
+          "1965-04-04"
+      );
+      mModerateLivingDAO.insert(user1);
+      mModerateLivingDAO.insert(user2);
     }
     return false;
   }
@@ -141,4 +174,5 @@ public class MainActivity extends AppCompatActivity {
   private void refreshDisplay() {
 
   }
+
 }

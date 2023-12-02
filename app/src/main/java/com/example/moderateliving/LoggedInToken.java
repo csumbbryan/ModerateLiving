@@ -4,20 +4,29 @@ import com.example.moderateliving.TableClasses.UserID;
 
 public class LoggedInToken {
   public static int loggedInUserHash; //CONSIDER MOVING TO METHOD
-  public static int userID;
+  private static int tokenUserID;
+  private static String userName;
   private static LoggedInToken token;
 
-  public int logUserIN(UserID userToBeLoggedIn) {
-    LoggedInToken token = getLoggedInToken();
-    token.loggedInUserHash = userToBeLoggedIn.getHashPassword();
-    token.userID = userToBeLoggedIn.getUserID();
+  public static int logUserIN(UserID userToBeLoggedIn) {
+    if(token == null) {
+      token = new LoggedInToken();
+    }
+    loggedInUserHash = userToBeLoggedIn.getHashPassword();
+    tokenUserID = userToBeLoggedIn.getUserID();
+    userName = userToBeLoggedIn.getName();
     return loggedInUserHash;
   }
 
-  private LoggedInToken getLoggedInToken() {
+  public static LoggedInToken getLoggedInToken() {
     if (token == null) {
-      token = new LoggedInToken();
+      return null;
     }
     return token;
+  }
+
+  @Override
+  public String toString() {
+    return userName;
   }
 }

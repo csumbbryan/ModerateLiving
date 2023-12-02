@@ -21,10 +21,10 @@ public class UserID {
   private int mPoints;
   private String mPassword;
   private Boolean mIsAdmin;
-  private Float mWeight;
+  private double mWeight;
   private String mBirthday;
 
-  public UserID(int userID, String username, String name, int points, String password, Boolean isAdmin, Float weight, String birthday) {
+  public UserID(int userID, String username, String name, int points, String password, Boolean isAdmin, double weight, String birthday) {
     mUserID = userID;
     mUsername = username;
     mName = name;
@@ -59,11 +59,11 @@ public class UserID {
     mIsAdmin = isadmin;
   }
 
-  public Float getWeight() {
+  public double getWeight() {
     return mWeight;
   }
 
-  public void setWeight(Float weight) {
+  public void setWeight(double weight) {
     mWeight = weight;
   }
 
