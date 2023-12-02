@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/textViewSignInText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/textViewSignInText"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextUserInput"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/material_dynamic_neutral95"
+        android:gravity="center"
+        android:text="@string/editTextUserInputDefault"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSignInText" />
+
+    <EditText
+        android:id="@+id/editTextPasswordInput"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/material_dynamic_neutral95"
+        android:gravity="center"
+        android:text="@string/editTextPasswordInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextUserInput" />
+
+    <Button
+        android:id="@+id/buttonLoginSelect"
+        android:layout_width="175dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="35dp"
+        android:backgroundTint="@color/blue2"
+        android:text="@string/buttonLoginSelect"
+        android:textSize="20sp"
+        app:cornerRadius="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordInput" />
+
+    <Button
+        android:id="@+id/buttonSignUpSelect"
+        android:layout_width="175dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="50dp"
+        android:backgroundTint="@color/blue2"
+        android:text="@string/buttonSignUpSelect"
+        app:cornerRadius="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

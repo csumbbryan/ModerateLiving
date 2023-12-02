@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">ModerateLiving</string>
+    <string name="no_userID_error_message">No users found in database</string>
+    <string name="mainActivityWelcomeText">Welcome Message Here</string>
+    <string name="textViewPointsBalanceText">"Your Points Balance: "</string>
+    <string name="textViewPointBalanceDisplay">0 Points (Default)</string>
+    <string name="buttonHealthActivitiesSelect">Health Activities</string>
+    <string name="buttonSplurgesSelect">Splurges</string>
+    <string name="buttonViewLogSelect">View Log</string>
+    <string name="buttonEditUserSettingsSelect">Edit User Settings</string>
+    <string name="buttonEnterAdminToolsSelect">Admin Tools</string>
+    <string name="textViewSignInText">Please Sign In!</string>
+    <string name="editTextUserInputDefault">Username</string>
+    <string name="editTextPasswordInput">Password</string>
+    <string name="buttonLoginSelect">Login</string>
+    <string name="buttonSignUpSelect">Sign Up</string>
 </resources>

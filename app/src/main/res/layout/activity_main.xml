@@ -4,15 +4,139 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonViewLogSelect"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@color/grayDark"
+        android:text="@string/buttonViewLogSelect"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSplurgesSelect" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonEditUserSettingsSelect"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="250dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="@color/grayDark"
+        android:text="@string/buttonEditUserSettingsSelect"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonEnterAdminToolsSelect"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="250dp"
+        android:layout_height="46dp"
+        android:backgroundTint="@color/grayDark"
+        android:text="@string/buttonEnterAdminToolsSelect"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:cornerRadius="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonEditUserSettingsSelect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/mainActivityWelcomeText"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="@color/cardview_dark_background"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/mainActivityWelcomeText"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonHealthActivitiesSelect"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@color/blueGreen"
+        android:elevation="12dp"
+        android:text="@string/buttonHealthActivitiesSelect"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPointsBalance" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSplurgesSelect"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@color/tan"
+        android:text="@string/buttonSplurgesSelect"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonHealthActivitiesSelect" />
+
+    <TextView
+        android:id="@+id/textViewPointsBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/textViewPointsBalanceText"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainActivityWelcomeText" />
+
+    <TextView
+        android:id="@+id/textViewPointBalanceDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:text="@string/textViewPointBalanceDisplay"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPointsBalance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewPointsBalance" />
+
+    <ImageButton
+        android:id="@+id/buttonMainClose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="0dp"
+        android:backgroundTint="@color/gray"
+        app:layout_constraintEnd_toEndOf="@+id/mainActivityWelcomeText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/list_selector_background"
+        tools:srcCompat="@android:drawable/btn_dialog" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
