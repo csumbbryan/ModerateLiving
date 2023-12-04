@@ -46,7 +46,9 @@ public interface ModerateLivingDAO {
   List<UserID> getUserIDs();
 
   @Query("SELECT * FROM " + AppDataBase.USERID_TABLE + " WHERE mUserID = :userID")
-  UserID getUserByID(String userID);
+  UserID getUserByID(int userID);
 
+  @Query("SELECT * FROM " + AppDataBase.USERID_TABLE + " WHERE mUsername = :username")
+  UserID getUserByUsername(String username);
 
 }

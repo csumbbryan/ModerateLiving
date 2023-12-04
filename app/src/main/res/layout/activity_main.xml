@@ -51,12 +51,15 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:visibility="invisible"
+        android:visibility="gone"
+
         app:cornerRadius="8dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonEditUserSettingsSelect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible"/>
+
 
     <TextView
         android:id="@+id/mainActivityWelcomeText"
@@ -133,10 +136,9 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="0dp"
-        android:backgroundTint="@color/gray"
         app:layout_constraintEnd_toEndOf="@+id/mainActivityWelcomeText"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/list_selector_background"
+        app:srcCompat="@android:drawable/btn_dialog"
         tools:srcCompat="@android:drawable/btn_dialog" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminActivity">
+
+    <TextView
+        android:id="@+id/adminActivityWelcomeText"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="@color/black"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/adminActivityWelcomeText"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAdminActivityUserManagement"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@color/grayDark"
+        android:text="@string/buttonAdminActivityUserManagement"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adminActivityWelcomeText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAdminActivityFullUserLog"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@color/grayDark"
+        android:text="@string/buttonAdminActivityFullUserLog"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAdminActivityUserManagement" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAdminActivityDatabaseReset"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="372dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@color/red3"
+        android:text="@string/buttonAdminActivityDatabaseReset"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAdminActivityUserManagement" />
+
+    <ImageButton
+        android:id="@+id/buttonAdminClose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="0dp"
+        app:layout_constraintEnd_toEndOf="@+id/adminActivityWelcomeText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/list_selector_background"
+        tools:srcCompat="@android:drawable/btn_dialog" />
+</androidx.constraintlayout.widget.ConstraintLayout>

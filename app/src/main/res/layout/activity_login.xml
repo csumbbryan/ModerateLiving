@@ -25,7 +25,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/material_dynamic_neutral95"
         android:gravity="center"
-        android:text="@string/editTextUserInputDefault"
+        android:hint="@string/editTextUserInputDefault"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSignInText" />
@@ -38,7 +38,8 @@
         android:layout_marginTop="20dp"
         android:background="@color/material_dynamic_neutral95"
         android:gravity="center"
-        android:text="@string/editTextPasswordInput"
+        android:hint="@string/editTextPasswordInput"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"

@@ -15,9 +15,7 @@ public class UserID {
   private int mUserID;
 
   private String mUsername;
-
   private String mName;
-
   private int mPoints;
   private String mPassword;
   private Boolean mIsAdmin;
@@ -100,7 +98,7 @@ public class UserID {
   }
 
   public int getHashPassword() {
-    return Objects.hash(mUserID, mPassword);
+    return Objects.hash(mUsername, mPassword);
   }
 
   @Override

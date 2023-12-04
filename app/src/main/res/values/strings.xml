@@ -14,4 +14,8 @@
     <string name="editTextPasswordInput">Password</string>
     <string name="buttonLoginSelect">Login</string>
     <string name="buttonSignUpSelect">Sign Up</string>
+    <string name="adminActivityWelcomeText">Welcome Admin</string>
+    <string name="buttonAdminActivityUserManagement">User Management</string>
+    <string name="buttonAdminActivityFullUserLog">Full User Log</string>
+    <string name="buttonAdminActivityDatabaseReset">Database Reset</string>
 </resources>
