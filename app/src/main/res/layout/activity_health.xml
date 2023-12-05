@@ -5,7 +5,7 @@
     android:id="@+id/healthTableLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TableClasses.HealthActivity">
+    tools:context=".HealthActivity">
 
     <TableLayout
         android:id="@+id/healthTableLayout2"

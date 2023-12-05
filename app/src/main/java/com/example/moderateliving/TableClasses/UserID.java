@@ -8,6 +8,14 @@ import com.example.moderateliving.LoggedInToken;
 
 import java.util.Objects;
 
+/**
+ * @author Bryan Zanoli
+ * @since November 26, 2023
+ * </p>
+ * Abstract: represents user database entries as objects
+ * Includes getters and setters as well as a getUserHash and a toString method
+ */
+
 @Entity(tableName = AppDataBase.USERID_TABLE)
 public class UserID {
 
@@ -97,6 +105,9 @@ public class UserID {
     mName = name;
   }
 
+  /**
+   * @return hash of username and password
+   */
   public int getHashPassword() {
     return Objects.hash(mUsername, mPassword);
   }

@@ -8,10 +8,20 @@ import androidx.room.Update;
 
 import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.TableClasses.HealthActivities;
+import com.example.moderateliving.TableClasses.HealthActivityLog;
 import com.example.moderateliving.TableClasses.Splurges;
+import com.example.moderateliving.TableClasses.SplurgeLog;
 
 import java.util.List;
 
+/**
+ * @author Bryan Zanoli
+ * @since November 26, 2023
+ * </p>
+ * Abstract:
+ * Room Data Access Object used to connect to Room database abstraction layer
+ * Includes standard CRUD queries as well as custom retrievers for entries by userID and username
+ */
 @Dao
 public interface ModerateLivingDAO {
 
@@ -34,6 +44,15 @@ public interface ModerateLivingDAO {
   void delete(HealthActivities healthActivity);
 
   @Insert
+  void insert(HealthActivityLog... healthActivityLogs);
+
+  @Update
+  void update(HealthActivityLog... healthActivityLogs);
+
+  @Delete
+  void delete(HealthActivityLog healthActivityLog);
+
+  @Insert
   void insert(Splurges... splurges);
 
   @Update
@@ -41,6 +60,15 @@ public interface ModerateLivingDAO {
 
   @Delete
   void delete(Splurges splurge);
+
+  @Insert
+  void insert(SplurgeLog... splurgeLogs);
+
+  @Update
+  void update(SplurgeLog... splurgeLogs);
+
+  @Delete
+  void update(SplurgeLog splurgeLog);
 
   @Query("SELECT * FROM " + AppDataBase.USERID_TABLE)
   List<UserID> getUserIDs();

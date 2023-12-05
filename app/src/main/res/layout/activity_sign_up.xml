@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpActivity">
+
+    <TextView
+        android:id="@+id/textViewSignUpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/textViewSignUpText"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextUserSignUp"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/material_dynamic_neutral95"
+        android:gravity="center"
+        android:hint="@string/editTextUserSignUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSignUpText" />
+
+    <EditText
+        android:id="@+id/editTextPasswordSignUp1"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/material_dynamic_neutral95"
+        android:gravity="center"
+        android:hint="@string/editTextPasswordSignUp1"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextUserSignUp" />
+
+    <EditText
+        android:id="@+id/editTextPasswordSignUp2"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/material_dynamic_neutral95"
+        android:gravity="center"
+        android:hint="@string/editTextPasswordSignUp2"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordSignUp1" />
+
+    <Button
+        android:id="@+id/buttonSignUpSubmit"
+        android:layout_width="175dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/blue2"
+        android:text="@string/buttonSignUpSelect"
+        app:cornerRadius="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSignUpBirthday" />
+
+    <TextView
+        android:id="@+id/textViewSignUpName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/textViewSignUpName"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/editTextPasswordSignUp2"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordSignUp2" />
+
+    <TextView
+        android:id="@+id/textViewSignUpWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/textViewSignUpWeight"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/textViewSignUpName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSignUpFullNameInput" />
+
+    <TextView
+        android:id="@+id/textViewSignUpBirthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/textViewSignUpBirthday"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/textViewSignUpWeight"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSignUpWeight" />
+
+    <EditText
+        android:id="@+id/editTextSignUpFullNameInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/material_dynamic_neutral95"
+        android:gravity="center"
+        android:hint="@string/editTextSignUpNameHint"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordSignUp2"
+        app:layout_constraintStart_toEndOf="@+id/textViewSignUpName"
+        app:layout_constraintTop_toBottomOf="@id/editTextPasswordSignUp2" />
+
+    <EditText
+        android:id="@+id/editTextSignUpWeightInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/material_dynamic_neutral95"
+        android:gravity="center"
+        android:hint="@string/editTextSignUpWeightInput"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordSignUp2"
+        app:layout_constraintStart_toEndOf="@+id/textViewSignUpWeight"
+        app:layout_constraintTop_toBottomOf="@id/editTextSignUpFullNameInput" />
+
+    <EditText
+        android:id="@+id/editTextSignUpBirthdayInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/material_dynamic_neutral95"
+        android:gravity="center"
+        android:hint="@string/editTextSignUpBirthdayHint"
+        android:inputType=""
+        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordSignUp2"
+        app:layout_constraintStart_toEndOf="@+id/textViewSignUpBirthday"
+        app:layout_constraintTop_toBottomOf="@id/editTextSignUpWeightInput" />
+</androidx.constraintlayout.widget.ConstraintLayout>

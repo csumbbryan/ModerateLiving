@@ -83,6 +83,6 @@
         android:layout_margin="0dp"
         app:layout_constraintEnd_toEndOf="@+id/adminActivityWelcomeText"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/list_selector_background"
+        app:srcCompat="@android:drawable/btn_dialog"
         tools:srcCompat="@android:drawable/btn_dialog" />
 </androidx.constraintlayout.widget.ConstraintLayout>

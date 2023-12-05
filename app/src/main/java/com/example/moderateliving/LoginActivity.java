@@ -82,7 +82,8 @@ public class LoginActivity extends AppCompatActivity {
     mSignUpSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //TODO: setup signup methods and functionality
+        Intent intent = SignUpActivity.intentFactory(getApplicationContext());
+        startActivity(intent);
 
       }
     });

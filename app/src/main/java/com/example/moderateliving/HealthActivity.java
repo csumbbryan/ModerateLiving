@@ -1,7 +1,6 @@
-package com.example.moderateliving.TableClasses;
+package com.example.moderateliving;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.room.Room;
 
 import android.content.Context;
@@ -17,10 +16,8 @@ import android.widget.TextView;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
-import com.example.moderateliving.MainActivity;
-import com.example.moderateliving.R;
+import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.databinding.ActivityHealthBinding;
-import com.example.moderateliving.databinding.ActivityMainBinding;
 
 import java.util.HashMap;
 

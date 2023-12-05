@@ -18,4 +18,14 @@
     <string name="buttonAdminActivityUserManagement">User Management</string>
     <string name="buttonAdminActivityFullUserLog">Full User Log</string>
     <string name="buttonAdminActivityDatabaseReset">Database Reset</string>
+    <string name="textViewSignUpText">Please Sign Up!</string>
+    <string name="editTextUserSignUp">Username</string>
+    <string name="editTextPasswordSignUp1">Password</string>
+    <string name="editTextPasswordSignUp2">Password Again</string>
+    <string name="textViewSignUpName">Full Name:"</string>
+    <string name="textViewSignUpWeight">"Your Weight (lbs):"</string>
+    <string name="textViewSignUpBirthday">Your Birthday:</string>
+    <string name="editTextSignUpBirthdayHint">YYYY/MM/DD</string>
+    <string name="editTextSignUpWeightInput">185.00</string>
+    <string name="editTextSignUpNameHint">Your Name</string>
 </resources>

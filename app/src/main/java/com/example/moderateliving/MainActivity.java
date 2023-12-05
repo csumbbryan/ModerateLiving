@@ -6,7 +6,6 @@ import androidx.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.nfc.Tag;
 import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
-import com.example.moderateliving.TableClasses.HealthActivity;
 import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.databinding.ActivityMainBinding;
 
@@ -30,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
   private static final String TAG = "MainActivity";
 
   ActivityMainBinding binding;
-  TextView mMainDisplay;
-  //Buttons and Text Fields Here
   TextView mWelcomeUserMessage;
   TextView mPointsBalanceCount;
   Button mHealthActivitiesSelect;
@@ -47,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
   UserID mLoggedInUser = null; //TODO: review if this is necessary
 
+  int userHash = 0;
+
   public static Intent intentFactory(Context packageContext, Integer userHash) {
     Intent intent = new Intent(packageContext, MainActivity.class);
     intent.putExtra(USER_PASSWORD_HASH, userHash);
@@ -61,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
 
+    userHash = getIntent().getIntExtra(USER_PASSWORD_HASH, 0);
     mWelcomeUserMessage = binding.mainActivityWelcomeText;
     mPointsBalanceCount = binding.textViewPointBalanceDisplay;
     mHealthActivitiesSelect = binding.buttonHealthActivitiesSelect;
@@ -80,13 +79,15 @@ public class MainActivity extends AppCompatActivity {
         .build().
         getModerateLivingDAO();
 
-    //TODO: User Logged In? (Separate Method?)
     if(!checkUserStatus(mModerateLivingDAO)) {
       Intent intent = LoginActivity.intentFactory(getApplicationContext(), 0); //Update userHash
       Log.d(TAG, "Switching to LoginActivity View");
       startActivity(intent);
     }
-    //if()
+
+    if(userHash == -1) {
+      finish();
+    }
 
     /**
      * initialize logged in user variables and setup environment based on user values.
@@ -105,13 +106,14 @@ public class MainActivity extends AppCompatActivity {
       if(isAdmin) {
         mAdminToolsSelect.setVisibility(View.VISIBLE);
       }
+      Log.d(TAG, "User " + name + " is logged in and " + isAdmin);
     }
 
 
     mHealthActivitiesSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //TODO: intent factory and send to Health Activities view
+        //TODO: intent factory and send to Health Activities view -- update for passing Extra
         Intent intent = HealthActivity.intentFactory(getApplicationContext()); //Update userHash
         Log.d(TAG, "Switching to HealthActivity View");
         startActivity(intent);
@@ -136,10 +138,14 @@ public class MainActivity extends AppCompatActivity {
     mAdminToolsSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //TODO: intent factory and send to Admin Tools view
+        //TODO: Update for passing Extra in AdminActivity
+        Intent intent = AdminActivity.intentFactory(getApplicationContext()); //Update userHash
+        Log.d(TAG, "Switching to AdminActivity View");
+        startActivity(intent);
       }
     });
 
+    //TODO: Determine if other actions should be taken during MainActivity Close. Separate Method?
     mButtonMainClose.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -147,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor loginSharedEditor = loginSharedPref.edit();
         loginSharedEditor.remove(SHARED_PREF_STRING);
         loginSharedEditor.apply();
+        //TODO: update better checking of sharedPreferences being cleared for below log
+        Log.d(TAG, "Shared Preferences have been cleared. Closing MainActivity.");
         //LoggedInToken.logUserOut(); //TODO: review for LoggedInToken need
         finish();
         //CALL: Close App
@@ -158,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
 
   //TODO: use code returns instead of boolean
   private boolean checkUserStatus(ModerateLivingDAO mModerateLivingDAO) {
-    //TODO: Review if userPassHash is really needed
     SharedPreferences loginSharedPref = getSharedPreferences(SHARED_PREF_STRING, Context.MODE_PRIVATE);
     int loginSharedPrefHash = loginSharedPref.getInt(SHARED_PREF_STRING, 0);
 

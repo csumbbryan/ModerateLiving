@@ -4,7 +4,7 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import com.example.moderateliving.DB.AppDataBase;
-@Entity(tableName = AppDataBase.HEALTHACTIVITIES_LOG_TABLE,
+@Entity(tableName = AppDataBase.SPLURGES_LOG_TABLE,
     foreignKeys = {@ForeignKey(entity = UserID.class,
         parentColumns = "mUserID",
         childColumns = "mUserID",
