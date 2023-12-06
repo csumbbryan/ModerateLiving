@@ -21,9 +21,10 @@ public class AdminActivity extends AppCompatActivity {
   public static final String TAG = "AdminActivity";
   private static final String SHARED_PREF_STRING = "com.example.moderateliving_SHARED_PREF_STRING";
 
-  Button mButtonDatabaseReset;
-  ImageButton mButtonAdminClose;
-  ModerateLivingDAO mModerateLivingDAO;
+  private Button mButtonDatabaseReset;
+  private Button mButtonUserManagement;
+  private ImageButton mButtonAdminClose;
+  private ModerateLivingDAO mModerateLivingDAO;
 
   ActivityAdminBinding mActivityAdminBinding;
   public static Intent intentFactory(Context packageContext) {
@@ -40,6 +41,7 @@ public class AdminActivity extends AppCompatActivity {
 
     mButtonDatabaseReset = mActivityAdminBinding.buttonAdminActivityDatabaseReset;
     mButtonAdminClose = mActivityAdminBinding.buttonAdminClose;
+    mButtonUserManagement = mActivityAdminBinding.buttonAdminActivityUserManagement;
 
     mModerateLivingDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME)
         .allowMainThreadQueries()
@@ -58,6 +60,14 @@ public class AdminActivity extends AppCompatActivity {
         Intent intent = MainActivity.intentFactory(getApplicationContext(), -1);
         startActivity(intent);
         //CALL: Close App
+      }
+    });
+
+    mButtonUserManagement.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = UserManagementActivity.intentFactory(getApplicationContext());
+        startActivity(intent);
       }
     });
   }
