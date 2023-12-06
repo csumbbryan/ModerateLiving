@@ -117,13 +117,8 @@ public class SignUpActivity extends AppCompatActivity {
   private void submitForm() {
     int userPoints = 0;
     boolean isAdmin = false;
-    boolean isCorrectValues = true;
 
-    isCorrectValues = checkUsername();
-    isCorrectValues = checkPasswordMatch();
-    isCorrectValues = checkBirthdayFormat();
-
-    if(isCorrectValues) {
+    if(checkUsername() && checkPasswordMatch() && checkBirthdayFormat()) {
       UserID newUser = new UserID(
           mUsername,
           mFullname,
@@ -142,7 +137,6 @@ public class SignUpActivity extends AppCompatActivity {
       Log.d(TAG, "Switching to Main Activity");
       startActivity(intent);
     } else {
-      //TODO: notification here
       clearDisplay();
     }
   }
