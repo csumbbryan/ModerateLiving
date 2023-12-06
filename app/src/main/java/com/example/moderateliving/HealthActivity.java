@@ -79,16 +79,13 @@ public class HealthActivity extends AppCompatActivity {
           new CountDownTimer(1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-
             }
-
             @Override
             public void onFinish() {
               TableRow healthTableRow = findViewById(finalInstanceIDRow);
               healthTableLayout.removeView(healthTableRow);
             }
           }.start();
-
         }
       });
     }
