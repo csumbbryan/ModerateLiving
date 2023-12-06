@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
@@ -31,22 +32,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//TODO: add delete and logout button
+//TODO: add functionality to add points for user
+//TODO: add functionality to limit health-activity creation for unique names
+//TODO: move activities to activity log??
+public class HealthActivity extends AppCompatActivity implements RecyclerViewInterface {
 
-public class HealthActivity extends AppCompatActivity {
-
+  private static final String USER_ID = "com.example.moderateliving.HealthActivity_USER_ID";
   RecyclerView recyclerView;
   HealthRecyclerAdapter mHealthRecyclerAdapter;
 
   ActivityHealthBinding mHealthActivityBinding;
   ModerateLivingDAO mModerateLivingDAO;
   Button mHealthActivityHome;
-  //TODO: REMOVE THIS AFTER TESTING
   List<HealthActivities> mHealthActivities;
+  int mLoggedInUserID = 0;
 
+  //TODO: Used for Table view. May be able to delete.
   HashMap<String, int[]> tableHashMap = new HashMap<>();
 
-  public static Intent intentFactory(Context packageContext) {
+  public static Intent intentFactory(Context packageContext, int mLoggedInUserID) {
     Intent intent = new Intent(packageContext, HealthActivity.class);
+    intent.putExtra(USER_ID, mLoggedInUserID);
     return intent;
   }
   @Override
@@ -57,21 +64,19 @@ public class HealthActivity extends AppCompatActivity {
     mHealthActivityBinding = ActivityHealthBinding.inflate(getLayoutInflater());
     setContentView(mHealthActivityBinding.getRoot());
 
-
     mModerateLivingDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME)
         .allowMainThreadQueries()
         .build().
         getModerateLivingDAO();
 
+    checkUserLoggedIn();
+    populateEntries();
+
     mHealthActivityHome = mHealthActivityBinding.buttonHealthActivityHome;
-    tableHashMap = initTable();
 
-    //TODO: REMOVE THIS AFTER TESTING
-    recyclerView = findViewById(R.id.recyclerViewHealthCollection);
-    mHealthActivities = mModerateLivingDAO.getHealthActivities();
-    mHealthRecyclerAdapter = new HealthRecyclerAdapter(this, mHealthActivities);
-    recyclerView.setAdapter(mHealthRecyclerAdapter);
+    //tableHashMap = initTable(); //TODO: This can be removed once table initialization is removed
 
+    /*TABLE CODE: TODO: Do not remove until another table is created in Activity
     //Used Code as reference:
     //https://stackoverflow.com/questions/10673628/implementing-onclicklistener-for-dynamically-created-buttons-in-android
     for (String idName : tableHashMap.keySet()) {
@@ -103,14 +108,39 @@ public class HealthActivity extends AppCompatActivity {
           }.start();
         }
       });
-    }
+    }*/
 
   }
 
-  //TODO: Update below to accommodate Health Activity Records Instead
+  private void populateEntries() {
+    recyclerView = findViewById(R.id.recyclerViewHealthCollection);
+    mHealthActivities = mModerateLivingDAO.getHealthActivitiesByUser(mLoggedInUserID);
+    mHealthRecyclerAdapter = new HealthRecyclerAdapter(this, mHealthActivities);
+    recyclerView.setAdapter(mHealthRecyclerAdapter);
+  }
+
+  private void checkUserLoggedIn() {
+    mLoggedInUserID = getIntent().getIntExtra(USER_ID, 0);
+    if(mLoggedInUserID == 0) {
+      Toast notLoggedIn = Toast.makeText(this, "You are not logged in. Exiting the app.", Toast.LENGTH_SHORT);
+      notLoggedIn.show();
+      new CountDownTimer(1000, 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+        }
+        @Override
+        public void onFinish() {
+          Intent intent = MainActivity.intentFactory(getApplicationContext(), 0);
+          startActivity(intent);
+        }
+      }.start();
+
+    }
+  }
+
   public HashMap<String, int[]> initTable() {
     HashMap<String, int[]> tableHashMap = new HashMap<>();
-    TableLayout healthTableLayout = mHealthActivityBinding.tableLayoutHealthActivity;
+    //TableLayout healthTableLayout = mHealthActivityBinding.tableLayoutHealthActivity;
     for (UserID userID : mModerateLivingDAO.getUserIDs()) {
       String name = userID.getName();
       String weight = Double.toString(userID.getWeight());
@@ -157,8 +187,18 @@ public class HealthActivity extends AppCompatActivity {
       healthTableRowUser.addView(htxbirthday);
       //Add row to table
       healthTableRowUser.setId(instanceIDRow);
-      healthTableLayout.addView(healthTableRowUser);
+      //healthTableLayout.addView(healthTableRowUser);
     }
     return tableHashMap;
+  }
+
+  @Override
+  public void onEntryClick(int position) {
+
+  }
+
+  @Override
+  public void onEntryLongClick(int position) {
+
   }
 }

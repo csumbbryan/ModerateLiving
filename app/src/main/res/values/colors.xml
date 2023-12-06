@@ -27,5 +27,6 @@
     <color name="brown">#FF8C5409</color>
     <color name="brownLight">#FFBF883E</color>
     <color name="tan">#FFD1B288</color>
+    <color name="grayExtraDark">#2D2D2D</color>
 
 </resources>

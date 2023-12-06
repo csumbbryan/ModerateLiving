@@ -5,7 +5,7 @@
     android:id="@+id/healthTableLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grayDark"
+    android:backgroundTint="@color/blue5"
     tools:context=".HealthActivity">
 
     <androidx.appcompat.widget.AppCompatButton
@@ -35,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonHealthActivityCreate"
+        android:id="@+id/buttonHealthActivityCollCreate"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         android:layout_marginEnd="25dp"
         android:backgroundTint="@color/blueGreen"
         android:elevation="12dp"
-        android:text="@string/buttonHealthActivityCreate"
+        android:text="@string/buttonHealthActivityCollCreate"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/white"
         android:textSize="25sp"
@@ -52,7 +52,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewHealthActivityText" />
-
 
     <LinearLayout
         android:id="@+id/linearLayoutHealthActCollText"
@@ -62,17 +61,15 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonHealthActivityCreate">
+        app:layout_constraintTop_toBottomOf="@+id/buttonHealthActivityCollCreate">
 
         <TextView
             android:id="@+id/textViewHealthActCollIncomplete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:background="@color/grayExtraDark"
             android:text="@string/textViewHealthActivityIncomplete"
-            android:textColor="@color/grayLight"
             android:textSize="16sp" />
 
         <TextView
@@ -80,9 +77,7 @@
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/grayExtraDark"
             android:text="@string/textViewHealthActivityDescription"
-            android:textColor="@color/grayLight"
             android:textSize="16sp" />
 
         <TextView
@@ -90,19 +85,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginEnd="4dp"
-            android:background="@color/grayExtraDark"
             android:text="@string/textViewHealthActivityPoints"
-            android:textColor="@color/grayLight"
             android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayoutHealthActCollList"
-        android:layout_width="0dp"
+        android:layout_width="409dp"
         android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
         android:layout_marginBottom="60dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/buttonHealthActivityHome"
@@ -114,7 +104,6 @@
             android:id="@+id/recyclerViewHealthCollection"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </LinearLayout>
 

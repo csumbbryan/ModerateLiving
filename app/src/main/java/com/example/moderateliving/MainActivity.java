@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
   private static final String USER_PASSWORD_HASH =
       "com.example.moderateliving.MainActivity_USER_PASSWORD_HASH";
-  private static final String SHARED_PREF_STRING = "com.example.moderateliving_SHARED_PREF_STRING";
+  private static final String SHARED_PREF_STRING = "com.example.moderateliving.MainActivity_SHARED_PREF_STRING";
   private static final String TAG = "MainActivity";
 
   ActivityMainBinding binding;
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
 
-    userHash = getIntent().getIntExtra(USER_PASSWORD_HASH, 0);
+    //userHash = getIntent().getIntExtra(USER_PASSWORD_HASH, 0);
     mWelcomeUserMessage = binding.mainActivityWelcomeText;
     mPointsBalanceCount = binding.textViewPointBalanceDisplay;
     mHealthActivitiesSelect = binding.buttonHealthActivitiesSelect;
@@ -94,9 +94,7 @@ public class MainActivity extends AppCompatActivity {
      * initialize logged in user variables and setup environment based on user values.
      */
     if(mLoggedInUser != null) {
-      //int userPoints = LoggedInToken.getPointsBalance(); //TODO: review for LoggedInToken need
-      //String userName = LoggedInToken.getUserName(); //TODO: review for LoggedInToken need
-      //boolean isAdmin = LoggedInToken.getIsAdmin(); //TODO: review for LoggedInToken need
+      CreateHealthActivities();
       int userPoints = mLoggedInUser.getPoints();
       String name = mLoggedInUser.getName();
       boolean isAdmin = mLoggedInUser.getIsAdmin();
@@ -110,14 +108,11 @@ public class MainActivity extends AppCompatActivity {
       Log.d(TAG, "User " + name + " is logged in and isAdmin is " + isAdmin);
     }
 
-    CreateHealthActivities();
-
-
     mHealthActivitiesSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         //TODO: intent factory and send to Health Activities view -- update for passing Extra
-        Intent intent = HealthActivity.intentFactory(getApplicationContext()); //Update userHash
+        Intent intent = HealthActivity.intentFactory(getApplicationContext(), mLoggedInUser.getUserID()); //Update userHash
         Log.d(TAG, "Switching to HealthActivity View");
         startActivity(intent);
       }
@@ -233,13 +228,13 @@ public class MainActivity extends AppCompatActivity {
         3,
         false);
     HealthActivities healthActivity1 = new HealthActivities(
-        mLoggedInUser.getUserID(),
+        2,
         "Healthy Weekend Eating",
         "Stay healthy on the weekends!",
         1,
         false);
     HealthActivities healthActivity2 = new HealthActivities(
-        mLoggedInUser.getUserID(),
+        2,
         "Gym",
         "Earn a point for each workout, up to 4 per week",
         1,

@@ -13,11 +13,20 @@ public class HealthEntryHolder extends RecyclerView.ViewHolder {
   public TextView mEntryName;
   public TextView mEntryDescription;
   public TextView mEntryPoints;
-  public HealthEntryHolder(@NonNull View itemView) {
+  public HealthEntryHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
     super(itemView);
     mCheckBox = (CheckBox) itemView.findViewById(R.id.checkBoxIsIncomplete);
     mEntryName = (TextView) itemView.findViewById(R.id.textViewHealthEntryName);
     mEntryDescription = (TextView) itemView.findViewById(R.id.textViewHealthEntryDescription);
     mEntryPoints = (TextView) itemView.findViewById(R.id.textViewHealthEntryPoints);
+
+    itemView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if(recyclerViewInterface != null) {
+
+        }
+      }
+    });
   }
 }

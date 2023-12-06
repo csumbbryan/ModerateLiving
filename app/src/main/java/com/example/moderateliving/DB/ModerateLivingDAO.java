@@ -83,6 +83,9 @@ public interface ModerateLivingDAO {
   List<HealthActivities> getHealthActivities();
 
   @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mActivityID = :activityID")
-  HealthActivities getHealthActivitisByID(int activityID);
+  List<HealthActivities> getHealthActivitiesByID(int activityID);
+
+  @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mUserID = :userID")
+  List<HealthActivities> getHealthActivitiesByUser(int userID);
 
 }

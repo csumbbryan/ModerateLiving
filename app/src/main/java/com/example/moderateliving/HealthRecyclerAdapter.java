@@ -18,19 +18,21 @@ import java.util.List;
 
 public class HealthRecyclerAdapter extends RecyclerView.Adapter<HealthEntryHolder> {
 
+  private final RecyclerViewInterface recyclerViewInterface;
   private Context context;
   private List<HealthActivities> healthEntries = new ArrayList<>();
 
-  public HealthRecyclerAdapter(Context context, List<HealthActivities> healthEntries) {
+  public HealthRecyclerAdapter(Context context, List<HealthActivities> healthEntries, RecyclerViewInterface recyclerViewInterface) {
     this.context = context;
     this.healthEntries = healthEntries;
+    this.recyclerViewInterface = recyclerViewInterface;
   }
 
   @NonNull
   @Override
   public HealthEntryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_row, parent, false);
-    return new HealthEntryHolder(view);
+    return new HealthEntryHolder(view, recyclerViewInterface);
   }
 
   @Override
@@ -53,6 +55,7 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<HealthEntryHolde
         loginError.show();
       }
     }
+
 
   }
 
