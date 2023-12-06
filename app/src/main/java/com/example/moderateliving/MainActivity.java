@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
       if(isAdmin) {
         mAdminToolsSelect.setVisibility(View.VISIBLE);
       }
-      Log.d(TAG, "User " + name + " is logged in and " + isAdmin);
+      Log.d(TAG, "User " + name + " is logged in and isAdmin is " + isAdmin);
     }
 
 
@@ -194,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
     }
     if(mUserIDList.isEmpty()) {
       UserID user1 = new UserID(
-      00001,
       "testuser1",
       "Bob Ross",
       0,
@@ -203,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
       178.0,
       "1965-03-25");
       UserID user2 = new UserID(
-          00002,
           "admin2",
           "Tony Stark",
           0,

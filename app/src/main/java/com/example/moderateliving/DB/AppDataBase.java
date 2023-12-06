@@ -8,10 +8,12 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.moderateliving.TableClasses.HealthActivities;
+import com.example.moderateliving.TableClasses.HealthActivityLog;
+import com.example.moderateliving.TableClasses.SplurgeLog;
 import com.example.moderateliving.TableClasses.Splurges;
 import com.example.moderateliving.TableClasses.UserID;
 
-@Database(entities = {UserID.class, HealthActivities.class, Splurges.class}, version = 1)
+@Database(entities = {UserID.class, HealthActivities.class, Splurges.class, HealthActivityLog.class, SplurgeLog.class}, version = 1)
 @TypeConverters(LocalDateTypeConverter.class)
 public abstract class AppDataBase extends RoomDatabase {
   public static final String DATABASE_NAME = "ModerateLiving.db";

@@ -10,7 +10,7 @@ import com.example.moderateliving.DB.AppDataBase;
         childColumns = "mUserID",
         onDelete = ForeignKey.CASCADE),
         @ForeignKey(entity = HealthActivities.class,
-        parentColumns = "mActvivityID",
+        parentColumns = "mActivityID",
         childColumns = "mActivityID",
         onDelete = ForeignKey.CASCADE)
     })

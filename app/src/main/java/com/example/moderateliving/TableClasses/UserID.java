@@ -30,8 +30,7 @@ public class UserID {
   private double mWeight;
   private String mBirthday;
 
-  public UserID(int userID, String username, String name, int points, String password, Boolean isAdmin, double weight, String birthday) {
-    mUserID = userID;
+  public UserID(String username, String name, int points, String password, Boolean isAdmin, double weight, String birthday) {
     mUsername = username;
     mName = name;
     mPoints = points;
