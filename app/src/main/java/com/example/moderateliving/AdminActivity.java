@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -22,6 +23,7 @@ public class AdminActivity extends AppCompatActivity {
   private static final String SHARED_PREF_STRING = "com.example.moderateliving_SHARED_PREF_STRING";
 
   Button mButtonDatabaseReset;
+  Button mButtonUserManagement;
   ImageButton mButtonAdminClose;
   ModerateLivingDAO mModerateLivingDAO;
 
@@ -39,6 +41,7 @@ public class AdminActivity extends AppCompatActivity {
     setContentView(mActivityAdminBinding.getRoot());
 
     mButtonDatabaseReset = mActivityAdminBinding.buttonAdminActivityDatabaseReset;
+    mButtonUserManagement = mActivityAdminBinding.buttonAdminActivityUserManagement;
     mButtonAdminClose = mActivityAdminBinding.buttonAdminClose;
 
     mModerateLivingDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME)
@@ -60,5 +63,16 @@ public class AdminActivity extends AppCompatActivity {
         //CALL: Close App
       }
     });
+
+    mButtonUserManagement.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = UserManagementActivity.intentFactory(getApplicationContext()); //Update userHash
+        Log.d(TAG, "Switching to User Management View");
+        startActivity(intent);
+      }
+    });
   }
+
+
 }
