@@ -6,4 +6,53 @@
     android:layout_height="match_parent"
     tools:context=".UserManagementActivity">
 
+    <TableLayout
+        android:id="@+id/userManagementTableLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:id="@+id/userManagementRowHeaders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:background="@color/blue"
+                android:gravity="center"
+                android:text="@string/userManagementColName"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:background="@color/blue"
+                android:gravity="center"
+                android:text="@string/userManagementColWeight"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:background="@color/blue"
+                android:gravity="center"
+                android:text="@string/userManagementColBirthday"
+                android:textColor="@color/white" />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/buttonUserManagement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/buttonUserManagement"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userManagementTableLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
