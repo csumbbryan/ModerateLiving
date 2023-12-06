@@ -39,4 +39,6 @@
     <string name="textViewHealthActivityDescription">Description</string>
     <string name="textViewHealthActivityPoints">"Points"</string>
     <string name="buttonHealthActivityHome">Return Home</string>
+    <string name="textViewHealthEntryName">Name</string>
+    <string name="textViewHealthEntryPoints">Points</string>
 </resources>

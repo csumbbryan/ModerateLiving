@@ -3,6 +3,8 @@ package com.example.moderateliving;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.content.Context;
@@ -25,14 +27,21 @@ import com.example.moderateliving.TableClasses.HealthActivities;
 import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.databinding.ActivityHealthBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class HealthActivity extends AppCompatActivity {
 
+  RecyclerView recyclerView;
+  HealthRecyclerAdapter mHealthRecyclerAdapter;
+
   ActivityHealthBinding mHealthActivityBinding;
   ModerateLivingDAO mModerateLivingDAO;
   Button mHealthActivityHome;
+  //TODO: REMOVE THIS AFTER TESTING
+  List<HealthActivities> mHealthActivities;
 
   HashMap<String, int[]> tableHashMap = new HashMap<>();
 
@@ -56,6 +65,12 @@ public class HealthActivity extends AppCompatActivity {
 
     mHealthActivityHome = mHealthActivityBinding.buttonHealthActivityHome;
     tableHashMap = initTable();
+
+    //TODO: REMOVE THIS AFTER TESTING
+    recyclerView = findViewById(R.id.recyclerViewHealthCollection);
+    mHealthActivities = mModerateLivingDAO.getHealthActivities();
+    mHealthRecyclerAdapter = new HealthRecyclerAdapter(this, mHealthActivities);
+    recyclerView.setAdapter(mHealthRecyclerAdapter);
 
     //Used Code as reference:
     //https://stackoverflow.com/questions/10673628/implementing-onclicklistener-for-dynamically-created-buttons-in-android

@@ -15,17 +15,16 @@ public class HealthActivities {
   @PrimaryKey(autoGenerate = true)
   private int mActivityID;
 
-  private String mUserID;
+  private int mUserID;
 
   private String mActivityName;
   private String mActivityDescription;
   private int mActivityPoints;
   private boolean mIsRecurring;
 
-  public HealthActivities(int activityID, String userID,
+  public HealthActivities(int userID,
                           String activityName, String activityDescription,
                           int activityPoints, boolean isRecurring) {
-    mActivityID = activityID;
     mUserID = userID;
     mActivityName = activityName;
     mActivityDescription = activityDescription;
@@ -41,11 +40,11 @@ public class HealthActivities {
     mActivityID = activityID;
   }
 
-  public String getUserID() {
+  public int getUserID() {
     return mUserID;
   }
 
-  public void setUserID(String userID) {
+  public void setUserID(int userID) {
     mUserID = userID;
   }
 

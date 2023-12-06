@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
+import com.example.moderateliving.TableClasses.HealthActivities;
 import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.databinding.ActivityMainBinding;
 
@@ -108,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
       }
       Log.d(TAG, "User " + name + " is logged in and isAdmin is " + isAdmin);
     }
+
+    CreateHealthActivities();
 
 
     mHealthActivitiesSelect.setOnClickListener(new View.OnClickListener() {
@@ -219,6 +222,31 @@ public class MainActivity extends AppCompatActivity {
   //TODO: Update this upon completion of other methods
   private void refreshDisplay() {
 
+  }
+
+  //TODO: Delete this when no longer needed
+  private void CreateHealthActivities() {
+    HealthActivities healthActivity = new HealthActivities(
+        mLoggedInUser.getUserID(),
+        "Running",
+        "Running 3 miles every week",
+        3,
+        false);
+    HealthActivities healthActivity1 = new HealthActivities(
+        mLoggedInUser.getUserID(),
+        "Healthy Weekend Eating",
+        "Stay healthy on the weekends!",
+        1,
+        false);
+    HealthActivities healthActivity2 = new HealthActivities(
+        mLoggedInUser.getUserID(),
+        "Gym",
+        "Earn a point for each workout, up to 4 per week",
+        1,
+        false);
+    mModerateLivingDAO.insert(healthActivity);
+    mModerateLivingDAO.insert(healthActivity1);
+    mModerateLivingDAO.insert(healthActivity2);
   }
 
 }

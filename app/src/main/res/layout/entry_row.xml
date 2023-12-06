@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="5dp"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <CheckBox
+            android:id="@+id/checkBoxIsIncomplete"
+            style="@android:style/Widget.CompoundButton.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:checked="false" />
+
+
+        <TextView
+            android:id="@+id/textViewHealthEntryName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="76dp"
+            android:text="@string/textViewHealthEntryName"
+            android:textSize="20sp" />
+
+
+        <TextView
+            android:id="@+id/textViewHealthEntryDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="76dp"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textViewHealthEntryPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="-60dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toEndOf="@+id/textViewHealthEntryName"
+            android:gravity="left"
+            android:text="@string/textViewHealthEntryPoints"
+            android:textSize="18sp" />
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
