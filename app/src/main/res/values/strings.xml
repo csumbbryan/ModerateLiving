@@ -28,6 +28,10 @@
     <string name="editTextSignUpBirthdayHint">YYYY-MM-DD</string>
     <string name="editTextSignUpWeightInput">185.00</string>
     <string name="editTextSignUpNameHint">Your Name</string>
+    <string name="userManagementColName">Name</string>
+    <string name="userManagementColWeight">Weight</string>
+    <string name="userManagementColBirthday">Birthday</string>
+    <string name="buttonUserManagement">TEST</string>
     <string name="textViewHealthActivityText">Moderate Living: Health Activities</string>
     <string name="buttonHealthActivityCreate">Create Health Activity</string>
     <string name="buttonHealthActivityCollCreate">Create Health Activity Collection</string>
