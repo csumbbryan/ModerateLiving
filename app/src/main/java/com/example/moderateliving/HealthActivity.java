@@ -124,6 +124,12 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
 
   }
 
+  @Override
+  protected void onPause() {
+    super.onPause();
+    finish();
+  }
+
   private void getDatabase() {
     mModerateLivingDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME)
         .allowMainThreadQueries()

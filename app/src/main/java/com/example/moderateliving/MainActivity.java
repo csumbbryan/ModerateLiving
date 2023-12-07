@@ -1,5 +1,7 @@
 package com.example.moderateliving;
 
+import static com.example.moderateliving.Util.logOutUser;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
@@ -145,29 +147,45 @@ public class MainActivity extends AppCompatActivity {
     mButtonMainClose.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        SharedPreferences loginSharedPref = getSharedPreferences(SHARED_PREF_STRING, Context.MODE_PRIVATE);
-        SharedPreferences.Editor loginSharedEditor = loginSharedPref.edit();
-        loginSharedEditor.remove(SHARED_PREF_STRING);
-        loginSharedEditor.apply();
-        mLoggedInUser = null;
-        getIntent().putExtra(USER_PASSWORD_HASH, 0);
-        //TODO: update better checking of sharedPreferences being cleared for below log
-        Log.d(TAG, "Shared Preferences have been cleared. Closing MainActivity.");
-        finish();
-        //CALL: Close App
+        logOutUser();
       }
     });
 
     refreshDisplay();
   }
 
+  private void logOutUser() {
+    SharedPreferences loginSharedPref = getSharedPreferences(SHARED_PREF_STRING, Context.MODE_PRIVATE);
+    SharedPreferences.Editor loginSharedEditor = loginSharedPref.edit();
+    loginSharedEditor.remove(SHARED_PREF_STRING);
+    loginSharedEditor.apply();
+    mLoggedInUser = null;
+    getIntent().putExtra(USER_PASSWORD_HASH, 0);
+    //TODO: update better checking of sharedPreferences being cleared for below log
+    Log.d(TAG, "Shared Preferences have been cleared. Closing MainActivity.");
+    finish();
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    finish();
+  }
+
   //TODO: use code returns instead of boolean
+  //TODO: have a value of -1 in indicate logout
   private boolean checkUserStatus(ModerateLivingDAO mModerateLivingDAO) {
     SharedPreferences loginSharedPref = getSharedPreferences(SHARED_PREF_STRING, Context.MODE_PRIVATE);
     int loginSharedPrefHash = loginSharedPref.getInt(SHARED_PREF_STRING, 0);
 
     int userPassHash = getIntent().getIntExtra(USER_PASSWORD_HASH, 0);
+
     mUserIDList = mModerateLivingDAO.getUserIDs();
+
+    if(userPassHash == -1) {
+      logOutUser();
+    }
+
     if(userPassHash != 0 ) {
       //TODO: build in more checks to ensure success before returning true
       //LoggedInToken.logUserIN(Util.findUserByHash(mUserIDList, userPassHash));

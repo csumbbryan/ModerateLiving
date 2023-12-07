@@ -61,6 +61,8 @@ public class HealthConfigActivity extends AppCompatActivity {
     mEditTextHealthActivityPoints = mActivityHealthConfigBinding.editTextHealthActivityPoints;
     mButtonHealthConfigReturn = mActivityHealthConfigBinding.imageButtonHealthConfigReturn;
 
+    Util.logOutUser(this);
+
     getDatabase();
     if(!confirmNew()) {
       setUpExisting();
@@ -92,9 +94,15 @@ public class HealthConfigActivity extends AppCompatActivity {
       }
     });
 
-
+    //TODO: Complete listener for Complete Button
+    //TODO: Complete listener for Delete Button
   }
 
+  @Override
+  protected void onPause() {
+    super.onPause();
+    finish();
+  }
   private void clearDisplay() {
     mCheckBoxHealthActivityIsRecurring.setChecked(false);
     mEditTextHealthActivityDescription.setText("");
@@ -102,6 +110,7 @@ public class HealthConfigActivity extends AppCompatActivity {
     mEditTextHealthActivityPoints.setText("");
   }
 
+  //TODO: Log to HealthActivityLog
   private boolean submitHealthActivity() {
     boolean readyToSubmit = true;
     String activityName = mEditTextHealthActivityName.getText().toString();
@@ -169,6 +178,7 @@ public class HealthConfigActivity extends AppCompatActivity {
     if(mLoggedInUserID <= 0) {
       Intent intent = MainActivity.intentFactory(getApplicationContext(), 0);
       Toast.makeText(getApplicationContext(), "No user is currently logged in. Returning to login screen.", Toast.LENGTH_LONG).show();
+      Util.logOutUser(this);
       startActivity(intent);
     } else {
       //TODO: Modify text to display username?

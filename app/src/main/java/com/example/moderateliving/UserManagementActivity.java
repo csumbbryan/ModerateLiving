@@ -30,11 +30,12 @@ public class UserManagementActivity extends AppCompatActivity {
 
   private Button mButtonUserManagement;
 
-  //TODO: Modify to be used with Fragments, if they work
+  //TODO: Modify to be used with Fragments and Recycler view
   //TODO: Functionality: include ability to add new user with admin rights
   //TODO: Functionality: include ability to grant admin rights to user
   //TODO: Functionality: include ability to delete user
   //TODO: Functionality: include ability to reset user password
+  //TODO: onClick for Return Home
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

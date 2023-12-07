@@ -14,14 +14,13 @@ import com.example.moderateliving.TableClasses.UserID;
 
 import java.util.List;
 
-public class Util {
+//TODO: verify this can/should be abstract
+public abstract class Util {
   private static List<UserID> mUserIDList;
 
   public static boolean verifyCredentials(List<UserID> mUserIDList, int userHash) {
-    System.out.println("Made it to verifying credentials.");
     for(UserID user : mUserIDList) {
       if(userHash == user.getHashPassword()) {
-        //LoggedInToken.logUserIN(user); //TODO: review for LoggedInToken need
         return true;
       }
     }
@@ -38,9 +37,9 @@ public class Util {
     return userID;
   }
 
-  /* TODO: Return to this -- startActivities from non-activity
+  //TODO: This works! startActivities from non-activity
   public static void logOutUser(Context context) {
-    Intent intent = MainActivity.intentFactory(context, 0);
+    Intent intent = MainActivity.intentFactory(context, -1);
     startActivity(context, intent, new Bundle());
-  }*/
+  }
 }
