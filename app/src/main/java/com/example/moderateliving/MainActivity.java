@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
   private static final String USER_PASSWORD_HASH =
       "com.example.moderateliving.MainActivity_USER_PASSWORD_HASH";
-  private static final String SHARED_PREF_STRING = "com.example.moderateliving.MainActivity_SHARED_PREF_STRING";
+  private static final String SHARED_PREF_STRING = "com.example.moderateliving_SHARED_PREF_STRING";
   private static final String TAG = "MainActivity";
 
   ActivityMainBinding binding;
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         3,
         false);
     HealthActivities healthActivity1 = new HealthActivities(
-        2,
+        mLoggedInUser.getUserID(),
         "Healthy Weekend Eating",
         "Stay healthy on the weekends!",
         1,

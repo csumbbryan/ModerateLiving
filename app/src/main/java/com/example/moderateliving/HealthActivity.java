@@ -115,7 +115,7 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   private void populateEntries() {
     recyclerView = findViewById(R.id.recyclerViewHealthCollection);
     mHealthActivities = mModerateLivingDAO.getHealthActivitiesByUser(mLoggedInUserID);
-    mHealthRecyclerAdapter = new HealthRecyclerAdapter(this, mHealthActivities);
+    mHealthRecyclerAdapter = new HealthRecyclerAdapter(this, mHealthActivities, this);
     recyclerView.setAdapter(mHealthRecyclerAdapter);
   }
 
@@ -193,8 +193,16 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   }
 
   @Override
-  public void onEntryClick(int position) {
-
+  public void onCheckBoxSelect(HealthActivities healthActivity, boolean recreate) {
+    Toast.makeText(getApplicationContext(), "Activity completed: " + healthActivity.getActivityName(), Toast.LENGTH_LONG);
+    mModerateLivingDAO.delete(healthActivity);
+    //TODO: Log to HealthActivityLogs database
+    if(recreate){
+      HealthActivities newHealthActivities = healthActivity.copy();
+      mModerateLivingDAO.insert(newHealthActivities);
+      mHealthRecyclerAdapter.updateHealthEntryList(newHealthActivities);
+      //TODO: Log to HealthActivityLogs database
+    }
   }
 
   @Override

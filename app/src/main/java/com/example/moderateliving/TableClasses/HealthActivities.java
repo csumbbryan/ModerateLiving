@@ -4,6 +4,8 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import com.example.moderateliving.DB.AppDataBase;
+import com.example.moderateliving.HealthActivity;
+
 @Entity(tableName = AppDataBase.HEALTHACTIVITIES_TABLE,
 foreignKeys = {@ForeignKey(entity = UserID.class,
 parentColumns = "mUserID",
@@ -90,5 +92,15 @@ public class HealthActivities {
         ", mActivityPoints=" + mActivityPoints +
         ", mIsRecurring=" + mIsRecurring +
         '}';
+  }
+
+  public HealthActivities copy() {
+    HealthActivities healthActivities = new HealthActivities(
+        this.mUserID,
+        this.mActivityName,
+        this.mActivityDescription,
+        this.mActivityPoints,
+        this.mIsRecurring);
+    return healthActivities;
   }
 }
