@@ -231,7 +231,8 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   }
 
   @Override
-  public void onEntryLongClick(int position) {
-
+  public void onEntryLongClick(int mActivityID) {
+    Intent intent = HealthConfigActivity.intentFactory(getApplicationContext(), mActivityID, mLoggedInUserID);
+    startActivity(intent);
   }
 }

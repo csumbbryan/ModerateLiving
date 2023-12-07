@@ -56,6 +56,7 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<HealthEntryHolde
       pointsText = mEntryPoints + " Pts";
     }
     if(healthEntryHolder != null && healthEntry != null) {
+      healthEntryHolder.mActivityID = healthEntry.getActivityID();
       healthEntryHolder.mEntryDescription.setText(healthEntry.getActivityDescription());
       healthEntryHolder.mEntryName.setText(healthEntry.getActivityName());
       healthEntryHolder.mEntryPoints.setText(pointsText);
@@ -124,6 +125,13 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<HealthEntryHolde
             AlertDialog checkDelete = alertBuilder.create();
             checkDelete.show();
           }
+        }
+      });
+      healthEntryHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+          recyclerViewInterface.onEntryLongClick(healthEntryHolder.mActivityID);
+          return false;
         }
       });
     }

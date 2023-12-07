@@ -61,11 +61,11 @@ public class HealthConfigActivity extends AppCompatActivity {
     mEditTextHealthActivityPoints = mActivityHealthConfigBinding.editTextHealthActivityPoints;
     mButtonHealthConfigReturn = mActivityHealthConfigBinding.imageButtonHealthConfigReturn;
 
-    Util.logOutUser(this);
-
     getDatabase();
     if(!confirmNew()) {
       setUpExisting();
+    } else {
+      setUpCurrent();
     }
     setCurrentHealthActivity();
     setLoggedInUser();
@@ -96,6 +96,18 @@ public class HealthConfigActivity extends AppCompatActivity {
 
     //TODO: Complete listener for Complete Button
     //TODO: Complete listener for Delete Button
+  }
+
+  private void setUpCurrent() {
+    if(mActivityID == 0) {
+      //TODO: Warning, logs, etc.
+    } else {
+      mHealthActivities = mModerateLivingDAO.getHealthActivitiesByID(mActivityID);
+      mEditTextHealthActivityName.setText(mHealthActivities.getActivityName());
+      mEditTextHealthActivityDescription.setText(mHealthActivities.getActivityDescription());
+      mEditTextHealthActivityPoints.setText(mHealthActivities.getActivityPoints());
+      mCheckBoxHealthActivityIsRecurring.setChecked(mHealthActivities.isRecurring());
+    }
   }
 
   @Override
@@ -167,6 +179,7 @@ public class HealthConfigActivity extends AppCompatActivity {
       }
     } else {
       if(readyToSubmit) {
+        //TODO: add return to Health Activity view
         mModerateLivingDAO.update(mHealthActivities);
       }
     }
@@ -215,8 +228,8 @@ public class HealthConfigActivity extends AppCompatActivity {
     int userID = getIntent().getIntExtra(USER_ID, 0);
     if(activityID != 0) {
       mHealthActivities = mModerateLivingDAO.getHealthActivitiesByID(activityID);
-
     } else {
+      //TODO: setup warning, log, etc.?
     }
   }
 
