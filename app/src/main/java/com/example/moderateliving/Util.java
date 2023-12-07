@@ -1,5 +1,11 @@
 package com.example.moderateliving;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.room.Room;
 
 import com.example.moderateliving.DB.AppDataBase;
@@ -31,4 +37,10 @@ public class Util {
     }
     return userID;
   }
+
+  /* TODO: Return to this -- startActivities from non-activity
+  public static void logOutUser(Context context) {
+    Intent intent = MainActivity.intentFactory(context, 0);
+    startActivity(context, intent, new Bundle());
+  }*/
 }

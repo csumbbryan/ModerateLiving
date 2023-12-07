@@ -41,4 +41,12 @@
     <string name="buttonHealthActivityHome">Return Home</string>
     <string name="textViewHealthEntryName">Name</string>
     <string name="textViewHealthEntryPoints">Points</string>
+    <string name="buttonHealthConfigComplete">Complete Activity</string>
+    <string name="buttonHealthConfigDelete">Delete Activity</string>
+    <string name="buttonHealthConfigUpdate">Save Activity</string>
+    <string name="textViewReturnToHealthActivities">Go Back</string>
+    <string name="editTextHealthActivityName">Health Activity Name</string>
+    <string name="editTextHealthActivityDescription">Health Activity Description</string>
+    <string name="editTextHealthPerActivity">Points per Activity</string>
+    <string name="checkBoxHealthActivityIsRecurring">Repeating Activity (TBD)</string>
 </resources>

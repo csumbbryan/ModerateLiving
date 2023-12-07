@@ -1,9 +1,6 @@
 package com.example.moderateliving;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
@@ -12,12 +9,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +24,6 @@ import com.example.moderateliving.TableClasses.HealthActivities;
 import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.databinding.ActivityHealthBinding;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,12 +34,14 @@ import java.util.List;
 public class HealthActivity extends AppCompatActivity implements RecyclerViewInterface {
 
   private static final String USER_ID = "com.example.moderateliving.HealthActivity_USER_ID";
+  private static final String TAG = "HealthActivity";
   RecyclerView recyclerView;
   HealthRecyclerAdapter mHealthRecyclerAdapter;
 
   ActivityHealthBinding mHealthActivityBinding;
   ModerateLivingDAO mModerateLivingDAO;
-  Button mHealthActivityHome;
+  Button mButtonHealthActivityHome;
+  Button mButtonHealthActivityCreate;
   List<HealthActivities> mHealthActivities;
   int mLoggedInUserID = 0;
 
@@ -64,15 +61,30 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
     mHealthActivityBinding = ActivityHealthBinding.inflate(getLayoutInflater());
     setContentView(mHealthActivityBinding.getRoot());
 
-    mModerateLivingDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME)
-        .allowMainThreadQueries()
-        .build().
-        getModerateLivingDAO();
-
+    getDatabase();
     checkUserLoggedIn();
     populateEntries();
 
-    mHealthActivityHome = mHealthActivityBinding.buttonHealthActivityHome;
+    mButtonHealthActivityHome = mHealthActivityBinding.buttonHealthActivityHome;
+    mButtonHealthActivityCreate = mHealthActivityBinding.buttonHealthActivityCreate;
+
+    mButtonHealthActivityHome.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = MainActivity.intentFactory(getApplicationContext(), mModerateLivingDAO.getUserByID(mLoggedInUserID).getHashPassword());
+        Log.d(TAG, "Returning to Main Activity");
+        startActivity(intent);
+      }
+    });
+
+    mButtonHealthActivityCreate.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        int activityID = 0;
+        Intent intent = HealthConfigActivity.intentFactory(getApplicationContext(), activityID, mLoggedInUserID);
+        startActivity(intent);
+      }
+    });
 
     //tableHashMap = initTable(); //TODO: This can be removed once table initialization is removed
 
@@ -110,6 +122,13 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
       });
     }*/
 
+  }
+
+  private void getDatabase() {
+    mModerateLivingDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME)
+        .allowMainThreadQueries()
+        .build().
+        getModerateLivingDAO();
   }
 
   private void populateEntries() {

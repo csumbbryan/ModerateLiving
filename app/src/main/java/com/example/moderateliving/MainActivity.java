@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
      * initialize logged in user variables and setup environment based on user values.
      */
     if(mLoggedInUser != null) {
-      CreateHealthActivities();
       int userPoints = mLoggedInUser.getPoints();
       String name = mLoggedInUser.getName();
       boolean isAdmin = mLoggedInUser.getIsAdmin();
@@ -111,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
     mHealthActivitiesSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //TODO: intent factory and send to Health Activities view -- update for passing Extra
         Intent intent = HealthActivity.intentFactory(getApplicationContext(), mLoggedInUser.getUserID()); //Update userHash
         Log.d(TAG, "Switching to HealthActivity View");
         startActivity(intent);
@@ -151,9 +149,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor loginSharedEditor = loginSharedPref.edit();
         loginSharedEditor.remove(SHARED_PREF_STRING);
         loginSharedEditor.apply();
+        mLoggedInUser = null;
+        getIntent().putExtra(USER_PASSWORD_HASH, 0);
         //TODO: update better checking of sharedPreferences being cleared for below log
         Log.d(TAG, "Shared Preferences have been cleared. Closing MainActivity.");
-        //LoggedInToken.logUserOut(); //TODO: review for LoggedInToken need
         finish();
         //CALL: Close App
       }
@@ -169,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
 
     int userPassHash = getIntent().getIntExtra(USER_PASSWORD_HASH, 0);
     mUserIDList = mModerateLivingDAO.getUserIDs();
-    //if(LoggedInToken.getLoggedInToken() != null) {return true;} //TODO: review for LoggedInToken need
     if(userPassHash != 0 ) {
       //TODO: build in more checks to ensure success before returning true
       //LoggedInToken.logUserIN(Util.findUserByHash(mUserIDList, userPassHash));
@@ -214,34 +212,10 @@ public class MainActivity extends AppCompatActivity {
     return false;
   }
 
-  //TODO: Update this upon completion of other methods
+  //TODO: Update this upon completion of other methods. Need to update points textView.
   private void refreshDisplay() {
 
   }
 
-  //TODO: Delete this when no longer needed
-  private void CreateHealthActivities() {
-    HealthActivities healthActivity = new HealthActivities(
-        mLoggedInUser.getUserID(),
-        "Running",
-        "Running 3 miles every week",
-        3,
-        false);
-    HealthActivities healthActivity1 = new HealthActivities(
-        mLoggedInUser.getUserID(),
-        "Healthy Weekend Eating",
-        "Stay healthy on the weekends!",
-        1,
-        false);
-    HealthActivities healthActivity2 = new HealthActivities(
-        2,
-        "Gym",
-        "Earn a point for each workout, up to 4 per week",
-        1,
-        false);
-    mModerateLivingDAO.insert(healthActivity);
-    mModerateLivingDAO.insert(healthActivity1);
-    mModerateLivingDAO.insert(healthActivity2);
-  }
 
 }

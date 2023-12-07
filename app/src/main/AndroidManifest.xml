@@ -28,6 +28,9 @@
             android:name=".AdminActivity"
             android:exported="false" />
         <activity
+            android:name=".HealthConfigActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity

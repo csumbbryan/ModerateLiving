@@ -4,6 +4,144 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".HealthConfigActivity">
+
+    <TextView
+        android:id="@+id/textViewHealthActivityText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/blue2"
+        android:gravity="center"
+        android:text="@string/textViewHealthActivityText"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextHealthActivityName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="25dp"
+        android:background="@color/material_dynamic_neutral95"
+        android:hint="@string/editTextHealthActivityName"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonHealthConfigReturn" />
+
+    <EditText
+        android:id="@+id/editTextHealthActivityDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:background="@color/material_dynamic_neutral95"
+        android:hint="@string/editTextHealthActivityDescription"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextHealthActivityName" />
+
+    <EditText
+        android:id="@+id/editTextHealthActivityPoints"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:padding="4dp"
+        android:hint="@string/editTextHealthPerActivity"
+        android:background="@color/material_dynamic_neutral95"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/editTextHealthActivityDescription" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonHealthConfigComplete"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@color/greenDark"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/buttonHealthConfigComplete"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/checkBoxHealthActivityIsRecurring"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxHealthActivityIsRecurring" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonHealthConfigDelete"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/red3"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/buttonHealthConfigDelete"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/buttonHealthConfigComplete"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxHealthActivityIsRecurring" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonHealthConfigUpdate"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/grayLight"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/buttonHealthConfigUpdate"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextHealthActivityName"
+        app:layout_constraintEnd_toEndOf="@+id/editTextHealthActivityName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHealthActivityText" />
+
+    <TextView
+        android:id="@+id/textViewReturnToHealthActivities"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/textViewReturnToHealthActivities"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButtonHealthConfigReturn"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonHealthConfigReturn"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHealthActivityText" />
+
+    <ImageButton
+        android:id="@+id/imageButtonHealthConfigReturn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/blue2"
+        app:layout_constraintStart_toStartOf="@+id/editTextHealthActivityName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHealthActivityText"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
+
+    <CheckBox
+        android:id="@+id/checkBoxHealthActivityIsRecurring"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/checkBoxHealthActivityIsRecurring"
+        app:layout_constraintStart_toStartOf="@+id/editTextHealthActivityPoints"
+        app:layout_constraintTop_toBottomOf="@+id/editTextHealthActivityPoints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
