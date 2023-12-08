@@ -70,6 +70,12 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
 
   }
 
+  @Override
+  protected void onPause() {
+    super.onPause();
+    finish();
+  }
+
   private void populateEntries() {
     recyclerView = findViewById(R.id.recyclerViewSplurge);
     mSplurges = mModerateLivingDAO.getSplurgesByUserID(mLoggedInUserID);
