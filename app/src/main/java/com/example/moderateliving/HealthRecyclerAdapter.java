@@ -3,7 +3,6 @@ package com.example.moderateliving;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +13,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moderateliving.TableClasses.HealthActivities;
+import com.example.moderateliving.TableClasses.Splurges;
 
 import java.util.List;
 
 //Source: https://www.youtube.com/watch?v=wViZsuCptt4
 
-public class HealthRecyclerAdapter extends RecyclerView.Adapter<HealthEntryHolder> {
+public class HealthRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
 
   View view;
   private final RecyclerViewInterface recyclerViewInterface;
   private Context context;
   private List<HealthActivities> healthEntries;
+  private List<Splurges> splurgeEntries;
+  private List<ModerateLivingEntries> mLivingEntries;
 
   public HealthRecyclerAdapter(Context context, List<HealthActivities> healthEntries, RecyclerViewInterface recyclerViewInterface) {
     this.context = context;
@@ -38,15 +40,15 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<HealthEntryHolde
 
   @NonNull
   @Override
-  public HealthEntryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+  public EntryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_row, parent, false);
-    return new HealthEntryHolder(view, recyclerViewInterface);
+    return new EntryHolder(view, recyclerViewInterface);
   }
 
   @Override
-  public void onBindViewHolder(@NonNull HealthEntryHolder healthEntryHolder, final int position) {
+  public void onBindViewHolder(@NonNull EntryHolder entryHolder, final int position) {
     HealthActivities healthEntry = healthEntries.get(position);
-    healthEntryHolder.mCheckBox.setChecked(false);
+    entryHolder.mCheckBox.setChecked(false);
     boolean recreate = false;
     int mEntryPoints = healthEntry.getActivityPoints();
     String pointsText;
@@ -55,16 +57,16 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<HealthEntryHolde
     } else {
       pointsText = mEntryPoints + " Pts";
     }
-    if(healthEntryHolder != null && healthEntry != null) {
-      healthEntryHolder.mActivityID = healthEntry.getActivityID();
-      healthEntryHolder.mEntryDescription.setText(healthEntry.getActivityDescription());
-      healthEntryHolder.mEntryName.setText(healthEntry.getActivityName());
-      healthEntryHolder.mEntryPoints.setText(pointsText);
-      healthEntryHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
+    if(entryHolder != null && healthEntry != null) {
+      entryHolder.mActivityID = healthEntry.getActivityID();
+      entryHolder.mEntryDescription.setText(healthEntry.getActivityDescription());
+      entryHolder.mEntryName.setText(healthEntry.getActivityName());
+      entryHolder.mEntryPoints.setText(pointsText);
+      entryHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          if (healthEntryHolder.mCheckBox.isChecked()) {
-            healthEntryHolder.isSelected = true; //TODO: review if this is needed
+          if (entryHolder.mCheckBox.isChecked()) {
+            entryHolder.isSelected = true; //TODO: review if this is needed
 
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
             final AlertDialog alertDialog = alertBuilder.create();
@@ -111,14 +113,14 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<HealthEntryHolde
             alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
               @Override
               public void onClick(DialogInterface dialog, int i) {
-                healthEntryHolder.mCheckBox.setChecked(false);
+                entryHolder.mCheckBox.setChecked(false);
                 notifyDataSetChanged();
               }
             });
             alertBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
               @Override
               public void onCancel(DialogInterface dialog) {
-                healthEntryHolder.mCheckBox.setChecked(false);
+                entryHolder.mCheckBox.setChecked(false);
                 notifyDataSetChanged();
               }
             });
@@ -127,10 +129,10 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<HealthEntryHolde
           }
         }
       });
-      healthEntryHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+      entryHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-          recyclerViewInterface.onEntryLongClick(healthEntryHolder.mActivityID);
+          recyclerViewInterface.onEntryLongClick(entryHolder.mActivityID);
           return false;
         }
       });

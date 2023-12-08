@@ -16,7 +16,7 @@
             android:name=".SplurgeActivity"
             android:exported="false" />
         <activity
-            android:name=".HealthEntryHolder"
+            android:name=".EntryHolder"
             android:exported="false" />
         <activity
             android:name=".UserManagementActivity"

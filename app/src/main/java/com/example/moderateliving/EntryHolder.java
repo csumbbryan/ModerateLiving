@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-public class HealthEntryHolder extends RecyclerView.ViewHolder {
+public class EntryHolder extends RecyclerView.ViewHolder {
 
   public CheckBox mCheckBox;
   public TextView mEntryName;
@@ -15,7 +15,7 @@ public class HealthEntryHolder extends RecyclerView.ViewHolder {
   public TextView mEntryPoints;
   public Integer mActivityID; //TODO: is needed?
   public boolean isSelected;
-  public HealthEntryHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
+  public EntryHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
     super(itemView);
     int darkGreen = 0xFF007800; //TODO: how can we do this better?
     mCheckBox = (CheckBox) itemView.findViewById(R.id.checkBoxIsIncomplete);

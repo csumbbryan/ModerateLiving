@@ -4,21 +4,23 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import com.example.moderateliving.DB.AppDataBase;
+import com.example.moderateliving.ModerateLivingEntries;
+
 @Entity(tableName = AppDataBase.SPLURGES_TABLE,
     foreignKeys = {@ForeignKey(entity = UserID.class,
         parentColumns = "mUserID",
         childColumns = "mUserID",
         onDelete = ForeignKey.CASCADE)
     })
-public class Splurges {
+public class Splurges implements ModerateLivingEntries {
   @PrimaryKey (autoGenerate = true)
   private int mSplurgeID;
-  private String mUserID;
+  private int mUserID;
   private String mSplurgeName;
   private String mSplurgeDescription;
   private int mPointsCost;
 
-  public Splurges(int splurgeID, String userID, String splurgeName, String splurgeDescription, int pointsCost) {
+  public Splurges(int splurgeID, int userID, String splurgeName, String splurgeDescription, int pointsCost) {
     mSplurgeID = splurgeID;
     mUserID = userID;
     mSplurgeName = splurgeName;
@@ -34,11 +36,11 @@ public class Splurges {
     mSplurgeID = splurgeID;
   }
 
-  public String getUserID() {
+  public int getUserID() {
     return mUserID;
   }
 
-  public void setUserID(String userID) {
+  public void setUserID(int userID) {
     mUserID = userID;
   }
 
@@ -75,5 +77,25 @@ public class Splurges {
         ", mSplurgeDescription='" + mSplurgeDescription + '\'' +
         ", mPointsCost=" + mPointsCost +
         '}';
+  }
+
+  @Override
+  public String getEntryName() {
+    return this.mSplurgeName;
+  }
+
+  @Override
+  public String getDescription() {
+    return this.mSplurgeDescription;
+  }
+
+  @Override
+  public int getPoints() {
+    return this.mPointsCost;
+  }
+
+  @Override
+  public int getID() {
+    return this.mSplurgeID;
   }
 }

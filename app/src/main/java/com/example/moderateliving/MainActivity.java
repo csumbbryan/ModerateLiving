@@ -118,14 +118,17 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
-    /*
+
     mSplurgesSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //TODO: intent factory and send to Splurges view
+        Intent intent = SplurgeActivity.intentFactory(getApplicationContext(), mLoggedInUser.getUserID());
+        Log.d(TAG, "Switching to SplurgeActivity View");
+        startActivity(intent);
       }
     });
 
+    /*
     mViewLogSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {

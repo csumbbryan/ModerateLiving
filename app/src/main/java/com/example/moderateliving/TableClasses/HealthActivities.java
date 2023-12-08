@@ -4,7 +4,7 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import com.example.moderateliving.DB.AppDataBase;
-import com.example.moderateliving.HealthActivity;
+import com.example.moderateliving.ModerateLivingEntries;
 
 @Entity(tableName = AppDataBase.HEALTHACTIVITIES_TABLE,
 foreignKeys = {@ForeignKey(entity = UserID.class,
@@ -13,7 +13,7 @@ childColumns = "mUserID",
     onDelete = ForeignKey.CASCADE)
 })
 
-public class HealthActivities {
+public class HealthActivities implements ModerateLivingEntries {
   @PrimaryKey(autoGenerate = true)
   private int mActivityID;
 
@@ -40,6 +40,26 @@ public class HealthActivities {
 
   public void setActivityID(int activityID) {
     mActivityID = activityID;
+  }
+
+  @Override
+  public String getEntryName() {
+    return mActivityName;
+  }
+
+  @Override
+  public String getDescription() {
+    return mActivityDescription;
+  }
+
+  @Override
+  public int getPoints() {
+    return mActivityPoints;
+  }
+
+  @Override
+  public int getID() {
+    return mActivityID;
   }
 
   public int getUserID() {
@@ -103,4 +123,6 @@ public class HealthActivities {
         this.mIsRecurring);
     return healthActivities;
   }
+
+
 }

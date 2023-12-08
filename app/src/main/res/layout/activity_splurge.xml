@@ -5,7 +5,7 @@
     android:id="@+id/splurgeTableLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grayExtraDark"
+    android:background="@color/grayDark"
     tools:context=".SplurgeActivity">
 
     <androidx.appcompat.widget.AppCompatButton
@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:backgroundTint="@color/lavender"
+        android:backgroundTint="@color/material_dynamic_primary10"
         android:elevation="12dp"
         android:text="@string/buttonSplurgeActivityHome"
         android:textColor="@color/white"
@@ -25,7 +25,7 @@
         android:id="@+id/textViewSplurgeActivityMainText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/orange"
+        android:background="@color/material_dynamic_primary20"
         android:gravity="center"
         android:text="@string/textViewSplurgeActivity"
         android:textColor="@color/white"
@@ -42,7 +42,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="25dp"
-        android:backgroundTint="@color/lavender"
+        android:backgroundTint="@color/material_dynamic_primary10"
         android:elevation="12dp"
         android:text="@string/buttonSplurgeActivityCreate"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
