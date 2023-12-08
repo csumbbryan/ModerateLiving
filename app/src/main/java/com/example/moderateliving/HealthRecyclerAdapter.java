@@ -28,9 +28,10 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
   private List<Splurges> splurgeEntries;
   private List<ModerateLivingEntries> mLivingEntries;
 
-  public HealthRecyclerAdapter(Context context, List<HealthActivities> healthEntries, RecyclerViewInterface recyclerViewInterface) {
+  public HealthRecyclerAdapter(Context context, List<ModerateLivingEntries> livingEntries, RecyclerViewInterface recyclerViewInterface) {
     this.context = context;
-    this.healthEntries = healthEntries;
+    this.mLivingEntries = livingEntries;
+    //this.healthEntries = livingEntries;
     this.recyclerViewInterface = recyclerViewInterface;
   }
 
@@ -47,7 +48,31 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
 
   @Override
   public void onBindViewHolder(@NonNull EntryHolder entryHolder, final int position) {
-    HealthActivities healthEntry = healthEntries.get(position);
+    //TODO: Use recycler view
+    //TODO: setup Health and Splurge Activity to allow input of recycler view
+
+    //Interface Code:
+    ModerateLivingEntries livingEntry = mLivingEntries.get(position);
+    if(livingEntry.getClass().equals(HealthActivities.class)) {
+      Toast.makeText(context, "This is a Health Activities Class", Toast.LENGTH_LONG).show();
+    } else if (livingEntry.getClass().equals(Splurges.class)) {
+      Toast.makeText(context, "This is a Splurges Class", Toast.LENGTH_LONG).show();
+    }
+    int mEntryPointsI = livingEntry.getPoints();
+    String pointsTextI;
+    if(mEntryPointsI == 1) {
+      pointsTextI = mEntryPointsI + " Pt";
+    } else {
+      pointsTextI = mEntryPointsI + " Pts";
+    }
+    if(entryHolder != null && livingEntry != null) {
+      entryHolder.mActivityID = livingEntry.getID();
+      entryHolder.mEntryDescription.setText(livingEntry.getDescription());
+      entryHolder.mEntryName.setText(livingEntry.getEntryName());
+      entryHolder.mEntryPoints.setText(pointsTextI);
+
+    /*//Good Code:
+    HealthActivities healthEntry = healthEntries.get(position); //UPDATED healthEntries to Living Entries
     entryHolder.mCheckBox.setChecked(false);
     boolean recreate = false;
     int mEntryPoints = healthEntry.getActivityPoints();
@@ -62,6 +87,8 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
       entryHolder.mEntryDescription.setText(healthEntry.getActivityDescription());
       entryHolder.mEntryName.setText(healthEntry.getActivityName());
       entryHolder.mEntryPoints.setText(pointsText);
+    */
+
       entryHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -83,14 +110,14 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
                 alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                   @Override
                   public void onClick(DialogInterface dialog, int which) {
-                    recyclerViewInterface.onCheckBoxSelect(healthEntry, false);
+                    recyclerViewInterface.onCheckBoxSelect(livingEntry.getID(), false); //UPDATED TO LIVINGENTRY FROM HEALTHENTRY
                   }
                 });
                 alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                   @Override
                   public void onClick(DialogInterface dialog, int which) {
                     //TODO: Call method to create new Health Activity with attributes
-                    recyclerViewInterface.onCheckBoxSelect(healthEntry, true);
+                    recyclerViewInterface.onCheckBoxSelect(livingEntry.getID(), true); //UPDATED TO LIVING ENTRY FROM HEALTHENTRY
                     Toast.makeText(context, "Creating new Health Activity", Toast.LENGTH_LONG);
                   }
                 });
@@ -104,7 +131,7 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
 
                   @Override
                   public void onFinish() {
-                    healthEntries.remove(healthEntry);
+                    mLivingEntries.remove(livingEntry); //UPDATED TO LIVING ENTRY FROM HEALTHENTRY
                     notifyDataSetChanged();
                   }
                 }.start();
@@ -139,13 +166,13 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
     }
   }
 
-  public void updateHealthEntryList(HealthActivities healthActivities) {
-    healthEntries.add(0, healthActivities);
+  public void updateHealthEntryList(ModerateLivingEntries livingEntry) {
+    mLivingEntries.add(0, livingEntry);  //UPDATED TO LIVING ENTRY FROM HEALTHENTRY
     notifyItemInserted(0);
   }
 
   @Override
   public int getItemCount() {
-    return healthEntries.size();
-  }
+    return mLivingEntries.size();
+  } //UPDATED TO LIVING ENTRY FROM HEALTHENTRY
 }

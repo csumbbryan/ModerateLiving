@@ -1,6 +1,7 @@
 package com.example.moderateliving;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.content.Intent;
@@ -15,18 +16,26 @@ import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
+import com.example.moderateliving.TableClasses.Splurges;
 import com.example.moderateliving.databinding.ActivitySplurgeBinding;
 
-public class SplurgeActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class SplurgeActivity extends AppCompatActivity implements RecyclerViewInterface{
 
   private static final String USER_ID = "com.example.moderateliving.SplurgeActivity_USER_ID";
   private static final String TAG = "SplurgeActivity";
   private static final int LOGOUT_USER = -1;
   private static final int NO_USER = 0;
   private ModerateLivingDAO mModerateLivingDAO;
+  private RecyclerView recyclerView;
+  private HealthRecyclerAdapter mRecyclerAdapter;
   private ActivitySplurgeBinding mSplurgeActivityBinding;
   private Button mButtonSplurgeActivityHome;
   private Button mButtonSplurgeActivityCreate;
+  private List<Splurges> mSplurges;
+  List<ModerateLivingEntries> mLivingEntries = new ArrayList<>();
   private int mLoggedInUserID = NO_USER;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +69,13 @@ public class SplurgeActivity extends AppCompatActivity {
   }
 
   private void populateEntries() {
+    recyclerView = findViewById(R.id.recyclerViewSplurge);
+    mSplurges = mModerateLivingDAO.getSplurgesByUserID(mLoggedInUserID);
+    if(mSplurges != null) {
+      mLivingEntries.addAll(mSplurges);
+    }
+    mRecyclerAdapter = new HealthRecyclerAdapter(this, mLivingEntries, this);
+    recyclerView.setAdapter(mRecyclerAdapter);
   }
 
   private void checkUserLoggedIn() {
@@ -100,5 +116,15 @@ public class SplurgeActivity extends AppCompatActivity {
     Intent intent = MainActivity.intentFactory(getApplicationContext(), userPassHash);
     Log.d(TAG, "Returning to Main Activity");
     startActivity(intent);
+  }
+
+  @Override
+  public void onCheckBoxSelect(int activityID, boolean recreate) {
+
+  }
+
+  @Override
+  public void onEntryLongClick(int position) {
+
   }
 }

@@ -20,6 +20,7 @@ import com.example.moderateliving.TableClasses.HealthActivities;
 import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.databinding.ActivityHealthBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //TODO: add delete and logout button
@@ -39,6 +40,9 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   Button mButtonHealthActivityHome;
   Button mButtonHealthActivityCreate;
   List<HealthActivities> mHealthActivities;
+
+  //TESTING INTERFACE
+  List<ModerateLivingEntries> mLivingEntries = new ArrayList<>();
   int mLoggedInUserID = NO_USER;
 
   public static Intent intentFactory(Context packageContext, int mLoggedInUserID) {
@@ -98,9 +102,16 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   }
 
   private void populateEntries() {
+    //TODO: setup interface
+    ModerateLivingEntries mEntry = new HealthActivities(5,"name","description", 1, false);
+
+
     recyclerView = findViewById(R.id.recyclerViewHealth);
     mHealthActivities = mModerateLivingDAO.getHealthActivitiesByUser(mLoggedInUserID);
-    mHealthRecyclerAdapter = new HealthRecyclerAdapter(this, mHealthActivities, this);
+    if(mHealthActivities != null) {
+      mLivingEntries.addAll(mHealthActivities);
+    }
+    mHealthRecyclerAdapter = new HealthRecyclerAdapter(this, mLivingEntries, this);
     recyclerView.setAdapter(mHealthRecyclerAdapter);
   }
 
@@ -123,7 +134,8 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   }
 
   @Override
-  public void onCheckBoxSelect(HealthActivities healthActivity, boolean recreate) {
+  public void onCheckBoxSelect(int activityID, boolean recreate) {
+    HealthActivities healthActivity = mModerateLivingDAO.getHealthActivitiesByID(activityID);
     int completedPoints = healthActivity.getActivityPoints();
     UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
     int userPoints = user.getPoints();
