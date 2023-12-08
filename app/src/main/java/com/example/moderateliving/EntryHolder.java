@@ -24,17 +24,20 @@ public class EntryHolder extends RecyclerView.ViewHolder {
     mEntryPoints = (TextView) itemView.findViewById(R.id.textViewEntryPoints);
 
 
-    /*
-    itemView.setOnClickListener(new View.OnClickListener() {
+
+    mCheckBox.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         if(recyclerViewInterface != null) {
-          int position = getBindingAdapterPosition();
-          if(position != RecyclerView.NO_POSITION) {
-            recyclerViewInterface.onEntryClick(position);
+          if(mCheckBox.isChecked()) {
+            int position = getBindingAdapterPosition();
+            if(position != RecyclerView.NO_POSITION) {
+              recyclerViewInterface.onCheckBoxSelect(position);
+              mCheckBox.setChecked(false);
+            }
           }
         }
       }
-    });*/
+    });
   }
 }

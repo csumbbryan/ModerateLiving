@@ -64,30 +64,12 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
     } else {
       pointsTextI = mEntryPointsI + " Pts";
     }
-    if(entryHolder != null && livingEntry != null) {
       entryHolder.mActivityID = livingEntry.getID();
       entryHolder.mEntryDescription.setText(livingEntry.getDescription());
       entryHolder.mEntryName.setText(livingEntry.getEntryName());
       entryHolder.mEntryPoints.setText(pointsTextI);
 
-    /*//Good Code:
-    HealthActivities healthEntry = healthEntries.get(position); //UPDATED healthEntries to Living Entries
-    entryHolder.mCheckBox.setChecked(false);
-    boolean recreate = false;
-    int mEntryPoints = healthEntry.getActivityPoints();
-    String pointsText;
-    if(mEntryPoints == 1) {
-      pointsText = mEntryPoints + " Pt";
-    } else {
-      pointsText = mEntryPoints + " Pts";
-    }
-    if(entryHolder != null && healthEntry != null) {
-      entryHolder.mActivityID = healthEntry.getActivityID();
-      entryHolder.mEntryDescription.setText(healthEntry.getActivityDescription());
-      entryHolder.mEntryName.setText(healthEntry.getActivityName());
-      entryHolder.mEntryPoints.setText(pointsText);
-    */
-
+      /*
       //TODO: Can much of this be moved to the individual activities?
       entryHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -183,8 +165,7 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
           recyclerViewInterface.onEntryLongClick(entryHolder.mActivityID);
           return false;
         }
-      });
-    }
+      });*/
   }
 
   public void updateHealthEntryList(ModerateLivingEntries livingEntry) {

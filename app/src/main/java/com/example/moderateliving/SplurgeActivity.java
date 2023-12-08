@@ -81,9 +81,9 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
     mSplurges = mModerateLivingDAO.getSplurgesByUserID(mLoggedInUserID);
     if(mSplurges != null) {
       mLivingEntries.addAll(mSplurges);
+      mRecyclerAdapter = new HealthRecyclerAdapter(this, mLivingEntries, this);
+      recyclerView.setAdapter(mRecyclerAdapter);
     }
-    mRecyclerAdapter = new HealthRecyclerAdapter(this, mLivingEntries, this);
-    recyclerView.setAdapter(mRecyclerAdapter);
   }
 
   private void checkUserLoggedIn() {
@@ -120,7 +120,7 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
   private void toCreateNewSplurge() {
     int mSplurgeID = 0;
     Intent intent = SplurgeConfigActivity.intentFactory(getApplicationContext(), mSplurgeID, mLoggedInUserID);
-    Log.d(TAG, "Switching to Splurge Config Activity View");
+    Log.d(TAG, "Switching to Splurge Config Activity View for new Splurge");
     startActivity(intent);
   }
 
@@ -131,8 +131,10 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
   }
 
   @Override
-  public void onCheckBoxSelect(int splurgeID, boolean recreate) {
-    Splurges splurge = mModerateLivingDAO.getSplurgeByID(splurgeID);
+  public void onCheckBoxSelect(int itemPosition) {
+    ModerateLivingEntries livingEntry = mLivingEntries.get(itemPosition);
+    //Splurges splurge = mModerateLivingDAO.getSplurgeByID(itemPosition);
+    Splurges splurge = mModerateLivingDAO.getSplurgeByID(livingEntry.getID());
     int redeemedPoints = splurge.getPointsCost();
     UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
     int userPoints = user.getPoints();
@@ -147,11 +149,13 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
       Toast.makeText(getApplicationContext(),
           "Splurge redeemed: " + splurge.getSplurgeName() + " with " + redeemedPoints + " pts", Toast.LENGTH_LONG).show();
     }
+
   }
 
   @Override
   public void onEntryLongClick(int mSplurgeID) {
     Intent intent = SplurgeConfigActivity.intentFactory(getApplicationContext(), mSplurgeID, mLoggedInUserID);
+    Log.d(TAG, "Switching to Splurge Config Activity for existing Splurge: " + mSplurgeID);
     startActivity(intent);
   }
 }

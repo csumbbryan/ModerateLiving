@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -50,6 +52,7 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
     intent.putExtra(USER_ID, mLoggedInUserID);
     return intent;
   }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -103,27 +106,28 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
 
   private void populateEntries() {
     //TODO: setup interface
-    ModerateLivingEntries mEntry = new HealthActivities(5,"name","description", 1, false);
+    ModerateLivingEntries mEntry = new HealthActivities(5, "name", "description", 1, false);
 
 
     recyclerView = findViewById(R.id.recyclerViewHealth);
     mHealthActivities = mModerateLivingDAO.getHealthActivitiesByUser(mLoggedInUserID);
-    if(mHealthActivities != null) {
+    if (mHealthActivities != null) {
       mLivingEntries.addAll(mHealthActivities);
+      mHealthRecyclerAdapter = new HealthRecyclerAdapter(this, mLivingEntries, this);
+      recyclerView.setAdapter(mHealthRecyclerAdapter);
     }
-    mHealthRecyclerAdapter = new HealthRecyclerAdapter(this, mLivingEntries, this);
-    recyclerView.setAdapter(mHealthRecyclerAdapter);
   }
 
   private void checkUserLoggedIn() {
     mLoggedInUserID = getIntent().getIntExtra(USER_ID, NO_USER);
-    if(mLoggedInUserID == 0) {
+    if (mLoggedInUserID == 0) {
       Toast notLoggedIn = Toast.makeText(this, "You are not logged in. Exiting the app.", Toast.LENGTH_SHORT);
       notLoggedIn.show();
       new CountDownTimer(1000, 1000) {
         @Override
         public void onTick(long millisUntilFinished) {
         }
+
         @Override
         public void onFinish() {
           returnToMainActivity(LOGOUT_USER);
@@ -134,30 +138,87 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   }
 
   @Override
-  public void onCheckBoxSelect(int activityID, boolean recreate) {
-    HealthActivities healthActivity = mModerateLivingDAO.getHealthActivitiesByID(activityID);
-    int completedPoints = healthActivity.getActivityPoints();
-    UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
-    int userPoints = user.getPoints();
-    userPoints = userPoints + completedPoints;
-    user.setPoints(userPoints);
-    mModerateLivingDAO.update(user);
-    mModerateLivingDAO.delete(healthActivity);
-    Toast.makeText(getApplicationContext(),
-        "Activity completed: " + healthActivity.getActivityName() + " with " + completedPoints + " pts", Toast.LENGTH_LONG).show();
+  public void onCheckBoxSelect(int position) {
+    ModerateLivingEntries livingEntry = mLivingEntries.get(position);
+    HealthActivities healthActivity = mModerateLivingDAO.getHealthActivitiesByID(livingEntry.getID());
 
-    //TODO: Log to HealthActivityLogs database
-    if(recreate){
-      HealthActivities newHealthActivities = healthActivity.copy();
-      mModerateLivingDAO.insert(newHealthActivities);
-      mHealthRecyclerAdapter.updateHealthEntryList(newHealthActivities);
-      //TODO: Log to HealthActivityLogs database
-    }
+    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(HealthActivity.this);
+    final AlertDialog alertDialog = alertBuilder.create();
+    alertBuilder.setMessage("Mark Health Activity complete?\n");
+    alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialogInterface, int i) {
+
+            AlertDialog.Builder alertBuilderInner = new AlertDialog.Builder(HealthActivity.this);
+            final AlertDialog alertDialogInner = alertBuilderInner.create();
+
+            alertBuilder.setMessage("Would you like to create a new copy of the completed Activity?\n");
+
+            alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                mHealthRecyclerAdapter.notifyItemChanged(position);
+              }
+            });
+            alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                //TODO: Call method to create new Health Activity with attributes
+                HealthActivities mHealthActivity = healthActivity.copy();
+                mLivingEntries.add(0, mHealthActivity);
+                mModerateLivingDAO.insert(healthActivity.copy());
+                mHealthRecyclerAdapter.notifyItemInserted(0);
+                Toast.makeText(getApplicationContext(), "Creating new Health Activity", Toast.LENGTH_LONG).show();
+              }
+            });
+            AlertDialog checkCreate = alertBuilder.create();
+            checkCreate.show();
+            new CountDownTimer(1000, 1000) {
+              @Override
+              public void onTick(long millisUntilFinished) {
+              }
+
+              @Override
+              public void onFinish() {
+                mLivingEntries.remove(position);
+                mHealthRecyclerAdapter.notifyItemRemoved(position);
+                int completedPoints = healthActivity.getActivityPoints();
+                mModerateLivingDAO.delete(healthActivity);
+                updateUserPoints(completedPoints);
+                Toast.makeText(getApplicationContext(),
+                    "Activity completed: "+healthActivity.getActivityName()+" with "+completedPoints +" pts",Toast.LENGTH_LONG).show();
+              }
+            }.start();
+          }
+        });
+    alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int i) {
+        mHealthRecyclerAdapter.notifyItemChanged(position);
+      }
+    });
+    alertBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+      @Override
+      public void onCancel(DialogInterface dialog) {
+        mHealthRecyclerAdapter.notifyItemChanged(position);
+      }
+    });
+    AlertDialog checkComplete = alertBuilder.create();
+    checkComplete.show();
   }
 
   @Override
   public void onEntryLongClick(int mActivityID) {
     Intent intent = HealthConfigActivity.intentFactory(getApplicationContext(), mActivityID, mLoggedInUserID);
+    Log.d(TAG, "Switching to Health Config Activity for existing Health Activity: " + mActivityID);
     startActivity(intent);
+  }
+
+  private void updateUserPoints(int completedPoints) {
+    UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
+    int userPoints = user.getPoints();
+    userPoints =userPoints +completedPoints;
+    user.setPoints(userPoints);
+    mModerateLivingDAO.update(user);
   }
 }
