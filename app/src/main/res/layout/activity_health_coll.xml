@@ -9,7 +9,7 @@
     tools:context=".HealthActivity">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonHealthActivityHome"
+        android:id="@+id/buttonSplurgeActivityHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textViewHealthActivityText"
+        android:id="@+id/textViewSplurgeActivityMainText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/blue2"
@@ -51,10 +51,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHealthActivityText" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSplurgeActivityMainText" />
 
     <LinearLayout
-        android:id="@+id/linearLayoutHealthActCollText"
+        android:id="@+id/linearLayoutSplurgeActText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -64,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonHealthActivityCollCreate">
 
         <TextView
-            android:id="@+id/textViewHealthActCollIncomplete"
+            android:id="@+id/textViewSplurgeActRedeem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -73,7 +73,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textViewHealthActCollDescription"
+            android:id="@+id/textViewSplurgeActivityDescription"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -81,7 +81,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textViewHealthActCollPoints"
+            android:id="@+id/textViewSplurgeActivityPoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -90,18 +90,18 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutHealthActCollList"
+        android:id="@+id/linearLayoutSplurgeActivityList"
         android:layout_width="409dp"
         android:layout_height="0dp"
         android:layout_marginBottom="60dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/buttonHealthActivityHome"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSplurgeActivityHome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutHealthActCollText">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutSplurgeActText">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewHealthCollection"
+            android:id="@+id/recyclerViewSplurge"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

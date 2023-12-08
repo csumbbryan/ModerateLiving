@@ -51,6 +51,7 @@ public class HealthConfigActivity extends AppCompatActivity {
 
     mActivityHealthConfigBinding = ActivityHealthConfigBinding.inflate(getLayoutInflater());
     setContentView(mActivityHealthConfigBinding.getRoot());
+    int darkGreen = getColor(R.color.greenDark);
 
     mButtonHealthConfigComplete = mActivityHealthConfigBinding.buttonHealthConfigComplete;
     mButtonHealthConfigDelete = mActivityHealthConfigBinding.buttonHealthConfigDelete;
@@ -88,14 +89,75 @@ public class HealthConfigActivity extends AppCompatActivity {
     mButtonHealthConfigReturn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = HealthActivity.intentFactory(getApplicationContext(), mLoggedInUserID);
-        Log.d(TAG, "Switching to Health Activity");
-        startActivity(intent);
+        returnToHealthActivity();
       }
     });
 
-    //TODO: Complete listener for Complete Button
-    //TODO: Complete listener for Delete Button
+    mButtonHealthConfigComplete.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        completeHealthActivity();
+      }
+    });
+
+    mButtonHealthConfigDelete.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        deleteHealthActivity();
+      }
+    });
+  }
+
+  private void deleteHealthActivity() {
+    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+    final AlertDialog alertDialog = alertBuilder.create();
+    alertBuilder.setMessage("Are you sure you wish to delete this Health Activity?");
+    alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        Log.d(TAG, "User: " + mLoggedInUserID + " did not delete Health Activity " + mHealthActivities.getActivityName());
+      }
+    });
+    alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        Log.d(TAG, "User: " + mLoggedInUserID + " elected to delete Health Activity " + mHealthActivities.getActivityName());
+        mModerateLivingDAO.delete(mHealthActivities);
+        returnToHealthActivity();
+        //TODO: setup to log(?) but do not record as complete
+      }
+    });
+    AlertDialog deleteRecord = alertBuilder.create();
+    deleteRecord.show();
+  }
+
+  private void completeHealthActivity() {
+    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+    final AlertDialog alertDialog = alertBuilder.create();
+    alertBuilder.setMessage("Are you sure you wish to mark this Health Activity complete?");
+    alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        Log.d(TAG, "User: " + mLoggedInUserID + " did not complete Health Activity " + mHealthActivities.getActivityName());
+      }
+    });
+    alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        int completedPoints = mHealthActivities.getActivityPoints();
+        UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
+        int userPoints = user.getPoints();
+        userPoints = userPoints + completedPoints;
+        user.setPoints(userPoints);
+        mModerateLivingDAO.update(user);
+        Log.d(TAG, "User: " + mLoggedInUserID + " completed Health Activity " + mHealthActivities.getActivityName());
+        mModerateLivingDAO.delete(mHealthActivities);
+        returnToHealthActivity();
+        //TODO: log in HealthActivityLog as complete
+      }
+    });
+    AlertDialog deleteRecord = alertBuilder.create();
+    deleteRecord.show();
   }
 
   private void setUpCurrent() {
@@ -141,16 +203,15 @@ public class HealthConfigActivity extends AppCompatActivity {
     }
 
     //TODO: Consider checking for duplicates? If so, possibly use Dialog check to confirm duplicate creation
-    if(mHealthActivities == null && readyToSubmit) {
-      mHealthActivities = new HealthActivities(
-          mLoggedInUserID,
-          activityName,
-          activityDescription,
-          activityPoints,
-          activityIsRecurring
-      );
-
-      if(readyToSubmit) {
+    if(readyToSubmit) {
+      if(mHealthActivities == null) {
+        mHealthActivities = new HealthActivities(
+            mLoggedInUserID,
+            activityName,
+            activityDescription,
+            activityPoints,
+            activityIsRecurring
+        );
         mModerateLivingDAO.insert(mHealthActivities);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         final AlertDialog alertDialog = alertBuilder.create();
@@ -167,23 +228,30 @@ public class HealthConfigActivity extends AppCompatActivity {
         alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-            Intent intent = HealthActivity.intentFactory(getApplicationContext(), mLoggedInUserID);
-            startActivity(intent);
+            returnToHealthActivity();
           }
         });
 
         AlertDialog checkResubmit = alertBuilder.create();
         checkResubmit.show();
       } else {
-        Toast.makeText(getApplicationContext(), "Please fill out all fields with proper values and resubmit.", Toast.LENGTH_LONG);
+        mHealthActivities.setActivityName(activityName);
+        mHealthActivities.setActivityDescription(activityDescription);
+        mHealthActivities.setActivityPoints(activityPoints);
+        mHealthActivities.setRecurring(activityIsRecurring);
+        mModerateLivingDAO.update(mHealthActivities);
+        returnToHealthActivity();
       }
     } else {
-      if(readyToSubmit) {
-        //TODO: add return to Health Activity view
-        mModerateLivingDAO.update(mHealthActivities);
-      }
+      Toast.makeText(getApplicationContext(), "Please fill out all fields with proper values and resubmit.", Toast.LENGTH_LONG);
     }
     return readyToSubmit;
+  }
+
+  private void returnToHealthActivity() {
+    Intent intent = HealthActivity.intentFactory(getApplicationContext(), mLoggedInUserID);
+    Log.d(TAG, "Switching to Health Activity");
+    startActivity(intent);
   }
 
   private void setLoggedInUser() {

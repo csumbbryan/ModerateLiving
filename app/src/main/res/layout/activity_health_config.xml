@@ -8,7 +8,7 @@
     tools:context=".HealthConfigActivity">
 
     <TextView
-        android:id="@+id/textViewHealthActivityText"
+        android:id="@+id/textViewSplurgeActivityMainText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/blue2"
@@ -112,7 +112,7 @@
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextHealthActivityName"
         app:layout_constraintEnd_toEndOf="@+id/editTextHealthActivityName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHealthActivityText" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSplurgeActivityMainText" />
 
     <TextView
         android:id="@+id/textViewReturnToHealthActivities"
@@ -123,7 +123,7 @@
         android:text="@string/textViewReturnToHealthActivities"
         app:layout_constraintBottom_toBottomOf="@+id/imageButtonHealthConfigReturn"
         app:layout_constraintStart_toEndOf="@+id/imageButtonHealthConfigReturn"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHealthActivityText" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSplurgeActivityMainText" />
 
     <ImageButton
         android:id="@+id/imageButtonHealthConfigReturn"
@@ -132,7 +132,7 @@
         android:layout_marginTop="10dp"
         android:background="@color/blue2"
         app:layout_constraintStart_toStartOf="@+id/editTextHealthActivityName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHealthActivityText"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSplurgeActivityMainText"
         app:srcCompat="@android:drawable/ic_menu_revert" />
 
     <CheckBox

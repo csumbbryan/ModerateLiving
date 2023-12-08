@@ -23,7 +23,7 @@
 
 
         <TextView
-            android:id="@+id/textViewHealthEntryName"
+            android:id="@+id/textViewEntryName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="56dp"
@@ -34,7 +34,7 @@
 
 
         <TextView
-            android:id="@+id/textViewHealthEntryDescription"
+            android:id="@+id/textViewEntryDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="56dp"
@@ -43,7 +43,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/textViewHealthEntryPoints"
+            android:id="@+id/textViewEntryPoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -51,10 +51,11 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
-            android:layout_toEndOf="@+id/textViewHealthEntryName"
+            android:layout_toEndOf="@+id/textViewEntryName"
             android:gravity="left"
             android:text="@string/textViewHealthEntryPoints"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
 
     </RelativeLayout>

@@ -35,7 +35,7 @@
     <string name="textViewHealthActivityText">Moderate Living: Health Activities</string>
     <string name="buttonHealthActivityCreate">Create Health Activity</string>
     <string name="buttonHealthActivityCollCreate">Create Health Activity Collection</string>
-    <string name="textViewHealthActivityIncomplete">Incomplete</string>
+    <string name="textViewHealthActivityIncomplete">Complete</string>
     <string name="textViewHealthActivityDescription">Description</string>
     <string name="textViewHealthActivityPoints">"Points"</string>
     <string name="buttonHealthActivityHome">Return Home</string>
@@ -49,4 +49,10 @@
     <string name="editTextHealthActivityDescription">Health Activity Description</string>
     <string name="editTextHealthPerActivity">Points per Activity</string>
     <string name="checkBoxHealthActivityIsRecurring">Repeating Activity (TBD)</string>
+    <string name="textViewSplurgeActivity">Moderate Living: Splurge Time!</string>
+    <string name="buttonSplurgeActivityCreate">Create Splurge!</string>
+    <string name="textViewSplurgeActRedeem">Redeem</string>
+    <string name="textViewSplurgeActivityDescription">Description</string>
+    <string name="textViewSplurgeActivityPoints">Points</string>
+    <string name="buttonSplurgeActivityHome">Return Home</string>
 </resources>
