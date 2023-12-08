@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
+import com.example.moderateliving.TableClasses.HealthActivities;
 import com.example.moderateliving.TableClasses.Splurges;
+import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.databinding.ActivitySplurgeBinding;
 
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
     mButtonSplurgeActivityCreate.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        createNewSplurge();
+        toCreateNewSplurge();
       }
     });
 
@@ -109,7 +111,11 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
     return intent;
   }
 
-  private void createNewSplurge() {
+  private void toCreateNewSplurge() {
+    int mSplurgeID = 0;
+    Intent intent = SplurgeConfigActivity.intentFactory(getApplicationContext(), mSplurgeID, mLoggedInUserID);
+    Log.d(TAG, "Switching to Splurge Config Activity View");
+    startActivity(intent);
   }
 
   private void returnToMainActivity(int userPassHash) {
@@ -119,12 +125,27 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
   }
 
   @Override
-  public void onCheckBoxSelect(int activityID, boolean recreate) {
-
+  public void onCheckBoxSelect(int splurgeID, boolean recreate) {
+    Splurges splurge = mModerateLivingDAO.getSplurgeByID(splurgeID);
+    int redeemedPoints = splurge.getPointsCost();
+    UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
+    int userPoints = user.getPoints();
+    userPoints = userPoints - redeemedPoints; //TODO: Check for points less than zero here
+    if(userPoints < 0) {
+      Toast.makeText(getApplicationContext(), "You do not have enough points to redeem that Splurge.", Toast.LENGTH_LONG);
+      Toast.makeText(getApplicationContext(),
+          "Splurge redeem attempted but not enough points: " + splurge.getSplurgeName() + " with " + redeemedPoints + " pts", Toast.LENGTH_LONG).show();
+    } else {
+      user.setPoints(userPoints);
+      mModerateLivingDAO.update(user);
+      Toast.makeText(getApplicationContext(),
+          "Splurge redeemed: " + splurge.getSplurgeName() + " with " + redeemedPoints + " pts", Toast.LENGTH_LONG).show();
+    }
   }
 
   @Override
-  public void onEntryLongClick(int position) {
-
+  public void onEntryLongClick(int mSplurgeID) {
+    Intent intent = SplurgeConfigActivity.intentFactory(getApplicationContext(), mSplurgeID, mLoggedInUserID);
+    startActivity(intent);
   }
 }

@@ -20,8 +20,7 @@ public class Splurges implements ModerateLivingEntries {
   private String mSplurgeDescription;
   private int mPointsCost;
 
-  public Splurges(int splurgeID, int userID, String splurgeName, String splurgeDescription, int pointsCost) {
-    mSplurgeID = splurgeID;
+  public Splurges(int userID, String splurgeName, String splurgeDescription, int pointsCost) {
     mUserID = userID;
     mSplurgeName = splurgeName;
     mSplurgeDescription = splurgeDescription;
@@ -97,5 +96,14 @@ public class Splurges implements ModerateLivingEntries {
   @Override
   public int getID() {
     return this.mSplurgeID;
+  }
+
+  public Splurges copy() {
+    Splurges splurge = new Splurges(
+        this.mUserID,
+        this.mSplurgeName,
+        this.mSplurgeDescription,
+        this.mPointsCost);
+    return splurge;
   }
 }

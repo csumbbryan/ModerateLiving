@@ -13,6 +13,9 @@
         android:theme="@style/Theme.ModerateLiving"
         tools:targetApi="31">
         <activity
+            android:name=".SplurgeConfigActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplurgeActivity"
             android:exported="false" />
         <activity

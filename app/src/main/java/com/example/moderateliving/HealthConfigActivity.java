@@ -36,7 +36,7 @@ public class HealthConfigActivity extends AppCompatActivity {
   private EditText mEditTextHealthActivityDescription;
   private EditText mEditTextHealthActivityPoints;
   private ActivityHealthConfigBinding mActivityHealthConfigBinding;
-  private HealthActivities mHealthActivities;
+  private HealthActivities mHealthActivity;
   private UserID mLoggedInUser;
   private ModerateLivingDAO mModerateLivingDAO;
   private boolean createNew = true;
@@ -115,14 +115,14 @@ public class HealthConfigActivity extends AppCompatActivity {
     alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
-        Log.d(TAG, "User: " + mLoggedInUserID + " did not delete Health Activity " + mHealthActivities.getActivityName());
+        Log.d(TAG, "User: " + mLoggedInUserID + " did not delete Health Activity " + mHealthActivity.getActivityName());
       }
     });
     alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
-        Log.d(TAG, "User: " + mLoggedInUserID + " elected to delete Health Activity " + mHealthActivities.getActivityName());
-        mModerateLivingDAO.delete(mHealthActivities);
+        Log.d(TAG, "User: " + mLoggedInUserID + " elected to delete Health Activity " + mHealthActivity.getActivityName());
+        mModerateLivingDAO.delete(mHealthActivity);
         returnToHealthActivity();
         //TODO: setup to log(?) but do not record as complete
       }
@@ -138,20 +138,20 @@ public class HealthConfigActivity extends AppCompatActivity {
     alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
-        Log.d(TAG, "User: " + mLoggedInUserID + " did not complete Health Activity " + mHealthActivities.getActivityName());
+        Log.d(TAG, "User: " + mLoggedInUserID + " did not complete Health Activity " + mHealthActivity.getActivityName());
       }
     });
     alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
-        int completedPoints = mHealthActivities.getActivityPoints();
+        int completedPoints = mHealthActivity.getActivityPoints();
         UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
         int userPoints = user.getPoints();
         userPoints = userPoints + completedPoints;
         user.setPoints(userPoints);
         mModerateLivingDAO.update(user);
-        Log.d(TAG, "User: " + mLoggedInUserID + " completed Health Activity " + mHealthActivities.getActivityName());
-        mModerateLivingDAO.delete(mHealthActivities);
+        Log.d(TAG, "User: " + mLoggedInUserID + " completed Health Activity " + mHealthActivity.getActivityName());
+        mModerateLivingDAO.delete(mHealthActivity);
         returnToHealthActivity();
         //TODO: log in HealthActivityLog as complete
       }
@@ -164,11 +164,11 @@ public class HealthConfigActivity extends AppCompatActivity {
     if(mActivityID == 0) {
       //TODO: Warning, logs, etc.
     } else {
-      mHealthActivities = mModerateLivingDAO.getHealthActivitiesByID(mActivityID);
-      mEditTextHealthActivityName.setText(mHealthActivities.getActivityName());
-      mEditTextHealthActivityDescription.setText(mHealthActivities.getActivityDescription());
-      mEditTextHealthActivityPoints.setText(mHealthActivities.getActivityPoints());
-      mCheckBoxHealthActivityIsRecurring.setChecked(mHealthActivities.isRecurring());
+      mHealthActivity = mModerateLivingDAO.getHealthActivitiesByID(mActivityID);
+      mEditTextHealthActivityName.setText(mHealthActivity.getActivityName());
+      mEditTextHealthActivityDescription.setText(mHealthActivity.getActivityDescription());
+      mEditTextHealthActivityPoints.setText(mHealthActivity.getActivityPoints());
+      mCheckBoxHealthActivityIsRecurring.setChecked(mHealthActivity.isRecurring());
     }
   }
 
@@ -204,15 +204,15 @@ public class HealthConfigActivity extends AppCompatActivity {
 
     //TODO: Consider checking for duplicates? If so, possibly use Dialog check to confirm duplicate creation
     if(readyToSubmit) {
-      if(mHealthActivities == null) {
-        mHealthActivities = new HealthActivities(
+      if(mHealthActivity == null) {
+        mHealthActivity = new HealthActivities(
             mLoggedInUserID,
             activityName,
             activityDescription,
             activityPoints,
             activityIsRecurring
         );
-        mModerateLivingDAO.insert(mHealthActivities);
+        mModerateLivingDAO.insert(mHealthActivity);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         final AlertDialog alertDialog = alertBuilder.create();
 
@@ -222,7 +222,7 @@ public class HealthConfigActivity extends AppCompatActivity {
           public void onClick(DialogInterface dialog, int which) {
             clearDisplay();
             mActivityID = 0;
-            mHealthActivities = null;
+            mHealthActivity = null;
           }
         });
         alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -235,11 +235,11 @@ public class HealthConfigActivity extends AppCompatActivity {
         AlertDialog checkResubmit = alertBuilder.create();
         checkResubmit.show();
       } else {
-        mHealthActivities.setActivityName(activityName);
-        mHealthActivities.setActivityDescription(activityDescription);
-        mHealthActivities.setActivityPoints(activityPoints);
-        mHealthActivities.setRecurring(activityIsRecurring);
-        mModerateLivingDAO.update(mHealthActivities);
+        mHealthActivity.setActivityName(activityName);
+        mHealthActivity.setActivityDescription(activityDescription);
+        mHealthActivity.setActivityPoints(activityPoints);
+        mHealthActivity.setRecurring(activityIsRecurring);
+        mModerateLivingDAO.update(mHealthActivity);
         returnToHealthActivity();
       }
     } else {
@@ -269,17 +269,17 @@ public class HealthConfigActivity extends AppCompatActivity {
 
   private void setUpExisting() {
     if(mActivityID != 0) {
-      mHealthActivities = mModerateLivingDAO.getHealthActivitiesByID(mActivityID);
+      mHealthActivity = mModerateLivingDAO.getHealthActivitiesByID(mActivityID);
       String buttonUpdate = "Update Activity";
-      String activityPoints = mHealthActivities.getActivityPoints() +"";
-      mHealthActivities = mModerateLivingDAO.getHealthActivitiesByID(mActivityID);
+      String activityPoints = mHealthActivity.getActivityPoints() +"";
+      mHealthActivity = mModerateLivingDAO.getHealthActivitiesByID(mActivityID);
       mButtonHealthConfigUpdate.setText(buttonUpdate);
       mButtonHealthConfigComplete.setVisibility(Button.VISIBLE);
       mButtonHealthConfigDelete.setVisibility(Button.VISIBLE);
-      mEditTextHealthActivityName.setText(mHealthActivities.getActivityName());
-      mEditTextHealthActivityDescription.setText(mHealthActivities.getActivityDescription());
+      mEditTextHealthActivityName.setText(mHealthActivity.getActivityName());
+      mEditTextHealthActivityDescription.setText(mHealthActivity.getActivityDescription());
       mEditTextHealthActivityPoints.setText(activityPoints);
-      mCheckBoxHealthActivityIsRecurring.setChecked(mHealthActivities.isRecurring());
+      mCheckBoxHealthActivityIsRecurring.setChecked(mHealthActivity.isRecurring());
     }
   }
 
@@ -295,7 +295,7 @@ public class HealthConfigActivity extends AppCompatActivity {
     int activityID = getIntent().getIntExtra(ACTIVITY_ID, 0);
     int userID = getIntent().getIntExtra(USER_ID, 0);
     if(activityID != 0) {
-      mHealthActivities = mModerateLivingDAO.getHealthActivitiesByID(activityID);
+      mHealthActivity = mModerateLivingDAO.getHealthActivitiesByID(activityID);
     } else {
       //TODO: setup warning, log, etc.?
     }

@@ -88,10 +88,16 @@ public interface ModerateLivingDAO {
   @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mUserID = :userID")
   List<HealthActivities> getHealthActivitiesByUser(int userID);
 
+  @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE)
+  List<Splurges> getSplurges();
+
   @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE + " WHERE mUserID = :userID")
   List<Splurges> getSplurgesByUserID(int userID);
 
-  @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE)
-  List<Splurges> getSplurges();
+  @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE + " WHERE mSplurgeID = :splurgeID")
+  Splurges getSplurgeByID(int splurgeID);
+
+  @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE + " WHERE mSplurgeName = :splurgeName & mUserID = :userID")
+  List<Splurges> getSplurgesByNameAndUserID(String splurgeName, int userID);
 
 }

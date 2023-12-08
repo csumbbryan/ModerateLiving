@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".HealthConfigActivity">
+    tools:context=".SplurgeConfigActivity">
 
     <TextView
-        android:id="@+id/textViewHealthActivityMainText"
+        android:id="@+id/textViewSplurgeActivityMainText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/material_dynamic_primary20"
@@ -21,127 +21,120 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextHealthActivityName"
+        android:id="@+id/editTextSplurgeActivityName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="25dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="25dp"
         android:background="@color/material_dynamic_neutral95"
-        android:hint="@string/editTextHealthActivityName"
+        android:hint="@string/editTextSplurgeName"
         android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButtonHealthConfigReturn" />
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonSplurgeConfigReturn" />
 
     <EditText
-        android:id="@+id/editTextHealthActivityDescription"
+        android:id="@+id/editTextSplurgeActivityDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="25dp"
         android:background="@color/material_dynamic_neutral95"
-        android:hint="@string/editTextHealthActivityDescription"
+        android:hint="@string/editTextSplurgeDescription"
         android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_min="60dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextHealthActivityName" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextSplurgeActivityName" />
 
     <EditText
-        android:id="@+id/editTextHealthActivityPoints"
+        android:id="@+id/editTextSplurgePoints"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="25dp"
-        android:padding="4dp"
-        android:hint="@string/editTextHealthPerActivity"
         android:background="@color/material_dynamic_neutral95"
+        android:hint="@string/editTextSplurgePoints"
         android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@+id/editTextHealthActivityDescription" />
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSplurgeActivityDescription" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonHealthConfigComplete"
+        android:id="@+id/buttonSplurgeConfigComplete"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_width="180dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="70dp"
         android:background="@color/greenDark"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:text="@string/buttonHealthConfigComplete"
+        android:text="@string/buttonSplurgeConfigRedeem"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/white"
         android:textSize="22sp"
         android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="@+id/checkBoxHealthActivityIsRecurring"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxHealthActivityIsRecurring" />
+        app:layout_constraintStart_toStartOf="@+id/editTextSplurgePoints"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSplurgePoints" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonHealthConfigDelete"
+        android:id="@+id/buttonSplurgeConfigDelete"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="70dp"
         android:background="@color/red3"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:text="@string/buttonHealthConfigDelete"
+        android:text="@string/buttonSplurgeConfigDelete"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/white"
         android:textSize="22sp"
         android:visibility="invisible"
-        app:layout_constraintStart_toEndOf="@+id/buttonHealthConfigComplete"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxHealthActivityIsRecurring" />
+        app:layout_constraintEnd_toEndOf="@+id/editTextSplurgePoints"
+        app:layout_constraintStart_toEndOf="@+id/buttonSplurgeConfigComplete"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSplurgePoints" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonHealthConfigUpdate"
+        android:id="@+id/buttonSplurgeConfigUpdate"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/gray"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:text="@string/buttonHealthConfigUpdate"
+        android:text="@string/buttonSplurgeConfigUpdate"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/white"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextHealthActivityName"
-        app:layout_constraintEnd_toEndOf="@+id/editTextHealthActivityName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHealthActivityMainText" />
+        app:layout_constraintBottom_toTopOf="@+id/editTextSplurgeActivityName"
+        app:layout_constraintEnd_toEndOf="@+id/editTextSplurgeActivityName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSplurgeActivityMainText" />
 
     <TextView
-        android:id="@+id/textViewReturnToHealthActivities"
+        android:id="@+id/textViewReturnToSplurgeActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:text="@string/textViewReturnToHealthActivities"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButtonHealthConfigReturn"
-        app:layout_constraintStart_toEndOf="@+id/imageButtonHealthConfigReturn"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHealthActivityMainText" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageButtonSplurgeConfigReturn"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonSplurgeConfigReturn"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSplurgeActivityMainText" />
 
     <ImageButton
-        android:id="@+id/imageButtonHealthConfigReturn"
+        android:id="@+id/imageButtonSplurgeConfigReturn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/blue2"
-        app:layout_constraintStart_toStartOf="@+id/editTextHealthActivityName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHealthActivityMainText"
+        app:layout_constraintStart_toStartOf="@+id/editTextSplurgeActivityName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSplurgeActivityMainText"
         app:srcCompat="@android:drawable/ic_menu_revert" />
-
-    <CheckBox
-        android:id="@+id/checkBoxHealthActivityIsRecurring"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/checkBoxHealthActivityIsRecurring"
-        app:layout_constraintStart_toStartOf="@+id/editTextHealthActivityPoints"
-        app:layout_constraintTop_toBottomOf="@+id/editTextHealthActivityPoints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

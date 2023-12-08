@@ -48,15 +48,14 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
 
   @Override
   public void onBindViewHolder(@NonNull EntryHolder entryHolder, final int position) {
-    //TODO: Use recycler view
-    //TODO: setup Health and Splurge Activity to allow input of recycler view
-
     //Interface Code:
     ModerateLivingEntries livingEntry = mLivingEntries.get(position);
+    int darkGreen = 0xFF007800;
+    int orange = 0xFFFF8800;
     if(livingEntry.getClass().equals(HealthActivities.class)) {
-      Toast.makeText(context, "This is a Health Activities Class", Toast.LENGTH_LONG).show();
+      entryHolder.mEntryPoints.setTextColor(darkGreen);
     } else if (livingEntry.getClass().equals(Splurges.class)) {
-      Toast.makeText(context, "This is a Splurges Class", Toast.LENGTH_LONG).show();
+      entryHolder.mEntryPoints.setTextColor(orange);
     }
     int mEntryPointsI = livingEntry.getPoints();
     String pointsTextI;
@@ -89,66 +88,88 @@ public class HealthRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
       entryHolder.mEntryPoints.setText(pointsText);
     */
 
+      //TODO: Can much of this be moved to the individual activities?
       entryHolder.mCheckBox.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
           if (entryHolder.mCheckBox.isChecked()) {
             entryHolder.isSelected = true; //TODO: review if this is needed
+            String messageComplete = "";
+            if(livingEntry.getClass().equals(HealthActivities.class)) {
+              messageComplete = "Mark Health Activity complete?\n";
+            } else if (livingEntry.getClass().equals(Splurges.class)) {
+              messageComplete = "Redeem Splurge?\n";
+            }
 
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
             final AlertDialog alertDialog = alertBuilder.create();
 
-            alertBuilder.setMessage("Mark Health Activity complete?\n");
+            alertBuilder.setMessage(messageComplete);
             alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
               @Override
               public void onClick(DialogInterface dialogInterface, int i) {
-                AlertDialog.Builder alertBuilderInner = new AlertDialog.Builder(context);
-                final AlertDialog alertDialogInner = alertBuilderInner.create();
+                if(livingEntry.getClass().equals(HealthActivities.class)) {
+                  String messageCopy = "Would you like to create a new copy of the completed Activity?\n";
 
-                alertBuilder.setMessage("Would you like to create a new copy of the completed Activity?\n");
+                  AlertDialog.Builder alertBuilderInner = new AlertDialog.Builder(context);
+                  final AlertDialog alertDialogInner = alertBuilderInner.create();
 
-                alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                  @Override
-                  public void onClick(DialogInterface dialog, int which) {
-                    recyclerViewInterface.onCheckBoxSelect(livingEntry.getID(), false); //UPDATED TO LIVINGENTRY FROM HEALTHENTRY
-                  }
-                });
-                alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                  @Override
-                  public void onClick(DialogInterface dialog, int which) {
-                    //TODO: Call method to create new Health Activity with attributes
-                    recyclerViewInterface.onCheckBoxSelect(livingEntry.getID(), true); //UPDATED TO LIVING ENTRY FROM HEALTHENTRY
-                    Toast.makeText(context, "Creating new Health Activity", Toast.LENGTH_LONG);
-                  }
-                });
+                  alertBuilder.setMessage(messageCopy);
 
-                AlertDialog checkCreate = alertBuilder.create();
-                checkCreate.show();
-                new CountDownTimer(1000, 1000) {
-                  @Override
-                  public void onTick(long millisUntilFinished) {
-                  }
+                  alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                      recyclerViewInterface.onCheckBoxSelect(livingEntry.getID(), false); //UPDATED TO LIVINGENTRY FROM HEALTHENTRY
+                    }
+                  });
+                  alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                      //TODO: Call method to create new Health Activity with attributes
+                      recyclerViewInterface.onCheckBoxSelect(livingEntry.getID(), true); //UPDATED TO LIVING ENTRY FROM HEALTHENTRY
+                      Toast.makeText(context, "Creating new Health Activity", Toast.LENGTH_LONG);
+                    }
+                  });
+                  AlertDialog checkCreate = alertBuilder.create();
+                  checkCreate.show();
+                } else if (livingEntry.getClass().equals(Splurges.class)) {
+                  recyclerViewInterface.onCheckBoxSelect(livingEntry.getID(), false);
+                }
+                if(livingEntry.getClass().equals(HealthActivities.class)) {
+                  new CountDownTimer(1000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                    }
 
-                  @Override
-                  public void onFinish() {
-                    mLivingEntries.remove(livingEntry); //UPDATED TO LIVING ENTRY FROM HEALTHENTRY
-                    notifyDataSetChanged();
-                  }
-                }.start();
+                    @Override
+                    public void onFinish() {
+                      mLivingEntries.remove(livingEntry); //UPDATED TO LIVING ENTRY FROM HEALTHENTRY
+                      notifyDataSetChanged();
+                    }
+                  }.start();
+                } else if(livingEntry.getClass().equals(Splurges.class)) {
+                  entryHolder.mCheckBox.setChecked(false);
+                }
               }
             });
             alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
               @Override
               public void onClick(DialogInterface dialog, int i) {
-                entryHolder.mCheckBox.setChecked(false);
-                notifyDataSetChanged();
+                if(livingEntry.getClass().equals(HealthActivities.class)) {
+                  entryHolder.mCheckBox.setChecked(false);
+                  notifyDataSetChanged();
+                } else if (livingEntry.getClass().equals(Splurges.class)) {
+                }
               }
             });
             alertBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
               @Override
               public void onCancel(DialogInterface dialog) {
-                entryHolder.mCheckBox.setChecked(false);
-                notifyDataSetChanged();
+                if(livingEntry.getClass().equals(HealthActivities.class)) {
+                  entryHolder.mCheckBox.setChecked(false);
+                  notifyDataSetChanged();
+                } else if (livingEntry.getClass().equals(Splurges.class)) {
+                }
               }
             });
             AlertDialog checkDelete = alertBuilder.create();

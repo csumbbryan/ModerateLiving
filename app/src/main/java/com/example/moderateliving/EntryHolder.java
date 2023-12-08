@@ -17,12 +17,11 @@ public class EntryHolder extends RecyclerView.ViewHolder {
   public boolean isSelected;
   public EntryHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
     super(itemView);
-    int darkGreen = 0xFF007800; //TODO: how can we do this better?
+    //TODO: how can we do this better?
     mCheckBox = (CheckBox) itemView.findViewById(R.id.checkBoxIsIncomplete);
     mEntryName = (TextView) itemView.findViewById(R.id.textViewEntryName);
     mEntryDescription = (TextView) itemView.findViewById(R.id.textViewEntryDescription);
     mEntryPoints = (TextView) itemView.findViewById(R.id.textViewEntryPoints);
-    mEntryPoints.setTextColor(darkGreen);
 
 
     /*

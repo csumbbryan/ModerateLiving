@@ -55,4 +55,10 @@
     <string name="textViewSplurgeActivityDescription">Description</string>
     <string name="textViewSplurgeActivityPoints">Points</string>
     <string name="buttonSplurgeActivityHome">Return Home</string>
+    <string name="editTextSplurgeName">Splurge Name</string>
+    <string name="editTextSplurgeDescription">Splurge Description</string>
+    <string name="editTextSplurgePoints">Points Cost</string>
+    <string name="buttonSplurgeConfigRedeem">Redeem</string>
+    <string name="buttonSplurgeConfigUpdate">Save Splurge</string>
+    <string name="buttonSplurgeConfigDelete">Delete</string>
 </resources>
