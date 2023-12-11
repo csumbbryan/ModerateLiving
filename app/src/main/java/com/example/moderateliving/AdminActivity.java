@@ -55,11 +55,9 @@ public class AdminActivity extends AppCompatActivity {
         SharedPreferences.Editor loginSharedEditor = loginSharedPref.edit();
         loginSharedEditor.remove(SHARED_PREF_STRING);
         loginSharedEditor.apply();
-        //LoggedInToken.logUserOut(); //TODO: review for LoggedInToken need
         finish();
         Intent intent = MainActivity.intentFactory(getApplicationContext(), -1);
         startActivity(intent);
-        //CALL: Close App
       }
     });
 

@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.content.Context;
@@ -131,24 +133,53 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
   }
 
   @Override
-  public void onCheckBoxSelect(int itemPosition) {
-    ModerateLivingEntries livingEntry = mLivingEntries.get(itemPosition);
+  public void onCheckBoxSelect(int position) {
+    ModerateLivingEntries livingEntry = mLivingEntries.get(position);
     //Splurges splurge = mModerateLivingDAO.getSplurgeByID(itemPosition);
     Splurges splurge = mModerateLivingDAO.getSplurgeByID(livingEntry.getID());
-    int redeemedPoints = splurge.getPointsCost();
-    UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
-    int userPoints = user.getPoints();
-    userPoints = userPoints - redeemedPoints; //TODO: Check for points less than zero here
-    if(userPoints < 0) {
-      Toast.makeText(getApplicationContext(), "You do not have enough points to redeem that Splurge.", Toast.LENGTH_LONG);
-      Toast.makeText(getApplicationContext(),
-          "Splurge redeem attempted but not enough points: " + splurge.getSplurgeName() + " with " + redeemedPoints + " pts", Toast.LENGTH_LONG).show();
-    } else {
-      user.setPoints(userPoints);
-      mModerateLivingDAO.update(user);
-      Toast.makeText(getApplicationContext(),
-          "Splurge redeemed: " + splurge.getSplurgeName() + " with " + redeemedPoints + " pts", Toast.LENGTH_LONG).show();
-    }
+
+
+    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(SplurgeActivity.this);
+    final AlertDialog alertDialog = alertBuilder.create();
+
+    alertBuilder.setMessage("Redeem Splurge?\n");
+    alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialogInterface, int i) {
+        mRecyclerAdapter.notifyItemChanged(position);
+        int redeemedPoints = splurge.getPointsCost();
+        UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
+        int userPoints = user.getPoints();
+        userPoints = userPoints - redeemedPoints;
+        if(userPoints < 0) {
+          Toast.makeText(getApplicationContext(), "You do not have enough points to redeem that Splurge.", Toast.LENGTH_LONG);
+          Toast.makeText(getApplicationContext(),
+              "Splurge redeem attempted but not enough points: " + splurge.getSplurgeName() + " with " + redeemedPoints + " pts", Toast.LENGTH_LONG).show();
+        } else {
+          user.setPoints(userPoints);
+          mModerateLivingDAO.update(user);
+          Toast.makeText(getApplicationContext(),
+              "Splurge redeemed: " + splurge.getSplurgeName() + " with " + redeemedPoints + " pts", Toast.LENGTH_LONG).show();
+        }
+      }
+    });
+    alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int i) {
+        mRecyclerAdapter.notifyItemChanged(position);
+      }
+    });
+    alertBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+      @Override
+      public void onCancel(DialogInterface dialog) {
+        mRecyclerAdapter.notifyItemChanged(position);
+      }
+    });
+    AlertDialog checkDelete = alertBuilder.create();
+    checkDelete.show();
+
+
+
 
   }
 

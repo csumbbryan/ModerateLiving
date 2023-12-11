@@ -25,7 +25,6 @@ import com.example.moderateliving.databinding.ActivityHealthBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: add delete and logout button
 //TODO: add functionality to limit health-activity creation for unique names
 //TODO: move activities to activity log??
 public class HealthActivity extends AppCompatActivity implements RecyclerViewInterface {
@@ -105,9 +104,7 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   }
 
   private void populateEntries() {
-    //TODO: setup interface
     ModerateLivingEntries mEntry = new HealthActivities(5, "name", "description", 1, false);
-
 
     recyclerView = findViewById(R.id.recyclerViewHealth);
     mHealthActivities = mModerateLivingDAO.getHealthActivitiesByUser(mLoggedInUserID);

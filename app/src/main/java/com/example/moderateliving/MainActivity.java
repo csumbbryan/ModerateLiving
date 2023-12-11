@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * initialize logged in user variables and setup environment based on user values.
      */
+    //TODO: Method: wireUpDisplay?
     if(mLoggedInUser != null) {
       int userPoints = mLoggedInUser.getPoints();
       String name = mLoggedInUser.getName();
@@ -191,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
 
     if(userPassHash != 0 ) {
       //TODO: build in more checks to ensure success before returning true
-      //LoggedInToken.logUserIN(Util.findUserByHash(mUserIDList, userPassHash));
       mLoggedInUser = Util.findUserByHash(mUserIDList,userPassHash);
       if(mLoggedInUser != null) {
         return true;
@@ -201,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
     }
     if(loginSharedPrefHash != 0) {
       //TODO: build in more checks to ensure success before returning true
-      //LoggedInToken.logUserIN(Util.findUserByHash(mUserIDList, loginSharedPrefHash));
       mLoggedInUser = Util.findUserByHash(mUserIDList,loginSharedPrefHash);
       if(mLoggedInUser != null){
         return true;

@@ -37,7 +37,7 @@ public abstract class Util {
     return userID;
   }
 
-  //TODO: This works! startActivities from non-activity
+  //TODO: This works! startActivities from non-activity -- stitch into other activities for logoff
   public static void logOutUser(Context context) {
     Intent intent = MainActivity.intentFactory(context, -1);
     startActivity(context, intent, new Bundle());

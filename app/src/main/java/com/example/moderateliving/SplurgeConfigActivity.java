@@ -303,7 +303,7 @@ public class SplurgeConfigActivity extends AppCompatActivity {
         returnToSplurgeActivity();
       }
     } else {
-      Toast.makeText(getApplicationContext(), "Please fill out all fields with proper values and resubmit.", Toast.LENGTH_LONG);
+      Toast.makeText(getApplicationContext(), "Please fill out all fields with proper values and resubmit.", Toast.LENGTH_LONG).show();
     }
     return readyToSubmit;
   }
