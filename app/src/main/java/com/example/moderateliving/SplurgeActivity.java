@@ -13,12 +13,10 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
-import com.example.moderateliving.TableClasses.HealthActivities;
 import com.example.moderateliving.TableClasses.Splurges;
 import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.databinding.ActivitySplurgeBinding;
@@ -32,9 +30,11 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
   private static final String TAG = "SplurgeActivity";
   private static final int LOGOUT_USER = -1;
   private static final int NO_USER = 0;
+  private static final String LOG_CREATED = "created";
+  private static final String LOG_REDEEMED = "redeemed";
   private ModerateLivingDAO mModerateLivingDAO;
   private RecyclerView recyclerView;
-  private HealthRecyclerAdapter mRecyclerAdapter;
+  private EntryRecyclerAdapter mRecyclerAdapter;
   private ActivitySplurgeBinding mSplurgeActivityBinding;
   private Button mButtonSplurgeActivityHome;
   private Button mButtonSplurgeActivityCreate;
@@ -83,7 +83,7 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
     mSplurges = mModerateLivingDAO.getSplurgesByUserID(mLoggedInUserID);
     if(mSplurges != null) {
       mLivingEntries.addAll(mSplurges);
-      mRecyclerAdapter = new HealthRecyclerAdapter(this, mLivingEntries, this);
+      mRecyclerAdapter = new EntryRecyclerAdapter(this, mLivingEntries, this);
       recyclerView.setAdapter(mRecyclerAdapter);
     }
   }
@@ -158,6 +158,7 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
         } else {
           user.setPoints(userPoints);
           mModerateLivingDAO.update(user);
+          Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_REDEEMED, splurge);
           Toast.makeText(getApplicationContext(),
               "Splurge redeemed: " + splurge.getSplurgeName() + " with " + redeemedPoints + " pts", Toast.LENGTH_LONG).show();
         }
@@ -184,9 +185,11 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
   }
 
   @Override
-  public void onEntryLongClick(int mSplurgeID) {
-    Intent intent = SplurgeConfigActivity.intentFactory(getApplicationContext(), mSplurgeID, mLoggedInUserID);
-    Log.d(TAG, "Switching to Splurge Config Activity for existing Splurge: " + mSplurgeID);
+  public void onEntryLongClick(int position) {
+    ModerateLivingEntries livingEntry = mLivingEntries.get(position);
+    Splurges splurge = mModerateLivingDAO.getSplurgeByID(livingEntry.getID());
+    Intent intent = SplurgeConfigActivity.intentFactory(getApplicationContext(), splurge.getSplurgeID(), mLoggedInUserID);
+    Log.d(TAG, "Switching to Splurge Config Activity for existing Splurge: " + splurge.getSplurgeName());
     startActivity(intent);
   }
 }

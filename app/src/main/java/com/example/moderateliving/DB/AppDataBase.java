@@ -12,16 +12,19 @@ import com.example.moderateliving.TableClasses.HealthActivityLog;
 import com.example.moderateliving.TableClasses.SplurgeLog;
 import com.example.moderateliving.TableClasses.Splurges;
 import com.example.moderateliving.TableClasses.UserID;
+import com.example.moderateliving.TableClasses.UserLog;
 
-@Database(entities = {UserID.class, HealthActivities.class, Splurges.class, HealthActivityLog.class, SplurgeLog.class}, version = 1)
+@Database(entities = {UserID.class, UserLog.class, HealthActivities.class, Splurges.class, HealthActivityLog.class, SplurgeLog.class}, version = 1)
 @TypeConverters(LocalDateTypeConverter.class)
 public abstract class AppDataBase extends RoomDatabase {
   public static final String DATABASE_NAME = "ModerateLiving.db";
   public static final String USERID_TABLE = "UserID_table";
+  public static final String USER_LOG_TABLE = "User_LOG_table";
   public static final String HEALTHACTIVITIES_TABLE = "HealthActivities_table";
   public static final String HEALTHACTIVITIES_LOG_TABLE = "HealthActivities_LOG_table";
   public static final String SPLURGES_TABLE = "Splurges_table";
   public static final String SPLURGES_LOG_TABLE = "Splurges_LOG_table";
+
 
   private static volatile AppDataBase instance;
   private static final Object LOCK = new Object();

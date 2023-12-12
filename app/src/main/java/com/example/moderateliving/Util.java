@@ -10,13 +10,30 @@ import androidx.room.Room;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
+import com.example.moderateliving.TableClasses.HealthActivities;
+import com.example.moderateliving.TableClasses.Splurges;
 import com.example.moderateliving.TableClasses.UserID;
+import com.example.moderateliving.TableClasses.UserLog;
 
+import java.time.LocalDate;
 import java.util.List;
 
 //TODO: verify this can/should be abstract
 public abstract class Util {
+  public static final String LOG_CREATED = "created";
+  public static final String LOG_COMPLETED = "completed";
+  public static final String LOG_DELETED = "deleted";
+  public static final String LOG_REDEEMED = "redeemed";
+  public static final String LOG_UPDATED = "updated";
   private static List<UserID> mUserIDList;
+  private static ModerateLivingDAO mModerateLivingDAO;
+
+  private static void getDatabase(Context context) {
+    mModerateLivingDAO = Room.databaseBuilder(context, AppDataBase.class, AppDataBase.DATABASE_NAME)
+        .allowMainThreadQueries()
+        .build().
+        getModerateLivingDAO();
+  }
 
   public static boolean verifyCredentials(List<UserID> mUserIDList, int userHash) {
     for(UserID user : mUserIDList) {
@@ -41,5 +58,28 @@ public abstract class Util {
   public static void logOutUser(Context context) {
     Intent intent = MainActivity.intentFactory(context, -1);
     startActivity(context, intent, new Bundle());
+  }
+
+  public static boolean logToUserLog(Context context, int userID, String description, ModerateLivingEntries activityEntry) {
+    getDatabase(context);
+    LocalDate date = LocalDate.now(); //TODO: update format for LocalDate
+    String activityType;
+    if(activityEntry instanceof HealthActivities) {
+      activityType = "Health Activity";
+    } else if (activityEntry instanceof Splurges) {
+      activityType = "Splurge";
+    } else {
+      activityType = "";
+    }
+    UserLog userLog = new UserLog(
+        userID,
+        activityEntry.getID(),
+        mModerateLivingDAO.getUserByID(userID).getUsername(),
+        description,
+        activityType,
+        date,
+        activityEntry.getPoints()); //TODO: Review userLog for proper instantiation
+    mModerateLivingDAO.insert(userLog);
+    return true;
   }
 }

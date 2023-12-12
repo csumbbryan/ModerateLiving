@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="3dp"
+    android:layout_marginVertical="3dp"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+
+        <TextView
+            android:id="@+id/textViewLogEntryUsernameDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="2dp"
+            android:text="@string/textViewLogEntryUsernameDisplay"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/textViewLogEntryDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/textViewLogEntryUsernameDisplay"
+            android:text="@string/textViewLogEntryDescription"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textViewLogEntryDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="18dp"
+            android:text="@string/textViewLogEntryDate"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewLogEntryForWith"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="18dp"
+            android:layout_toEndOf="@+id/textViewLogEntryDate"
+            android:text="@string/textViewLogEntryForWith"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textViewLogEntryActivityType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/textViewLogEntryDescription"
+            android:text="@string/textViewLogEntryActivityType"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewLogEntryOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/textViewLogEntryActivityType"
+            android:text="@string/textViewLogEntryOn"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textViewLogEntryPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="18dp"
+            android:layout_toEndOf="@+id/textViewLogEntryForWith"
+            android:text="@string/textViewLogEntryPoints"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -61,4 +61,13 @@
     <string name="buttonSplurgeConfigRedeem">Redeem</string>
     <string name="buttonSplurgeConfigUpdate">Save Splurge</string>
     <string name="buttonSplurgeConfigDelete">Delete</string>
+    <string name="textViewUserLogActivityMainText">Moderate Living: User Log</string>
+    <string name="textViewUserNameText">Username:</string>
+    <string name="textViewLogEntryUsernameDisplay">Username</string>
+    <string name="textViewLogEntryDescription">Log Entry Description</string>
+    <string name="textViewLogEntryOn">on</string>
+    <string name="textViewLogEntryActivityType">ActivityType</string>
+    <string name="textViewLogEntryDate">Date</string>
+    <string name="textViewLogEntryForWith">for/with</string>
+    <string name="textViewLogEntryPoints">Points</string>
 </resources>

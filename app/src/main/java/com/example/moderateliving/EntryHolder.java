@@ -39,5 +39,18 @@ public class EntryHolder extends RecyclerView.ViewHolder {
         }
       }
     });
+
+    itemView.setOnLongClickListener(new View.OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View v) {
+        if(recyclerViewInterface != null) {
+          int position = getBindingAdapterPosition();
+          if(position != RecyclerView.NO_POSITION) {
+            recyclerViewInterface.onEntryLongClick(position);
+          }
+        }
+        return false;
+      }
+    });
   }
 }

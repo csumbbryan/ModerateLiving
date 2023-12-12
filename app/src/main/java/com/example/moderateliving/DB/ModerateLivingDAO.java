@@ -11,6 +11,7 @@ import com.example.moderateliving.TableClasses.HealthActivities;
 import com.example.moderateliving.TableClasses.HealthActivityLog;
 import com.example.moderateliving.TableClasses.Splurges;
 import com.example.moderateliving.TableClasses.SplurgeLog;
+import com.example.moderateliving.TableClasses.UserLog;
 
 import java.util.List;
 
@@ -70,6 +71,15 @@ public interface ModerateLivingDAO {
   @Delete
   void update(SplurgeLog splurgeLog);
 
+  @Insert
+  void insert(UserLog... userLogs);
+
+  @Update
+  void update(UserLog... userLogs);
+
+  @Delete
+  void delete(UserLog userLog);
+
   @Query("SELECT * FROM " + AppDataBase.USERID_TABLE)
   List<UserID> getUserIDs();
 
@@ -99,5 +109,11 @@ public interface ModerateLivingDAO {
 
   @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE + " WHERE mSplurgeName = :splurgeName & mUserID = :userID")
   List<Splurges> getSplurgesByNameAndUserID(String splurgeName, int userID);
+
+  @Query("SELECT * FROM " + AppDataBase.USER_LOG_TABLE)
+  List<UserLog> getUserLogs();
+
+  @Query("SELECT * FROM " + AppDataBase.USER_LOG_TABLE + " Where mUserID = :userID")
+  List<UserLog> getUserLogByUserID(int userID);
 
 }

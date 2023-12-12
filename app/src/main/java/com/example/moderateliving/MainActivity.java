@@ -129,13 +129,14 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
-    /*
     mViewLogSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //TODO: intent factory and send to User Log view
+        Intent intent = UserLogActivity.intentFactory(getApplicationContext(), mLoggedInUser.getUserID());
+        Log.d(TAG, "Switching to User Log Activity View");
+        startActivity(intent);
       }
-    });*/
+    });
 
     mAdminToolsSelect.setOnClickListener(new View.OnClickListener() {
       @Override

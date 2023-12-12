@@ -123,6 +123,7 @@ public class HealthConfigActivity extends AppCompatActivity {
       public void onClick(DialogInterface dialog, int which) {
         Log.d(TAG, "User: " + mLoggedInUserID + " elected to delete Health Activity " + mHealthActivity.getActivityName());
         mModerateLivingDAO.delete(mHealthActivity);
+        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_DELETED, mHealthActivity);
         returnToHealthActivity();
         //TODO: setup to log(?) but do not record as complete
       }
@@ -152,6 +153,7 @@ public class HealthConfigActivity extends AppCompatActivity {
         mModerateLivingDAO.update(user);
         Log.d(TAG, "User: " + mLoggedInUserID + " completed Health Activity " + mHealthActivity.getActivityName());
         mModerateLivingDAO.delete(mHealthActivity);
+        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_COMPLETED, mHealthActivity);
         returnToHealthActivity();
         //TODO: log in HealthActivityLog as complete
       }
@@ -213,6 +215,7 @@ public class HealthConfigActivity extends AppCompatActivity {
             activityIsRecurring
         );
         mModerateLivingDAO.insert(mHealthActivity);
+        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, mHealthActivity);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         final AlertDialog alertDialog = alertBuilder.create();
 
@@ -240,6 +243,7 @@ public class HealthConfigActivity extends AppCompatActivity {
         mHealthActivity.setActivityPoints(activityPoints);
         mHealthActivity.setRecurring(activityIsRecurring);
         mModerateLivingDAO.update(mHealthActivity);
+        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_UPDATED, mHealthActivity);
         returnToHealthActivity();
       }
     } else {

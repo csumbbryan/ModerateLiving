@@ -148,7 +148,8 @@ public class SplurgeConfigActivity extends AppCompatActivity {
         userPoints = userPoints + redeemedPoints;
         user.setPoints(userPoints);
         mModerateLivingDAO.update(user);
-        Log.d(TAG, "User: " + mLoggedInUserID + " completed Health Activity " + mSplurge.getSplurgeName());
+        Log.d(TAG, "User: " + mLoggedInUserID + " redeemed Splurge " + mSplurge.getSplurgeName());
+        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_REDEEMED, mSplurge);
         //mModerateLivingDAO.delete(mSplurge); //TODO: Review behavior for Splurge redemption
         returnToSplurgeActivity();
         //TODO: log in SplurgeLog as complete
@@ -252,6 +253,7 @@ public class SplurgeConfigActivity extends AppCompatActivity {
         @Override
         public void onClick(DialogInterface dialog, int which) {
           mModerateLivingDAO.insert(mSplurge.copy());
+          Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, mSplurge);
         }
       });
       alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -274,6 +276,7 @@ public class SplurgeConfigActivity extends AppCompatActivity {
             splurgeCost
         );
         mModerateLivingDAO.insert(mSplurge);
+        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, mSplurge);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         final AlertDialog alertDialog = alertBuilder.create();
 
@@ -300,6 +303,7 @@ public class SplurgeConfigActivity extends AppCompatActivity {
         mSplurge.setSplurgeDescription(splurgeDescription);
         mSplurge.setPointsCost(splurgeCost);
         mModerateLivingDAO.update(mSplurge);
+        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_UPDATED, mSplurge);
         returnToSplurgeActivity();
       }
     } else {

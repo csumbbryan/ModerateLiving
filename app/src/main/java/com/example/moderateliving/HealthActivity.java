@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,8 +32,10 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   private static final String TAG = "HealthActivity";
   private static final int LOGOUT_USER = -1;
   private static final int NO_USER = 0;
+  private static final String LOG_CREATED = "created";
+  private static final String LOG_COMPLETED = "completed";
   RecyclerView recyclerView;
-  HealthRecyclerAdapter mHealthRecyclerAdapter;
+  EntryRecyclerAdapter mEntryRecyclerAdapter;
 
   ActivityHealthBinding mHealthActivityBinding;
   ModerateLivingDAO mModerateLivingDAO;
@@ -110,8 +111,8 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
     mHealthActivities = mModerateLivingDAO.getHealthActivitiesByUser(mLoggedInUserID);
     if (mHealthActivities != null) {
       mLivingEntries.addAll(mHealthActivities);
-      mHealthRecyclerAdapter = new HealthRecyclerAdapter(this, mLivingEntries, this);
-      recyclerView.setAdapter(mHealthRecyclerAdapter);
+      mEntryRecyclerAdapter = new EntryRecyclerAdapter(this, mLivingEntries, this);
+      recyclerView.setAdapter(mEntryRecyclerAdapter);
     }
   }
 
@@ -154,7 +155,7 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
             alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
               @Override
               public void onClick(DialogInterface dialog, int which) {
-                mHealthRecyclerAdapter.notifyItemChanged(position);
+                mEntryRecyclerAdapter.notifyItemChanged(position);
               }
             });
             alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -164,7 +165,8 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
                 HealthActivities mHealthActivity = healthActivity.copy();
                 mLivingEntries.add(0, mHealthActivity);
                 mModerateLivingDAO.insert(healthActivity.copy());
-                mHealthRecyclerAdapter.notifyItemInserted(0);
+                Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, healthActivity);
+                mEntryRecyclerAdapter.notifyItemInserted(0);
                 Toast.makeText(getApplicationContext(), "Creating new Health Activity", Toast.LENGTH_LONG).show();
               }
             });
@@ -178,9 +180,10 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
               @Override
               public void onFinish() {
                 mLivingEntries.remove(position);
-                mHealthRecyclerAdapter.notifyItemRemoved(position);
+                mEntryRecyclerAdapter.notifyItemRemoved(position);
                 int completedPoints = healthActivity.getActivityPoints();
                 mModerateLivingDAO.delete(healthActivity);
+                Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_COMPLETED, healthActivity);
                 updateUserPoints(completedPoints);
                 Toast.makeText(getApplicationContext(),
                     "Activity completed: "+healthActivity.getActivityName()+" with "+completedPoints +" pts",Toast.LENGTH_LONG).show();
@@ -191,13 +194,13 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
     alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int i) {
-        mHealthRecyclerAdapter.notifyItemChanged(position);
+        mEntryRecyclerAdapter.notifyItemChanged(position);
       }
     });
     alertBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
       @Override
       public void onCancel(DialogInterface dialog) {
-        mHealthRecyclerAdapter.notifyItemChanged(position);
+        mEntryRecyclerAdapter.notifyItemChanged(position);
       }
     });
     AlertDialog checkComplete = alertBuilder.create();
@@ -205,9 +208,11 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   }
 
   @Override
-  public void onEntryLongClick(int mActivityID) {
-    Intent intent = HealthConfigActivity.intentFactory(getApplicationContext(), mActivityID, mLoggedInUserID);
-    Log.d(TAG, "Switching to Health Config Activity for existing Health Activity: " + mActivityID);
+  public void onEntryLongClick(int position) {
+    ModerateLivingEntries livingEntry = mLivingEntries.get(position);
+    HealthActivities healthActivity = mModerateLivingDAO.getHealthActivitiesByID(livingEntry.getID());
+    Intent intent = HealthConfigActivity.intentFactory(getApplicationContext(), healthActivity.getActivityID(), mLoggedInUserID);
+    Log.d(TAG, "Switching to Health Config Activity for existing Health Activity: " + healthActivity.getActivityName());
     startActivity(intent);
   }
 
