@@ -8,15 +8,23 @@ import java.util.List;
 
 public class LocalDateTypeConverter {
   @TypeConverter
-  public String convertLocalDateToString(LocalDate Date) {
-    return Date.toString();
+  public String convertLocalDateToString(LocalDate date) {
+    if(date != null) {
+      return date.toString();
+    } else {
+      return null;
+    }
   }
 
   @TypeConverter
-  public LocalDate convertStringToLocalDate(String Date) {
-    String[] DateList = Date.split("-");
-    return LocalDate.of(Integer.parseInt(DateList[0]), Integer.parseInt(DateList[1]),
-        Integer.parseInt(DateList[2]));
+  public LocalDate convertStringToLocalDate(String date) {
+    if(date != null ) {
+      String[] dateList = date.split("-");
+      return LocalDate.of(Integer.parseInt(dateList[0]), Integer.parseInt(dateList[1]),
+          Integer.parseInt(dateList[2]));
+    } else {
+      return null;
+    }
   }
 
 }

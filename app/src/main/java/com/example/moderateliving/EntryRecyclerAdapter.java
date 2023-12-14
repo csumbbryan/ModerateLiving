@@ -58,10 +58,11 @@ public class EntryRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
     } else {
       pointsTextI = mEntryPointsI + " Pts";
     }
-      entryHolder.mActivityID = livingEntry.getID();
-      entryHolder.mEntryDescription.setText(livingEntry.getDescription());
-      entryHolder.mEntryName.setText(livingEntry.getEntryName());
-      entryHolder.mEntryPoints.setText(pointsTextI);
+    entryHolder.mActivityID = livingEntry.getID();
+    entryHolder.mEntryDescription.setText(livingEntry.getDescription());
+    entryHolder.mEntryName.setText(livingEntry.getEntryName());
+    entryHolder.mEntryPoints.setText(pointsTextI);
+    entryHolder.mCheckBox.setChecked(livingEntry.isComplete());
   }
 
   public void updateHealthEntryList(ModerateLivingEntries livingEntry) {

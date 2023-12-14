@@ -38,9 +38,20 @@
             android:id="@+id/textViewLogEntryDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="18dp"
+            android:layout_toEndOf="@+id/textViewLogEntryOn"
+            android:text="@string/textViewLogEntryDate"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewLogTypeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="18dp"
-            android:text="@string/textViewLogEntryDate"
+            android:text="@string/textViewLogEntryName"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -70,9 +81,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
+            android:layout_marginTop="18dp"
+            android:layout_toEndOf="@+id/textViewLogTypeName"
+            android:text="@string/textViewLogEntryOn"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textViewLogEntryWithName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/textViewLogEntryActivityType"
-            android:text="@string/textViewLogEntryOn"
+            android:text="@string/textViewLogEntryWithName"
             android:textSize="14sp" />
 
         <TextView

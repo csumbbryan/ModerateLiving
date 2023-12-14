@@ -13,11 +13,11 @@ public class EntryHolder extends RecyclerView.ViewHolder {
   public TextView mEntryName;
   public TextView mEntryDescription;
   public TextView mEntryPoints;
-  public Integer mActivityID; //TODO: is needed?
-  public boolean isSelected;
+  public Integer mActivityID;
+  public boolean isSelected; //TODO: is this needed?
   public EntryHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
     super(itemView);
-    //TODO: how can we do this better?
+    //TODO: how can we handle the onClick better?
     mCheckBox = (CheckBox) itemView.findViewById(R.id.checkBoxIsIncomplete);
     mEntryName = (TextView) itemView.findViewById(R.id.textViewEntryName);
     mEntryDescription = (TextView) itemView.findViewById(R.id.textViewEntryDescription);

@@ -13,14 +13,15 @@ import com.example.moderateliving.ModerateLivingEntries;
         onDelete = ForeignKey.CASCADE)
     })
 public class Splurges implements ModerateLivingEntries {
-  @PrimaryKey (autoGenerate = true)
+  @PrimaryKey //(autoGenerate = true)
   private int mSplurgeID;
   private int mUserID;
   private String mSplurgeName;
   private String mSplurgeDescription;
   private int mPointsCost;
 
-  public Splurges(int userID, String splurgeName, String splurgeDescription, int pointsCost) {
+  public Splurges(int splurgeID, int userID, String splurgeName, String splurgeDescription, int pointsCost) {
+    mSplurgeID = splurgeID;
     mUserID = userID;
     mSplurgeName = splurgeName;
     mSplurgeDescription = splurgeDescription;
@@ -37,6 +38,11 @@ public class Splurges implements ModerateLivingEntries {
 
   public int getUserID() {
     return mUserID;
+  }
+
+  @Override
+  public boolean isComplete() {
+    return false;
   }
 
   public void setUserID(int userID) {
@@ -98,8 +104,9 @@ public class Splurges implements ModerateLivingEntries {
     return this.mSplurgeID;
   }
 
-  public Splurges copy() {
+  public Splurges copy(int splurgeID) {
     Splurges splurge = new Splurges(
+        splurgeID,
         this.mUserID,
         this.mSplurgeName,
         this.mSplurgeDescription,

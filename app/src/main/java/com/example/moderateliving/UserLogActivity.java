@@ -11,21 +11,27 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
-import com.example.moderateliving.TableClasses.HealthActivities;
-import com.example.moderateliving.TableClasses.LogRecyclerViewInterface;
+import com.example.moderateliving.TableClasses.HealthActivityLog;
+import com.example.moderateliving.TableClasses.SplurgeLog;
 import com.example.moderateliving.TableClasses.UserLog;
-import com.example.moderateliving.databinding.ActivityHealthBinding;
 import com.example.moderateliving.databinding.ActivityUserLogBinding;
 
 import java.util.List;
 
+//TODO: Code Delete functionality
+//TODO: Code Undo functionality
+//TODO: Wire in for admin support (can see all users)
 public class UserLogActivity extends AppCompatActivity implements LogRecyclerViewInterface {
 
   private static final String USER_ID = "com.example.moderateliving.UserLogActivity_USER_ID";
+  public static final int DEFAULT_COLOR = 0xFFFFFFFF;
+  public static final int SELECTED_COLOR = 0xAAEEEEEE;
   private static final int NO_USER = 0;
   private static final int LOGOUT_USER = -1;
   private static final String TAG = "User Log Activity";
@@ -35,7 +41,13 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
   private RecyclerView recyclerView;
   private LogRecyclerAdapter mLogRecyclerAdapter;
   private Button mButtonUserLogReturnHome;
+  private ImageButton mImageButtonUserLogDelete;
+  private ImageButton mImageButtonUserLogUndo;
+  private TextView mTextViewUserLogUsername;
   private int mLoggedInUserID;
+  private int mSelectedItemPosition;
+
+  List<UserLog> userLogs;
 
   public static Intent intentFactory(Context packageContext, int mLoggedInUserID) {
     Intent intent = new Intent(packageContext, UserLogActivity.class);
@@ -55,6 +67,11 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
     populateEntries();
 
     mButtonUserLogReturnHome = mUserLogBinding.buttonUserLogReturnHome;
+    mImageButtonUserLogDelete = mUserLogBinding.imageButtonUserLogDelete;
+    mImageButtonUserLogUndo = mUserLogBinding.imageButtonUserLogUndo;
+    mTextViewUserLogUsername = mUserLogBinding.textViewUserLogUserNameDisplay;
+
+    mTextViewUserLogUsername.setText(mModerateLivingDAO.getUserByID(mLoggedInUserID).getName());
 
     mButtonUserLogReturnHome.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -62,6 +79,58 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
         returnToMainActivity(mModerateLivingDAO.getUserByID(mLoggedInUserID).getHashPassword());
       }
     });
+
+    mImageButtonUserLogDelete.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if(userLogs.size() > mSelectedItemPosition) {
+          mModerateLivingDAO.delete(userLogs.get(mSelectedItemPosition));
+          userLogs.remove(mSelectedItemPosition);
+          mLogRecyclerAdapter.notifyItemRemoved(mSelectedItemPosition);
+          //TODO: complete alertdialog and removal from database
+        }
+      }
+    });
+
+    mImageButtonUserLogUndo.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //TODO: check for null item IDs
+        if(userLogs.size() > mSelectedItemPosition) {
+          UserLog userLog = userLogs.get(mSelectedItemPosition);
+          boolean userLogUndid = false;
+          //TODO: if Health Activity and CREATED...
+          if (userLog.getActivityType().equals(Util.TYPE_HEALTH_ACTIVITY)) {
+            HealthActivityLog healthActivityLog = mModerateLivingDAO.getHealthActivityLogByID(userLog.getItemID());
+            if (userLog.getDescription().equals(Util.LOG_CREATED)) {
+              userLogUndid = Util.undoCreateHealthActivity(getApplicationContext(), mLoggedInUserID, healthActivityLog);
+            } else if (userLog.getDescription().equals(Util.LOG_COMPLETED)) {
+              userLogUndid = Util.undoCompleteHealthActivity(getApplicationContext(), mLoggedInUserID, healthActivityLog);
+            } else {
+              Toast.makeText(getApplicationContext(), "User Log entry cannot be undone", Toast.LENGTH_LONG).show();
+            }
+          } else if (userLog.getActivityType().equals(Util.TYPE_SPLURGE)) {
+            SplurgeLog splurgeLog = mModerateLivingDAO.getSplurgeLogByLogID(userLog.getItemID()); //TODO: Item ID is now based on log -- check this
+            if (userLog.getDescription().equals(Util.LOG_CREATED)) {
+              userLogUndid = Util.undoCreateSplurge(getApplicationContext(), mLoggedInUserID, splurgeLog);
+            } else if (userLog.getDescription().equals(Util.LOG_REDEEMED)) {
+              userLogUndid = Util.undoRedeem(getApplicationContext(), mLoggedInUserID, splurgeLog);
+            } else {
+              Toast.makeText(getApplicationContext(), "User Log entry cannot be undone", Toast.LENGTH_LONG).show();
+            }
+          } else {
+            Toast.makeText(getApplicationContext(), "User Activity type not found.", Toast.LENGTH_LONG).show();
+          }
+          if(userLogUndid) {
+            Toast.makeText(getApplicationContext(), "Successfully rolled back action on " + userLog.getLogEntryName(), Toast.LENGTH_LONG).show();
+            mModerateLivingDAO.delete(userLog);
+            userLogs.remove(mSelectedItemPosition);
+            mLogRecyclerAdapter.notifyItemRemoved(mSelectedItemPosition);
+          }
+        }
+      }
+    });
+
   }
 
   @Override
@@ -102,7 +171,7 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
   }
 
   private void populateEntries() {
-    List<UserLog> userLogs = mModerateLivingDAO.getUserLogByUserID(mLoggedInUserID);
+    userLogs = mModerateLivingDAO.getUserLogByUserID(mLoggedInUserID);
     recyclerView = findViewById(R.id.recyclerViewUserLog);
     if (userLogs != null) {
       mLogRecyclerAdapter = new LogRecyclerAdapter(this, userLogs, this);
@@ -111,8 +180,8 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
   }
 
   @Override
-  public void clickToSelect(int position) {
-
+  public void clickedSelected(int selectedPosition) {
+     mSelectedItemPosition = selectedPosition;
   }
 
   @Override

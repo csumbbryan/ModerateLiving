@@ -6,4 +6,5 @@ public interface ModerateLivingEntries {
   int getPoints();
   int getID();
   int getUserID();
+  boolean isComplete();
 }

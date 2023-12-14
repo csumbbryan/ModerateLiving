@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
   List<UserID> mUserIDList;
 
-  UserID mLoggedInUser = null; //TODO: review if this is necessary
+  UserID mLoggedInUser = null;
 
   int userHash = 0;
 
@@ -71,16 +71,10 @@ public class MainActivity extends AppCompatActivity {
     mAdminToolsSelect = binding.buttonEnterAdminToolsSelect;
     mEditUserSettingsSelect = binding.buttonEditUserSettingsSelect;
     mButtonMainClose = binding.buttonMainClose;
-    Log.d(TAG, "Main Activity Started and the following variables are set: "
-    + '\n' + "Welcome User Message: " + mWelcomeUserMessage.getText()
-    + '\n' + "Points Balance Count: " + mPointsBalanceCount.getText());
 
     //mModerateLivingDAO = AppDataBase.getInstance(this).getModerateLivingDAO();
 
-    mModerateLivingDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME)
-        .allowMainThreadQueries()
-        .build().
-        getModerateLivingDAO();
+    getDatabase();
 
     if(!checkUserStatus(mModerateLivingDAO)) {
       Intent intent = LoginActivity.intentFactory(getApplicationContext(), 0); //Update userHash
@@ -109,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
       }
       Log.d(TAG, "User " + name + " is logged in and isAdmin is " + isAdmin);
     }
+
+    Log.d(TAG, "Main Activity Started and the following variables are set: "
+        + '\n' + "Welcome User Message: " + mWelcomeUserMessage.getText()
+        + '\n' + "Points Balance Count: " + mPointsBalanceCount.getText());
 
     mHealthActivitiesSelect.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -174,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onPause() {
     super.onPause();
+    mLoggedInUser = null;
     finish();
   }
 
@@ -236,6 +235,13 @@ public class MainActivity extends AppCompatActivity {
   //TODO: Update this upon completion of other methods. Need to update points textView.
   private void refreshDisplay() {
 
+  }
+
+  private void getDatabase() {
+    mModerateLivingDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME)
+        .allowMainThreadQueries()
+        .build().
+        getModerateLivingDAO();
   }
 
 

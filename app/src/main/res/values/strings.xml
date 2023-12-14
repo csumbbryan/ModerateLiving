@@ -62,7 +62,7 @@
     <string name="buttonSplurgeConfigUpdate">Save Splurge</string>
     <string name="buttonSplurgeConfigDelete">Delete</string>
     <string name="textViewUserLogActivityMainText">Moderate Living: User Log</string>
-    <string name="textViewUserNameText">Username:</string>
+    <string name="textViewUserNameText">Name:</string>
     <string name="textViewLogEntryUsernameDisplay">Username</string>
     <string name="textViewLogEntryDescription">Log Entry Description</string>
     <string name="textViewLogEntryOn">on</string>
@@ -70,4 +70,8 @@
     <string name="textViewLogEntryDate">Date</string>
     <string name="textViewLogEntryForWith">for/with</string>
     <string name="textViewLogEntryPoints">Points</string>
+    <string name="textViewSplurgeActivityMainText">Moderate Living: Splurge Time!</string>
+    <string name="textViewLogEntryWithName">with name:</string>
+    <string name="textViewLogEntryName">Name</string>
+    <string name="buttonHealthActivityShowAll">Show Completed</string>
 </resources>

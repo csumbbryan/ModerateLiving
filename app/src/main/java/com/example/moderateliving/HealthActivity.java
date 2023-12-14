@@ -18,14 +18,15 @@ import android.widget.Toast;
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
 import com.example.moderateliving.TableClasses.HealthActivities;
+import com.example.moderateliving.TableClasses.HealthActivityLog;
 import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.databinding.ActivityHealthBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: Consider LiveData?
 //TODO: add functionality to limit health-activity creation for unique names
-//TODO: move activities to activity log??
 public class HealthActivity extends AppCompatActivity implements RecyclerViewInterface {
 
   private static final String USER_ID = "com.example.moderateliving.HealthActivity_USER_ID";
@@ -34,18 +35,20 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   private static final int NO_USER = 0;
   private static final String LOG_CREATED = "created";
   private static final String LOG_COMPLETED = "completed";
-  RecyclerView recyclerView;
-  EntryRecyclerAdapter mEntryRecyclerAdapter;
+  private RecyclerView recyclerView;
+  private EntryRecyclerAdapter mEntryRecyclerAdapter;
 
-  ActivityHealthBinding mHealthActivityBinding;
-  ModerateLivingDAO mModerateLivingDAO;
-  Button mButtonHealthActivityHome;
-  Button mButtonHealthActivityCreate;
-  List<HealthActivities> mHealthActivities;
+  private ActivityHealthBinding mHealthActivityBinding;
+  private ModerateLivingDAO mModerateLivingDAO;
+  private Button mButtonHealthActivityHome;
+  private Button mButtonHealthActivityCreate;
+  Button mButtonHealthActivityShowAll;
+  private List<HealthActivities> mHealthActivities;
 
   //TESTING INTERFACE
-  List<ModerateLivingEntries> mLivingEntries = new ArrayList<>();
-  int mLoggedInUserID = NO_USER;
+  private List<ModerateLivingEntries> mLivingEntries = new ArrayList<>();
+  private int mLoggedInUserID = NO_USER;
+  private boolean mShowAll = false;
 
   public static Intent intentFactory(Context packageContext, int mLoggedInUserID) {
     Intent intent = new Intent(packageContext, HealthActivity.class);
@@ -67,6 +70,7 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
 
     mButtonHealthActivityHome = mHealthActivityBinding.buttonHealthActivityHome;
     mButtonHealthActivityCreate = mHealthActivityBinding.buttonHealthActivityCreate;
+    mButtonHealthActivityShowAll = mHealthActivityBinding.buttonHealthActivityShowAll;
 
     mButtonHealthActivityHome.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -81,6 +85,22 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
         int activityID = 0;
         Intent intent = HealthConfigActivity.intentFactory(getApplicationContext(), activityID, mLoggedInUserID);
         startActivity(intent);
+      }
+    });
+
+    mButtonHealthActivityShowAll.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if(!mShowAll) {
+          mButtonHealthActivityShowAll.setBackgroundColor(getResources().getColor(R.color.grayLight, null));
+          mButtonHealthActivityShowAll.setTextColor(getResources().getColor(R.color.black, null));
+        }
+        if(mShowAll) {
+          mButtonHealthActivityShowAll.setBackgroundColor(getResources().getColor(R.color.grayExtraDark, null));
+          mButtonHealthActivityShowAll.setTextColor(getResources().getColor(R.color.white, null));
+        }
+        mShowAll = !mShowAll;
+        populateEntries();
       }
     });
   }
@@ -105,11 +125,14 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   }
 
   private void populateEntries() {
-    ModerateLivingEntries mEntry = new HealthActivities(5, "name", "description", 1, false);
-
     recyclerView = findViewById(R.id.recyclerViewHealth);
-    mHealthActivities = mModerateLivingDAO.getHealthActivitiesByUser(mLoggedInUserID);
+    if(mShowAll) {
+      mHealthActivities = mModerateLivingDAO.getHealthActivitiesByUserAll(mLoggedInUserID);
+    } else {
+      mHealthActivities = mModerateLivingDAO.getHealthActivitiesByUser(mLoggedInUserID);
+    }
     if (mHealthActivities != null) {
+      mLivingEntries.clear();
       mLivingEntries.addAll(mHealthActivities);
       mEntryRecyclerAdapter = new EntryRecyclerAdapter(this, mLivingEntries, this);
       recyclerView.setAdapter(mEntryRecyclerAdapter);
@@ -162,10 +185,11 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
               @Override
               public void onClick(DialogInterface dialog, int which) {
                 //TODO: Call method to create new Health Activity with attributes
-                HealthActivities mHealthActivity = healthActivity.copy();
+                int activityID = mModerateLivingDAO.getMaxHealthActivityID() + 1;
+                HealthActivities mHealthActivity = healthActivity.copy(activityID);
                 mLivingEntries.add(0, mHealthActivity);
-                mModerateLivingDAO.insert(healthActivity.copy());
-                Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, healthActivity);
+                mModerateLivingDAO.insert(mHealthActivity);
+                Util.createEntryLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, mHealthActivity);
                 mEntryRecyclerAdapter.notifyItemInserted(0);
                 Toast.makeText(getApplicationContext(), "Creating new Health Activity", Toast.LENGTH_LONG).show();
               }
@@ -182,8 +206,11 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
                 mLivingEntries.remove(position);
                 mEntryRecyclerAdapter.notifyItemRemoved(position);
                 int completedPoints = healthActivity.getActivityPoints();
-                mModerateLivingDAO.delete(healthActivity);
-                Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_COMPLETED, healthActivity);
+                //TODO: Update Health Activity Log
+                HealthActivityLog healthActivityLog = mModerateLivingDAO.getHealthActivityLogByID(healthActivity.getActivityID());
+                Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_COMPLETED, healthActivityLog);
+                healthActivity.setIsComplete(true);
+                mModerateLivingDAO.update(healthActivity);
                 updateUserPoints(completedPoints);
                 Toast.makeText(getApplicationContext(),
                     "Activity completed: "+healthActivity.getActivityName()+" with "+completedPoints +" pts",Toast.LENGTH_LONG).show();

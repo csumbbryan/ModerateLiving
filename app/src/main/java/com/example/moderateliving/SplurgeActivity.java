@@ -24,6 +24,7 @@ import com.example.moderateliving.databinding.ActivitySplurgeBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: Consider LiveData?
 public class SplurgeActivity extends AppCompatActivity implements RecyclerViewInterface{
 
   private static final String USER_ID = "com.example.moderateliving.SplurgeActivity_USER_ID";
@@ -158,7 +159,7 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
         } else {
           user.setPoints(userPoints);
           mModerateLivingDAO.update(user);
-          Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_REDEEMED, splurge);
+          Util.createEntryLog(getApplicationContext(), mLoggedInUserID, Util.LOG_REDEEMED, splurge);
           Toast.makeText(getApplicationContext(),
               "Splurge redeemed: " + splurge.getSplurgeName() + " with " + redeemedPoints + " pts", Toast.LENGTH_LONG).show();
         }

@@ -4,6 +4,10 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import com.example.moderateliving.DB.AppDataBase;
+import com.example.moderateliving.LogInterface;
+
+import java.time.LocalDate;
+
 @Entity(tableName = AppDataBase.HEALTHACTIVITIES_LOG_TABLE,
     foreignKeys = {@ForeignKey(entity = UserID.class,
         parentColumns = "mUserID",
@@ -12,22 +16,22 @@ import com.example.moderateliving.DB.AppDataBase;
         @ForeignKey(entity = HealthActivities.class,
         parentColumns = "mActivityID",
         childColumns = "mActivityID",
-        onDelete = ForeignKey.CASCADE)
+        onDelete = ForeignKey.SET_NULL)
     })
-public class HealthActivityLog {
+public class HealthActivityLog implements LogInterface {
 
   @PrimaryKey(autoGenerate = true)
   private int mActivityLogID;
 
-  private int mActivityID;
+  private Integer mActivityID; //Set this as Integer to support ForeignKey.SET_NULL
   private int mUserID;
-  private String mDateCreated;
-  private String mDateCompleted;
+  private LocalDate mDateCreated;
+  private LocalDate mDateCompleted;
   private boolean mIsComplete;
   private int mPointsEarned;
 
   public HealthActivityLog(int activityLogID, int activityID, int userID,
-                           String dateCreated, String dateCompleted,
+                           LocalDate dateCreated, LocalDate dateCompleted,
                            boolean isComplete, int pointsEarned) {
     mActivityLogID = activityLogID;
     mActivityID = activityID;
@@ -46,7 +50,7 @@ public class HealthActivityLog {
     mActivityLogID = activityLogID;
   }
 
-  public int getActivityID() {
+  public Integer getActivityID() {
     return mActivityID;
   }
 
@@ -54,27 +58,52 @@ public class HealthActivityLog {
     mActivityID = activityID;
   }
 
+  @Override
+  public int getEntryID() {
+    return getActivityID();
+  }
+
+  @Override
+  public int getLogID() {
+    return getActivityLogID();
+  }
+
   public int getUserID() {
     return mUserID;
+  }
+
+  @Override
+  public LocalDate getCreateDate() {
+    return getDateCreated();
+  }
+
+  @Override
+  public LocalDate getCompleteDate() {
+    return getDateCompleted();
+  }
+
+  @Override
+  public int getPoints() {
+    return getPointsEarned();
   }
 
   public void setUserID(int userID) {
     mUserID = userID;
   }
 
-  public String getDateCreated() {
+  public LocalDate getDateCreated() {
     return mDateCreated;
   }
 
-  public void setDateCreated(String dateCreated) {
+  public void setDateCreated(LocalDate dateCreated) {
     mDateCreated = dateCreated;
   }
 
-  public String getDateCompleted() {
+  public LocalDate getDateCompleted() {
     return mDateCompleted;
   }
 
-  public void setDateCompleted(String dateCompleted) {
+  public void setDateCompleted(LocalDate dateCompleted) {
     mDateCompleted = dateCompleted;
   }
 

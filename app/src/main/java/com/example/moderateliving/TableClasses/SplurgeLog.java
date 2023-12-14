@@ -4,30 +4,33 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import com.example.moderateliving.DB.AppDataBase;
+import com.example.moderateliving.LogInterface;
+
+import java.time.LocalDate;
+
 @Entity(tableName = AppDataBase.SPLURGES_LOG_TABLE,
-    foreignKeys = {@ForeignKey(entity = UserID.class,
-        parentColumns = "mUserID",
-        childColumns = "mUserID",
-        onDelete = ForeignKey.CASCADE),
+    foreignKeys = {
+      @ForeignKey(entity = UserID.class, parentColumns = "mUserID", childColumns = "mUserID", onDelete = ForeignKey.CASCADE),
         @ForeignKey(entity = Splurges.class,
             parentColumns = "mSplurgeID",
             childColumns = "mSplurgeID",
-            onDelete = ForeignKey.CASCADE)
+            onDelete = ForeignKey.SET_NULL
+        )
     })
-public class SplurgeLog {
+public class SplurgeLog implements LogInterface {
 
   @PrimaryKey(autoGenerate = true)
   private int mSplurgeLogID;
 
-  private int mSplurgeID;
+  private Integer mSplurgeID;
   private int mUserID;
-  private String mSplurgeCreateDate;
-  private String mSplurgeRedeemDate;
+  private LocalDate mSplurgeCreateDate;
+  private LocalDate mSplurgeRedeemDate;
   private boolean mSplurgeIsRedeemed;
   private int mPointsRedeemed;
 
-  public SplurgeLog(int splurgeLogID, int splurgeID, int userID, String splurgeCreateDate,
-                    String splurgeRedeemDate, boolean splurgeIsRedeemed, int pointsRedeemed) {
+  public SplurgeLog(int splurgeLogID, int splurgeID, int userID, LocalDate splurgeCreateDate,
+                    LocalDate splurgeRedeemDate, boolean splurgeIsRedeemed, int pointsRedeemed) {
     mSplurgeLogID = splurgeLogID;
     mSplurgeID = splurgeID;
     mUserID = userID;
@@ -45,7 +48,7 @@ public class SplurgeLog {
     mSplurgeLogID = splurgeLogID;
   }
 
-  public int getSplurgeID() {
+  public Integer getSplurgeID() {
     return mSplurgeID;
   }
 
@@ -53,27 +56,52 @@ public class SplurgeLog {
     mSplurgeID = splurgeID;
   }
 
+
+  @Override
+  public int getEntryID() {
+    return getSplurgeID();
+  }
+
+  @Override
+  public int getLogID() {
+    return getSplurgeLogID();
+  }
+
+  @Override
+  public LocalDate getCreateDate() {
+    return getSplurgeCreateDate();
+  }
+
+  @Override
+  public LocalDate getCompleteDate() {
+    return getSplurgeRedeemDate();
+  }
+
+  @Override
+  public int getPoints() {
+    return getPointsRedeemed();
+  }
+
   public int getUserID() {
     return mUserID;
   }
-
   public void setUserID(int userID) {
     mUserID = userID;
   }
 
-  public String getSplurgeCreateDate() {
+  public LocalDate getSplurgeCreateDate() {
     return mSplurgeCreateDate;
   }
 
-  public void setSplurgeCreateDate(String splurgeCreateDate) {
+  public void setSplurgeCreateDate(LocalDate splurgeCreateDate) {
     mSplurgeCreateDate = splurgeCreateDate;
   }
 
-  public String getSplurgeRedeemDate() {
+  public LocalDate getSplurgeRedeemDate() {
     return mSplurgeRedeemDate;
   }
 
-  public void setSplurgeRedeemDate(String splurgeRedeemDate) {
+  public void setSplurgeRedeemDate(LocalDate splurgeRedeemDate) {
     mSplurgeRedeemDate = splurgeRedeemDate;
   }
 

@@ -69,7 +69,7 @@ public interface ModerateLivingDAO {
   void update(SplurgeLog... splurgeLogs);
 
   @Delete
-  void update(SplurgeLog splurgeLog);
+  void delete(SplurgeLog splurgeLog);
 
   @Insert
   void insert(UserLog... userLogs);
@@ -92,14 +92,35 @@ public interface ModerateLivingDAO {
   @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE)
   List<HealthActivities> getHealthActivities();
 
+  @Query("SELECT MAX(mActivityID) FROM " + AppDataBase.HEALTHACTIVITIES_TABLE)
+  int getMaxHealthActivityID();
+
   @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mActivityID = :activityID")
   HealthActivities getHealthActivitiesByID(int activityID);
 
-  @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mUserID = :userID")
+  @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mUserID = :userID & mIsComplete = 0")
   List<HealthActivities> getHealthActivitiesByUser(int userID);
+
+  @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mUserID = :userID")
+  List<HealthActivities> getHealthActivitiesByUserAll(int userID);
+
+  @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_LOG_TABLE)
+  List<HealthActivityLog> getHealthActivityLogs();
+
+  @Query("SELECT MAX(mActivityLogID) FROM " + AppDataBase.HEALTHACTIVITIES_LOG_TABLE)
+  int getMaxHealthActivityLogID();
+
+  @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_LOG_TABLE + " WHERE mActivityID = :activityID")
+  HealthActivityLog getHealthActivityLogByID(int activityID);
+
+  @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_LOG_TABLE + " WHERE mActivityLogID = :activityLogID")
+  HealthActivityLog getHealthActivityLogByLogID(int activityLogID);
 
   @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE)
   List<Splurges> getSplurges();
+
+  @Query("SELECT MAX(mSplurgeID) FROM " + AppDataBase.SPLURGES_TABLE)
+  int getMaxSplurgeID();
 
   @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE + " WHERE mUserID = :userID")
   List<Splurges> getSplurgesByUserID(int userID);
@@ -110,10 +131,21 @@ public interface ModerateLivingDAO {
   @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE + " WHERE mSplurgeName = :splurgeName & mUserID = :userID")
   List<Splurges> getSplurgesByNameAndUserID(String splurgeName, int userID);
 
+  @Query("SELECT * FROM " + AppDataBase.SPLURGES_LOG_TABLE)
+  List<SplurgeLog> getSplurgeLogs();
+
+  @Query("SELECT MAX(mSplurgeLogID) FROM " + AppDataBase.SPLURGES_LOG_TABLE)
+  int getMaxSplurgeLogID();
+
+  @Query("SELECT * FROM " + AppDataBase.SPLURGES_LOG_TABLE + " WHERE mSplurgeLogID = :splurgeLogID")
+  SplurgeLog getSplurgeLogByLogID(int splurgeLogID);
+
+  @Query("SELECT * FROM " + AppDataBase.SPLURGES_LOG_TABLE + " WHERE mSplurgeID = :splurgeID")
+  SplurgeLog getSplurgeLogByID(int splurgeID);
+
   @Query("SELECT * FROM " + AppDataBase.USER_LOG_TABLE)
   List<UserLog> getUserLogs();
 
-  @Query("SELECT * FROM " + AppDataBase.USER_LOG_TABLE + " Where mUserID = :userID")
+  @Query("SELECT * FROM " + AppDataBase.USER_LOG_TABLE + " Where mUserID = :userID Order by mLogID Desc ")
   List<UserLog> getUserLogByUserID(int userID);
-
 }

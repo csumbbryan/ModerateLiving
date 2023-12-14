@@ -17,13 +17,10 @@ import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
-import com.example.moderateliving.TableClasses.HealthActivities;
+import com.example.moderateliving.TableClasses.SplurgeLog;
 import com.example.moderateliving.TableClasses.UserID;
-import com.example.moderateliving.databinding.ActivitySplurgeBinding;
 import com.example.moderateliving.databinding.ActivitySplurgeConfigBinding;
 import com.example.moderateliving.TableClasses.Splurges;
-
-import java.util.List;
 
 public class SplurgeConfigActivity extends AppCompatActivity {
 
@@ -42,6 +39,7 @@ public class SplurgeConfigActivity extends AppCompatActivity {
   private int mSplurgeID;
   private Splurges mSplurge;
   private int mLoggedInUserID;
+  private int mMaxSplurgeID;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +104,12 @@ public class SplurgeConfigActivity extends AppCompatActivity {
 
   }
 
+  @Override
+  protected void onPause() {
+    super.onPause();
+    finish();
+  }
+
   private void deleteSplurgeActivity() {
     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
     final AlertDialog alertDialog = alertBuilder.create();
@@ -146,17 +150,19 @@ public class SplurgeConfigActivity extends AppCompatActivity {
         UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
         int userPoints = user.getPoints();
         userPoints = userPoints + redeemedPoints;
+        SplurgeLog splurgeLog = mModerateLivingDAO.getSplurgeLogByID(mSplurge.getSplurgeID()); //TODO: Review to make sure this works
+
         user.setPoints(userPoints);
         mModerateLivingDAO.update(user);
         Log.d(TAG, "User: " + mLoggedInUserID + " redeemed Splurge " + mSplurge.getSplurgeName());
-        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_REDEEMED, mSplurge);
+        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_REDEEMED, splurgeLog);
         //mModerateLivingDAO.delete(mSplurge); //TODO: Review behavior for Splurge redemption
         returnToSplurgeActivity();
         //TODO: log in SplurgeLog as complete
       }
     });
-    AlertDialog deleteRecord = alertBuilder.create();
-    deleteRecord.show();
+    AlertDialog completeRecord = alertBuilder.create();
+    completeRecord.show();
   }
 
   private void setLoggedInUser() {
@@ -174,6 +180,7 @@ public class SplurgeConfigActivity extends AppCompatActivity {
   private void setCurrentSplurge() {
     int splurgeID = getIntent().getIntExtra(SPLURGE_ID, 0);
     int userID = getIntent().getIntExtra(USER_ID, 0);
+    mMaxSplurgeID = 0;
     if(splurgeID != 0) {
       mSplurge = mModerateLivingDAO.getSplurgeByID(splurgeID);
     } else {
@@ -238,7 +245,7 @@ public class SplurgeConfigActivity extends AppCompatActivity {
       splurgeCost = Integer.parseInt(mEditTextSplurgePoints.getText().toString());
     } catch (NumberFormatException e) {
       Toast.makeText(getApplicationContext(), "Could not process points value. Please re-enter and resubmit", Toast.LENGTH_LONG).show();
-      Log.d(TAG, "Attempting to submit Health Activity and failed at parsing integer.");
+      Log.d(TAG, "Attempting to submit Splurge and failed at parsing integer.");
       readyToSubmit = false;
     }
     if(splurgeName.isEmpty() || splurgeDescription.isEmpty() || splurgeCost == -1) {
@@ -252,8 +259,11 @@ public class SplurgeConfigActivity extends AppCompatActivity {
       alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-          mModerateLivingDAO.insert(mSplurge.copy());
-          Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, mSplurge);
+          //TODO: Clean up these methods, call separate methods?
+          mMaxSplurgeID = mModerateLivingDAO.getMaxSplurgeID() + 1;
+          Splurges mSplurgeCopy = mSplurge.copy(mMaxSplurgeID);
+          mModerateLivingDAO.insert(mSplurgeCopy);
+          Util.createEntryLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, mSplurgeCopy);
         }
       });
       alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -265,18 +275,18 @@ public class SplurgeConfigActivity extends AppCompatActivity {
       AlertDialog checkResubmit = alertBuilder.create();
       checkResubmit.show();
     }
-
-    //TODO: Consider checking for duplicates? If so, possibly use Dialog check to confirm duplicate creation
     if(readyToSubmit) {
       if(mSplurge == null) {
+        int splurgeID = mModerateLivingDAO.getMaxSplurgeID() + 1;
         mSplurge = new Splurges(
+            splurgeID,
             mLoggedInUserID,
             splurgeName,
             splurgeDescription,
             splurgeCost
         );
         mModerateLivingDAO.insert(mSplurge);
-        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, mSplurge);
+        Util.createEntryLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, mSplurge);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         final AlertDialog alertDialog = alertBuilder.create();
 
@@ -303,7 +313,7 @@ public class SplurgeConfigActivity extends AppCompatActivity {
         mSplurge.setSplurgeDescription(splurgeDescription);
         mSplurge.setPointsCost(splurgeCost);
         mModerateLivingDAO.update(mSplurge);
-        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_UPDATED, mSplurge);
+        Util.createEntryLog(getApplicationContext(), mLoggedInUserID, Util.LOG_UPDATED, mSplurge);
         returnToSplurgeActivity();
       }
     } else {

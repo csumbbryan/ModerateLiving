@@ -8,6 +8,7 @@ import com.example.moderateliving.DB.AppDataBase;
 
 import java.time.LocalDate;
 
+//TODO: Consider LiveData?
 @Entity(tableName = AppDataBase.USER_LOG_TABLE,
     foreignKeys = {@ForeignKey(entity = UserID.class,
         parentColumns = "mUserID",
@@ -28,15 +29,25 @@ public class UserLog {
   }
 
   private int mUserID;
+  private String mLogEntryName;
   private String mUsername;
   private String mDescription;
   private String mActivityType;
   private LocalDate mTransactionDate;
   private int mPoints;
 
-  public UserLog(int userID, int itemID, String username, String description, String activityType, LocalDate transactionDate, int points) {
+  public String getLogEntryName() {
+    return mLogEntryName;
+  }
+
+  public void setLogEntryName(String logEntryName) {
+    mLogEntryName = logEntryName;
+  }
+
+  public UserLog(int userID, int itemID, String logEntryName, String username, String description, String activityType, LocalDate transactionDate, int points) {
     mUserID = userID;
     mItemID = itemID;
+    mLogEntryName = logEntryName;
     mUsername = username;
     mDescription = description;
     mActivityType = activityType;
@@ -98,5 +109,19 @@ public class UserLog {
 
   public void setPoints(int points) {
     mPoints = points;
+  }
+
+  @Override
+  public String toString() {
+    return "UserLog{" +
+        "mLogID=" + mLogID +
+        ", mItemID=" + mItemID +
+        ", mUserID=" + mUserID +
+        ", mUsername='" + mUsername + '\'' +
+        ", mDescription='" + mDescription + '\'' +
+        ", mActivityType='" + mActivityType + '\'' +
+        ", mTransactionDate=" + mTransactionDate +
+        ", mPoints=" + mPoints +
+        '}';
   }
 }

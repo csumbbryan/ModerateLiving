@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
 import com.example.moderateliving.TableClasses.HealthActivities;
+import com.example.moderateliving.TableClasses.HealthActivityLog;
 import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.databinding.ActivityHealthConfigBinding;
 
@@ -111,7 +112,7 @@ public class HealthConfigActivity extends AppCompatActivity {
   private void deleteHealthActivity() {
     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
     final AlertDialog alertDialog = alertBuilder.create();
-    alertBuilder.setMessage("Are you sure you wish to delete this Health Activity?");
+    alertBuilder.setMessage("Are you sure you wish to delete this Health Activity? This action cannot be undone.");
     alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
@@ -122,14 +123,14 @@ public class HealthConfigActivity extends AppCompatActivity {
       @Override
       public void onClick(DialogInterface dialog, int which) {
         Log.d(TAG, "User: " + mLoggedInUserID + " elected to delete Health Activity " + mHealthActivity.getActivityName());
+        //Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_DELETED, mHealthActivity);
+        mModerateLivingDAO.delete(mModerateLivingDAO.getHealthActivityLogByID(mHealthActivity.getActivityID()));
         mModerateLivingDAO.delete(mHealthActivity);
-        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_DELETED, mHealthActivity);
         returnToHealthActivity();
-        //TODO: setup to log(?) but do not record as complete
       }
     });
-    AlertDialog deleteRecord = alertBuilder.create();
-    deleteRecord.show();
+    AlertDialog updateRecord = alertBuilder.create();
+    updateRecord.show();
   }
 
   private void completeHealthActivity() {
@@ -149,22 +150,24 @@ public class HealthConfigActivity extends AppCompatActivity {
         UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
         int userPoints = user.getPoints();
         userPoints = userPoints + completedPoints;
+        HealthActivityLog healthActivityLog = mModerateLivingDAO.getHealthActivityLogByID(mHealthActivity.getActivityID());
+
         user.setPoints(userPoints);
+        mHealthActivity.setIsComplete(true);
         mModerateLivingDAO.update(user);
+        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_COMPLETED, healthActivityLog);
         Log.d(TAG, "User: " + mLoggedInUserID + " completed Health Activity " + mHealthActivity.getActivityName());
-        mModerateLivingDAO.delete(mHealthActivity);
-        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_COMPLETED, mHealthActivity);
+        mModerateLivingDAO.update(mHealthActivity);
         returnToHealthActivity();
-        //TODO: log in HealthActivityLog as complete
       }
     });
-    AlertDialog deleteRecord = alertBuilder.create();
-    deleteRecord.show();
+    AlertDialog updateRecord = alertBuilder.create();
+    updateRecord.show();
   }
 
   private void setUpCurrent() {
     if(mActivityID == 0) {
-      //TODO: Warning, logs, etc.
+      Log.d(TAG, "Current Health Activity was requested, but none found.");
     } else {
       mHealthActivity = mModerateLivingDAO.getHealthActivitiesByID(mActivityID);
       mEditTextHealthActivityName.setText(mHealthActivity.getActivityName());
@@ -186,7 +189,6 @@ public class HealthConfigActivity extends AppCompatActivity {
     mEditTextHealthActivityPoints.setText("");
   }
 
-  //TODO: Log to HealthActivityLog
   private boolean submitHealthActivity() {
     boolean readyToSubmit = true;
     String activityName = mEditTextHealthActivityName.getText().toString();
@@ -204,10 +206,11 @@ public class HealthConfigActivity extends AppCompatActivity {
       readyToSubmit = false;
     }
 
-    //TODO: Consider checking for duplicates? If so, possibly use Dialog check to confirm duplicate creation
     if(readyToSubmit) {
       if(mHealthActivity == null) {
+        int activityID = mModerateLivingDAO.getMaxHealthActivityID() + 1;
         mHealthActivity = new HealthActivities(
+            activityID,
             mLoggedInUserID,
             activityName,
             activityDescription,
@@ -215,7 +218,7 @@ public class HealthConfigActivity extends AppCompatActivity {
             activityIsRecurring
         );
         mModerateLivingDAO.insert(mHealthActivity);
-        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, mHealthActivity);
+        Util.createEntryLog(getApplicationContext(), mLoggedInUserID, Util.LOG_CREATED, mHealthActivity);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         final AlertDialog alertDialog = alertBuilder.create();
 
@@ -238,12 +241,14 @@ public class HealthConfigActivity extends AppCompatActivity {
         AlertDialog checkResubmit = alertBuilder.create();
         checkResubmit.show();
       } else {
+        HealthActivityLog healthActivityLog = mModerateLivingDAO.getHealthActivityLogByID(mHealthActivity.getActivityID());
         mHealthActivity.setActivityName(activityName);
         mHealthActivity.setActivityDescription(activityDescription);
         mHealthActivity.setActivityPoints(activityPoints);
         mHealthActivity.setRecurring(activityIsRecurring);
         mModerateLivingDAO.update(mHealthActivity);
-        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_UPDATED, mHealthActivity);
+
+        Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_UPDATED, healthActivityLog);
         returnToHealthActivity();
       }
     } else {
@@ -266,9 +271,8 @@ public class HealthConfigActivity extends AppCompatActivity {
       Util.logOutUser(this);
       startActivity(intent);
     } else {
-      //TODO: Modify text to display username?
+      Log.d(TAG, "User not found in Extra.");
     }
-
   }
 
   private void setUpExisting() {
@@ -301,7 +305,7 @@ public class HealthConfigActivity extends AppCompatActivity {
     if(activityID != 0) {
       mHealthActivity = mModerateLivingDAO.getHealthActivitiesByID(activityID);
     } else {
-      //TODO: setup warning, log, etc.?
+      Log.d(TAG, "Could not find Health Activity in Extra.");
     }
   }
 

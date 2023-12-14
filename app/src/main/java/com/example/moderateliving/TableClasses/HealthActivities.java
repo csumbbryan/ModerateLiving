@@ -23,15 +23,18 @@ public class HealthActivities implements ModerateLivingEntries {
   private String mActivityDescription;
   private int mActivityPoints;
   private boolean mIsRecurring;
+  private boolean mIsComplete;
 
-  public HealthActivities(int userID,
+  public HealthActivities(int activityID, int userID,
                           String activityName, String activityDescription,
                           int activityPoints, boolean isRecurring) {
+    mActivityID = activityID;
     mUserID = userID;
     mActivityName = activityName;
     mActivityDescription = activityDescription;
     mActivityPoints = activityPoints;
     mIsRecurring = isRecurring;
+    mIsComplete = false;
   }
 
   public int getActivityID() {
@@ -65,6 +68,7 @@ public class HealthActivities implements ModerateLivingEntries {
   public int getUserID() {
     return mUserID;
   }
+
 
   public void setUserID(int userID) {
     mUserID = userID;
@@ -102,6 +106,14 @@ public class HealthActivities implements ModerateLivingEntries {
     mIsRecurring = recurring;
   }
 
+  public boolean isComplete() {
+    return mIsComplete;
+  }
+
+  public void setIsComplete(boolean complete) {
+    mIsComplete = complete;
+  }
+
   @Override
   public String toString() {
     return "HealthActivities{" +
@@ -114,8 +126,10 @@ public class HealthActivities implements ModerateLivingEntries {
         '}';
   }
 
-  public HealthActivities copy() {
+  //TODO: Keep eye on whether isComplete needs to be exposed in this copy method
+  public HealthActivities copy(int activityID) {
     HealthActivities healthActivities = new HealthActivities(
+        activityID,
         this.mUserID,
         this.mActivityName,
         this.mActivityDescription,

@@ -1,6 +1,6 @@
-package com.example.moderateliving.TableClasses;
+package com.example.moderateliving;
 
 public interface LogRecyclerViewInterface {
-  public void clickToSelect(int position);
+  public void clickedSelected(int selectedPosition);
   public void longClickToSelect(int position);
 }
