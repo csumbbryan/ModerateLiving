@@ -14,7 +14,7 @@ import java.time.LocalDate;
         @ForeignKey(entity = Splurges.class,
             parentColumns = "mSplurgeID",
             childColumns = "mSplurgeID",
-            onDelete = ForeignKey.SET_NULL
+            onDelete = ForeignKey.CASCADE
         )
     })
 public class SplurgeLog implements LogInterface {
@@ -58,7 +58,7 @@ public class SplurgeLog implements LogInterface {
 
 
   @Override
-  public int getEntryID() {
+  public Integer getEntryID() {
     return getSplurgeID();
   }
 

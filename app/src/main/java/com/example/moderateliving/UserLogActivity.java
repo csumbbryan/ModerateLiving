@@ -101,7 +101,8 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
           boolean userLogUndid = false;
           //TODO: if Health Activity and CREATED...
           if (userLog.getActivityType().equals(Util.TYPE_HEALTH_ACTIVITY)) {
-            HealthActivityLog healthActivityLog = mModerateLivingDAO.getHealthActivityLogByID(userLog.getItemID());
+            int userItemID = userLog.getItemID();
+            HealthActivityLog healthActivityLog = mModerateLivingDAO.getHealthActivityLogByLogID(userItemID);
             if (userLog.getDescription().equals(Util.LOG_CREATED)) {
               userLogUndid = Util.undoCreateHealthActivity(getApplicationContext(), mLoggedInUserID, healthActivityLog);
             } else if (userLog.getDescription().equals(Util.LOG_COMPLETED)) {
@@ -110,7 +111,8 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
               Toast.makeText(getApplicationContext(), "User Log entry cannot be undone", Toast.LENGTH_LONG).show();
             }
           } else if (userLog.getActivityType().equals(Util.TYPE_SPLURGE)) {
-            SplurgeLog splurgeLog = mModerateLivingDAO.getSplurgeLogByLogID(userLog.getItemID()); //TODO: Item ID is now based on log -- check this
+            int userItemID = userLog.getItemID();
+            SplurgeLog splurgeLog = mModerateLivingDAO.getSplurgeLogByLogID(userItemID); //TODO: Item ID is now based on log -- check this
             if (userLog.getDescription().equals(Util.LOG_CREATED)) {
               userLogUndid = Util.undoCreateSplurge(getApplicationContext(), mLoggedInUserID, splurgeLog);
             } else if (userLog.getDescription().equals(Util.LOG_REDEEMED)) {

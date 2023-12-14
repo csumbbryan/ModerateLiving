@@ -16,7 +16,7 @@ import java.time.LocalDate;
         @ForeignKey(entity = HealthActivities.class,
         parentColumns = "mActivityID",
         childColumns = "mActivityID",
-        onDelete = ForeignKey.SET_NULL)
+        onDelete = ForeignKey.CASCADE)
     })
 public class HealthActivityLog implements LogInterface {
 
@@ -59,7 +59,7 @@ public class HealthActivityLog implements LogInterface {
   }
 
   @Override
-  public int getEntryID() {
+  public Integer getEntryID() {
     return getActivityID();
   }
 

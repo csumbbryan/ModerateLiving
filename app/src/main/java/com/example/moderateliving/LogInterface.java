@@ -3,7 +3,7 @@ package com.example.moderateliving;
 import java.time.LocalDate;
 
 public interface LogInterface {
-  public int getEntryID();
+  public Integer getEntryID();
 
   public int getLogID();
 
@@ -13,7 +13,4 @@ public interface LogInterface {
   public LocalDate getCompleteDate();
 
   public int getPoints();
-
-
-
 }

@@ -111,7 +111,7 @@ public interface ModerateLivingDAO {
   int getMaxHealthActivityLogID();
 
   @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_LOG_TABLE + " WHERE mActivityID = :activityID")
-  HealthActivityLog getHealthActivityLogByID(int activityID);
+  HealthActivityLog getHealthActivityLogByID(Integer activityID);
 
   @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_LOG_TABLE + " WHERE mActivityLogID = :activityLogID")
   HealthActivityLog getHealthActivityLogByLogID(int activityLogID);
@@ -141,7 +141,7 @@ public interface ModerateLivingDAO {
   SplurgeLog getSplurgeLogByLogID(int splurgeLogID);
 
   @Query("SELECT * FROM " + AppDataBase.SPLURGES_LOG_TABLE + " WHERE mSplurgeID = :splurgeID")
-  SplurgeLog getSplurgeLogByID(int splurgeID);
+  SplurgeLog getSplurgeLogByID(Integer splurgeID);
 
   @Query("SELECT * FROM " + AppDataBase.USER_LOG_TABLE)
   List<UserLog> getUserLogs();
