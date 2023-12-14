@@ -1,4 +1,4 @@
-package com.example.moderateliving;
+package com.example.moderateliving.AndroidActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,9 +17,15 @@ import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
+import com.example.moderateliving.EntryRecyclerAdapter;
+import com.example.moderateliving.MainActivity;
+import com.example.moderateliving.ModerateLivingEntries;
+import com.example.moderateliving.R;
+import com.example.moderateliving.RecyclerViewInterface;
 import com.example.moderateliving.TableClasses.HealthActivities;
 import com.example.moderateliving.TableClasses.HealthActivityLog;
 import com.example.moderateliving.TableClasses.UserID;
+import com.example.moderateliving.Util;
 import com.example.moderateliving.databinding.ActivityHealthBinding;
 
 import java.util.ArrayList;
@@ -75,7 +81,7 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
     mButtonHealthActivityHome.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        returnToMainActivity(mModerateLivingDAO.getUserByID(mLoggedInUserID).getHashPassword());
+        returnToMainActivity();
       }
     });
 
@@ -105,15 +111,8 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
     });
   }
 
-  private void returnToMainActivity(int userPassHash) {
-    Intent intent = MainActivity.intentFactory(getApplicationContext(), userPassHash);
+  private void returnToMainActivity() {
     Log.d(TAG, "Returning to Main Activity");
-    startActivity(intent);
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
     finish();
   }
 
@@ -151,10 +150,9 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
 
         @Override
         public void onFinish() {
-          returnToMainActivity(LOGOUT_USER);
+          returnToMainActivity();
         }
       }.start();
-
     }
   }
 

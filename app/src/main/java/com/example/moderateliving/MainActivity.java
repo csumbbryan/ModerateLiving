@@ -1,7 +1,5 @@
 package com.example.moderateliving;
 
-import static com.example.moderateliving.Util.logOutUser;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
@@ -15,6 +13,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.moderateliving.AndroidActivity.AdminActivity;
+import com.example.moderateliving.AndroidActivity.HealthActivity;
+import com.example.moderateliving.AndroidActivity.LoginActivity;
+import com.example.moderateliving.AndroidActivity.SignUpActivity;
+import com.example.moderateliving.AndroidActivity.SplurgeActivity;
+import com.example.moderateliving.AndroidActivity.UserLogActivity;
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
 import com.example.moderateliving.TableClasses.HealthActivities;
@@ -91,17 +95,8 @@ public class MainActivity extends AppCompatActivity {
      */
     //TODO: Method: wireUpDisplay?
     if(mLoggedInUser != null) {
-      int userPoints = mLoggedInUser.getPoints();
-      String name = mLoggedInUser.getName();
-      boolean isAdmin = mLoggedInUser.getIsAdmin();
-      String pointsDisplay = userPoints + (userPoints != 1 ? " Points" : " Point");
-      String welcomeDisplay = "Welcome " + name;
-      mWelcomeUserMessage.setText(welcomeDisplay);
-      mPointsBalanceCount.setText(pointsDisplay);
-      if(isAdmin) {
-        mAdminToolsSelect.setVisibility(View.VISIBLE);
-      }
-      Log.d(TAG, "User " + name + " is logged in and isAdmin is " + isAdmin);
+      refreshDisplay();
+      Log.d(TAG, "User " + mLoggedInUser.getName() + " is logged in and isAdmin is " + mLoggedInUser.getIsAdmin());
     }
 
     Log.d(TAG, "Main Activity Started and the following variables are set: "
@@ -111,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     mHealthActivitiesSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent intent = HealthActivity.intentFactory(getApplicationContext(), mLoggedInUser.getUserID()); //Update userHash
+        Intent intent = HealthActivity.intentFactory(MainActivity.this, mLoggedInUser.getUserID()); //Update userHash
         Log.d(TAG, "Switching to HealthActivity View");
         startActivity(intent);
       }
@@ -140,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         //TODO: Update for passing Extra in AdminActivity
-        Intent intent = AdminActivity.intentFactory(getApplicationContext()); //Update userHash
+        Intent intent = AdminActivity.intentFactory(getApplicationContext(), mLoggedInUser.getUserID()); //Update userHash
         Log.d(TAG, "Switching to AdminActivity View");
         startActivity(intent);
       }
@@ -154,6 +149,19 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
+    mEditUserSettingsSelect.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = SignUpActivity.intentFactory(getApplicationContext(), mLoggedInUser.getUserID());
+        startActivity(intent);
+      }
+    });
+  }
+
+  @Override
+  protected void onRestart() {
+    super.onRestart();
+    mLoggedInUser = mModerateLivingDAO.getUserByID(mLoggedInUser.getUserID());
     refreshDisplay();
   }
 
@@ -166,13 +174,6 @@ public class MainActivity extends AppCompatActivity {
     getIntent().putExtra(USER_PASSWORD_HASH, 0);
     //TODO: update better checking of sharedPreferences being cleared for below log
     Log.d(TAG, "Shared Preferences have been cleared. Closing MainActivity.");
-    finish();
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    mLoggedInUser = null;
     finish();
   }
 
@@ -234,7 +235,16 @@ public class MainActivity extends AppCompatActivity {
 
   //TODO: Update this upon completion of other methods. Need to update points textView.
   private void refreshDisplay() {
-
+    int userPoints = mLoggedInUser.getPoints();
+    String name = mLoggedInUser.getName();
+    boolean isAdmin = mLoggedInUser.getIsAdmin();
+    String pointsDisplay = userPoints + (userPoints != 1 ? " Points" : " Point");
+    String welcomeDisplay = "Welcome " + name;
+    mWelcomeUserMessage.setText(welcomeDisplay);
+    mPointsBalanceCount.setText(pointsDisplay);
+    if(isAdmin) {
+      mAdminToolsSelect.setVisibility(View.VISIBLE);
+    }
   }
 
   private void getDatabase() {

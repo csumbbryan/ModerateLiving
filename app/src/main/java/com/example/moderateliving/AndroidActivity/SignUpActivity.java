@@ -1,26 +1,30 @@
-package com.example.moderateliving;
+package com.example.moderateliving.AndroidActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
+import com.example.moderateliving.MainActivity;
+import com.example.moderateliving.R;
 import com.example.moderateliving.TableClasses.UserID;
-import com.example.moderateliving.databinding.ActivityMainBinding;
+import com.example.moderateliving.Util;
 import com.example.moderateliving.databinding.ActivitySignUpBinding;
 
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Locale;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -31,9 +35,12 @@ import java.util.regex.Pattern;
  */
 public class SignUpActivity extends AppCompatActivity {
 
+  private static final String SHARED_PREF_STRING = "com.example.moderateliving_SHARED_PREF_STRING";
   private static final String TAG = "Sign Up Activity";
   //Source: https://stackoverflow.com/questions/22061723/regex-date-validation-for-yyyy-mm-dd
   private static final String REGEX_DATE = "\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])";
+  private static final String USER_ID = "com.example.moderateliving.SignUpActivity_USER_ID";
+  private static final int NO_USER = 0;
   ActivitySignUpBinding mSignUpBinding;
   ModerateLivingDAO mModerateLivingDAO;
 
@@ -44,6 +51,9 @@ public class SignUpActivity extends AppCompatActivity {
   EditText mEditTextUserSignUp;
   EditText mEditTextSignUpWeight;
   EditText mEditTextSignUpBirthday;
+  TextView mTextViewMainText;
+  CheckBox mCheckBoxSignUpIsAdmin;
+  Button mButtonSignUpDiscard;
 
   String mUsername;
   String mFullname;
@@ -51,9 +61,15 @@ public class SignUpActivity extends AppCompatActivity {
   String mPassword2;
   Double mWeight;
   String mBirthday;
+  int mLoggedInUserID;
+  int mUserID;
+  boolean mUpdateUser;
+  static Context previousContext; //TODO: Let's see if this works
 
-  public static Intent intentFactory(Context packageContext) {
+  public static Intent intentFactory(Context packageContext, int mUserID) {
     Intent intent = new Intent(packageContext, SignUpActivity.class);
+    intent.putExtra(USER_ID, mUserID);
+    previousContext = packageContext;
     return intent;
   }
   @Override
@@ -63,17 +79,82 @@ public class SignUpActivity extends AppCompatActivity {
 
     mSignUpBinding = ActivitySignUpBinding.inflate(getLayoutInflater());
     setContentView(mSignUpBinding.getRoot());
-    mButtonSignUpSumbit = mSignUpBinding.buttonSignUpSubmit;
+
     getDatabase();
+    checkUserLoggedIn();
+    initializeBindings();
+    if(checkForUpdateUser()) {
+      refreshDisplay();
+    }
+
+
 
     mButtonSignUpSumbit.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         getFormValues();
-        submitForm();
+        if(mUpdateUser) {
+          submitFormExisting();
+        } else {
+          submitFormNew();
+        }
       }
     });
 
+    mButtonSignUpDiscard.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        returnToPreviousActivity();
+      }
+    });
+
+  }
+
+  private void checkUserLoggedIn() {
+    SharedPreferences loginSharedPref = getSharedPreferences(SHARED_PREF_STRING, Context.MODE_PRIVATE);
+    List<UserID> mUserIDList = mModerateLivingDAO.getUserIDs();
+    int loggedInUserHash = loginSharedPref.getInt(SHARED_PREF_STRING, NO_USER);
+    mLoggedInUserID = Util.findUserByHash(mUserIDList, loggedInUserHash).getUserID();
+  }
+
+  private void initializeBindings() {
+    mButtonSignUpSumbit = mSignUpBinding.buttonSignUpSubmit;
+    mEditTextUserSignUp = mSignUpBinding.editTextUserSignUp;
+    mEditTextSignUpFullName = mSignUpBinding.editTextSignUpFullNameInput;
+    mEditTextPasswordSignUp1 = mSignUpBinding.editTextPasswordSignUp1;
+    mEditTextPasswordSignUp2 = mSignUpBinding.editTextPasswordSignUp2;
+    mEditTextSignUpWeight = mSignUpBinding.editTextSignUpWeightInput;
+    mEditTextSignUpBirthday = mSignUpBinding.editTextSignUpBirthdayInput;
+    mTextViewMainText = mSignUpBinding.textViewSignUpText;
+    mCheckBoxSignUpIsAdmin = mSignUpBinding.checkBoxSignUpIsAdmin;
+    mButtonSignUpDiscard = mSignUpBinding.buttonSignUpDiscard;
+  }
+
+
+
+  private void refreshDisplay() {
+    mEditTextUserSignUp.setText(mModerateLivingDAO.getUserByID(mUserID).getUsername());
+    mEditTextSignUpFullName.setText(mModerateLivingDAO.getUserByID(mUserID).getName());
+    mEditTextSignUpBirthday.setText(mModerateLivingDAO.getUserByID(mUserID).getBirthday());
+    mEditTextSignUpWeight.setText(String.valueOf(mModerateLivingDAO.getUserByID(mUserID).getWeight()));
+    if(mUpdateUser) {
+      mButtonSignUpSumbit.setText("Submit"); //TODO: Set constant value for change or use R.id
+      mTextViewMainText.setText("Update User Settings Below"); //TODO: Set constant value for change or use R.id
+      mButtonSignUpDiscard.setVisibility(Button.VISIBLE);
+      if(mModerateLivingDAO.getUserByID(mLoggedInUserID).getIsAdmin()) {
+        mCheckBoxSignUpIsAdmin.setVisibility(CheckBox.VISIBLE);
+      }
+    }
+  }
+
+  private boolean checkForUpdateUser() {
+    mUserID = getIntent().getIntExtra(USER_ID, NO_USER);
+    if(mUserID > 0) {
+      mUpdateUser = true;
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @Override
@@ -88,13 +169,6 @@ public class SignUpActivity extends AppCompatActivity {
    * Retrieves EditText field values and sets the to the corresponding String and number values.
    */
   private void getFormValues() {
-    mEditTextUserSignUp = mSignUpBinding.editTextUserSignUp;
-    mEditTextSignUpFullName = mSignUpBinding.editTextSignUpFullNameInput;
-    mEditTextPasswordSignUp1 = mSignUpBinding.editTextPasswordSignUp1;
-    mEditTextPasswordSignUp2 = mSignUpBinding.editTextPasswordSignUp2;
-    mEditTextSignUpWeight = mSignUpBinding.editTextSignUpWeightInput;
-    mEditTextSignUpBirthday = mSignUpBinding.editTextSignUpBirthdayInput;
-
     mUsername = mEditTextUserSignUp.getText().toString();
     mFullname = mEditTextSignUpFullName.getText().toString();
     mPassword1 = mEditTextPasswordSignUp1.getText().toString();
@@ -105,7 +179,19 @@ public class SignUpActivity extends AppCompatActivity {
       Log.d(TAG, "Could not parse weight of value: " + mEditTextSignUpWeight.getText().toString());
     }
     mBirthday = mEditTextSignUpBirthday.getText().toString();
+  }
 
+  private void submitFormExisting() {
+    UserID existingUser = mModerateLivingDAO.getUserByID(mUserID);
+    existingUser.setName(mFullname);
+    existingUser.setBirthday(mBirthday);
+    existingUser.setWeight(mWeight);
+    mModerateLivingDAO.update(existingUser);
+    returnToPreviousActivity();
+  }
+
+  private void returnToPreviousActivity() {
+    finish();
   }
 
   /**
@@ -114,7 +200,7 @@ public class SignUpActivity extends AppCompatActivity {
    * format is correct. Inserts value into UserID database and logs said insertion. Switches to main
    * activity afterwards, passing in the userPassHash for use as the logged in user.
    */
-  private void submitForm() {
+  private void submitFormNew() {
     int userPoints = 0;
     boolean isAdmin = false;
 

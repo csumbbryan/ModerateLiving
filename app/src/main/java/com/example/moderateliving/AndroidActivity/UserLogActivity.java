@@ -1,4 +1,4 @@
-package com.example.moderateliving;
+package com.example.moderateliving.AndroidActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,9 +17,14 @@ import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
+import com.example.moderateliving.LogRecyclerAdapter;
+import com.example.moderateliving.LogRecyclerViewInterface;
+import com.example.moderateliving.MainActivity;
+import com.example.moderateliving.R;
 import com.example.moderateliving.TableClasses.HealthActivityLog;
 import com.example.moderateliving.TableClasses.SplurgeLog;
 import com.example.moderateliving.TableClasses.UserLog;
+import com.example.moderateliving.Util;
 import com.example.moderateliving.databinding.ActivityUserLogBinding;
 
 import java.util.List;

@@ -4,55 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserManagementActivity">
+    android:id="@+id/constraintLayoutUserManagement"
+    tools:context=".AndroidActivity.UserManagementActivity">
 
-    <TableLayout
-        android:id="@+id/userManagementTableLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+
+    <ImageButton
+        android:id="@+id/imageButtonUserManagementDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="200dp"
+        android:backgroundTint="@color/red2"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButtonUserManagementAdd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageButtonUserManagementAdd"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    <TextView
+        android:id="@+id/textViewUserManagementMainText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/grayDark"
+        android:gravity="center"
+        android:text="@string/textViewUserManagementMainText"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonUserManagementReturnHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/grayDark"
+        android:elevation="12dp"
+        android:text="@string/buttonHealthActivityHome"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutUserManagement"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/buttonUserManagementReturnHome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TableRow
-            android:id="@+id/userManagementRowHeaders"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewUserManagement"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/grayLight"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <TextView
-                android:background="@color/blue"
-                android:gravity="center"
-                android:text="@string/userManagementColName"
-                android:textColor="@color/white" />
+    </LinearLayout>
 
-            <TextView
-                android:background="@color/blue"
-                android:gravity="center"
-                android:text="@string/userManagementColWeight"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:background="@color/blue"
-                android:gravity="center"
-                android:text="@string/userManagementColBirthday"
-                android:textColor="@color/white" />
-        </TableRow>
-    </TableLayout>
-
-    <Button
-        android:id="@+id/buttonUserManagement"
+    <ImageButton
+        android:id="@+id/imageButtonUserManagementAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/buttonUserManagement"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/greenLight"
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutUserManagement"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userManagementTableLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewUserManagementMainText"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+    <ImageButton
+        android:id="@+id/imageButtonUserManagementEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:background="@color/brownLight"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButtonUserManagementAdd"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonUserManagementAdd"
+        app:layout_constraintTop_toTopOf="@+id/imageButtonUserManagementAdd"
+        app:layout_constraintVertical_bias="0.483"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <ImageButton
+        android:id="@+id/imageButtonUserManagementResetPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:background="@color/grayExtraDark"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButtonUserManagementEdit"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonUserManagementEdit"
+        app:layout_constraintTop_toTopOf="@+id/imageButtonUserManagementEdit"
+        app:srcCompat="@android:drawable/ic_lock_idle_lock" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

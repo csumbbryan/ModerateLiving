@@ -1,4 +1,4 @@
-package com.example.moderateliving;
+package com.example.moderateliving.AndroidActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
@@ -17,8 +17,11 @@ import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
+import com.example.moderateliving.MainActivity;
+import com.example.moderateliving.R;
 import com.example.moderateliving.TableClasses.SplurgeLog;
 import com.example.moderateliving.TableClasses.UserID;
+import com.example.moderateliving.Util;
 import com.example.moderateliving.databinding.ActivitySplurgeConfigBinding;
 import com.example.moderateliving.TableClasses.Splurges;
 

@@ -74,4 +74,19 @@
     <string name="textViewLogEntryWithName">with name:</string>
     <string name="textViewLogEntryName">Name</string>
     <string name="buttonHealthActivityShowAll">Show Completed</string>
+    <string name="textViewUserManagementUsernameText">"Username: "</string>
+    <string name="textViewUserManagementUsernameDisplay">username</string>
+    <string name="textViewUserManagementNameText">Name:</string>
+    <string name="textViewUserManagementNameDisplay">name</string>
+    <string name="textViewUserManagementWeight">Weight:</string>
+    <string name="textViewUserManagementWeightDisplay">weight</string>
+    <string name="textViewUserManagementBirthdayText">Birthday:</string>
+    <string name="textViewUserManagementBirthdayDisplay">birthday</string>
+    <string name="textViewUserManagementPointsText">Points:</string>
+    <string name="textViewUserManagementPointsDisplay">points</string>
+    <string name="textViewUserManagementIsAdmin">Is Admin:</string>
+    <string name="textViewUserManagementYesNo">yes/no</string>
+    <string name="textViewUserManagementMainText">Moderate Living: User Management</string>
+    <string name="checkBoxSignUpIsAdmin">Is Admin</string>
+    <string name="buttonSignUpDiscard">Discard Changes</string>
 </resources>

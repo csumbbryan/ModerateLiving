@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="3dp"
+    android:layout_marginTop="3dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+
+        <TextView
+            android:id="@+id/textViewUserManagementUsernameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:text="@string/textViewUserManagementUsernameText"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewUserManagementUsernameDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:text="@string/textViewUserManagementUsernameDisplay"
+            app:layout_constraintStart_toEndOf="@+id/textViewUserManagementUsernameText"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewUserManagementNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:text="@string/textViewUserManagementNameText"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/textViewUserManagementUsernameDisplay"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewUserManagementNameDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:text="@string/textViewUserManagementNameDisplay"
+            app:layout_constraintStart_toEndOf="@+id/textViewUserManagementNameText"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewUserManagementWeightText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:textStyle="bold"
+            android:text="@string/textViewUserManagementWeight"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserManagementUsernameText" />
+
+        <TextView
+            android:id="@+id/textViewUserManagementWeightDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:text="@string/textViewUserManagementWeightDisplay"
+            app:layout_constraintStart_toEndOf="@+id/textViewUserManagementWeightText"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserManagementUsernameDisplay" />
+
+        <TextView
+            android:id="@+id/textViewUserManagementBirthdayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:textStyle="bold"
+            android:text="@string/textViewUserManagementBirthdayText"
+            app:layout_constraintStart_toEndOf="@+id/textViewUserManagementWeightDisplay"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserManagementNameText" />
+
+        <TextView
+            android:id="@+id/textViewUserManagementBirthdayDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:text="@string/textViewUserManagementBirthdayDisplay"
+            app:layout_constraintStart_toEndOf="@+id/textViewUserManagementBirthdayText"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserManagementNameText" />
+
+        <TextView
+            android:id="@+id/textViewUserManagementPointsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:textStyle="bold"
+            android:text="@string/textViewUserManagementPointsText"
+            app:layout_constraintStart_toEndOf="@+id/textViewUserManagementBirthdayDisplay"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserManagementNameText" />
+
+        <TextView
+            android:id="@+id/textViewUserManagementPointsDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:text="@string/textViewUserManagementPointsDisplay"
+            app:layout_constraintStart_toEndOf="@+id/textViewUserManagementPointsText"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserManagementNameDisplay" />
+
+        <TextView
+            android:id="@+id/textViewUserManagementIsAdmin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:textStyle="bold"
+            android:text="@string/textViewUserManagementIsAdmin"
+            app:layout_constraintStart_toEndOf="@+id/textViewUserManagementNameDisplay"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewUserManagementYesNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="2dp"
+            android:text="@string/textViewUserManagementYesNo"
+            app:layout_constraintStart_toEndOf="@+id/textViewUserManagementIsAdmin"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

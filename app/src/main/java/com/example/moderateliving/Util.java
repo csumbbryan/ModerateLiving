@@ -51,13 +51,13 @@ public abstract class Util {
   }
 
   public static UserID findUserByHash(List<UserID> mUserIDList, int userHash) {
-    UserID userID = null;
+    UserID user = null;
     for(UserID userIDList : mUserIDList) {
       if(userHash == userIDList.getHashPassword()) {
-        userID = userIDList;
+        user = userIDList;
       }
     }
-    return userID;
+    return user;
   }
 
   //TODO: This works! startActivities from non-activity -- stitch into other activities for logoff

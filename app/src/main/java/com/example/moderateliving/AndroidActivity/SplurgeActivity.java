@@ -1,4 +1,4 @@
-package com.example.moderateliving;
+package com.example.moderateliving.AndroidActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,15 +17,21 @@ import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
+import com.example.moderateliving.EntryRecyclerAdapter;
+import com.example.moderateliving.MainActivity;
+import com.example.moderateliving.ModerateLivingEntries;
+import com.example.moderateliving.R;
+import com.example.moderateliving.RecyclerViewInterface;
 import com.example.moderateliving.TableClasses.Splurges;
 import com.example.moderateliving.TableClasses.UserID;
+import com.example.moderateliving.Util;
 import com.example.moderateliving.databinding.ActivitySplurgeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //TODO: Consider LiveData?
-public class SplurgeActivity extends AppCompatActivity implements RecyclerViewInterface{
+public class SplurgeActivity extends AppCompatActivity implements RecyclerViewInterface {
 
   private static final String USER_ID = "com.example.moderateliving.SplurgeActivity_USER_ID";
   private static final String TAG = "SplurgeActivity";
@@ -67,16 +73,10 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
     mButtonSplurgeActivityHome.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        returnToMainActivity(mModerateLivingDAO.getUserByID(mLoggedInUserID).getHashPassword());
+        returnToMainActivity();
       }
     });
 
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    finish();
   }
 
   private void populateEntries() {
@@ -100,7 +100,7 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
         }
         @Override
         public void onFinish() {
-          returnToMainActivity(LOGOUT_USER);
+          returnToMainActivity();
         }
       }.start();
 
@@ -127,10 +127,9 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
     startActivity(intent);
   }
 
-  private void returnToMainActivity(int userPassHash) {
-    Intent intent = MainActivity.intentFactory(getApplicationContext(), userPassHash);
+  private void returnToMainActivity() {
     Log.d(TAG, "Returning to Main Activity");
-    startActivity(intent);
+    finish();
   }
 
   @Override

@@ -1,4 +1,4 @@
-package com.example.moderateliving;
+package com.example.moderateliving.AndroidActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
@@ -15,9 +15,11 @@ import android.widget.Toast;
 
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
+import com.example.moderateliving.MainActivity;
+import com.example.moderateliving.R;
 import com.example.moderateliving.TableClasses.UserID;
+import com.example.moderateliving.Util;
 import com.example.moderateliving.databinding.ActivityLoginBinding;
-import com.example.moderateliving.databinding.ActivityMainBinding;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
   private static final String USER_PASSWORD_HASH = "com.example.moderateliving_Login_Activity";
   private static final String SHARED_PREF_STRING = "com.example.moderateliving_SHARED_PREF_STRING";
+  private static final int NO_USER = 0;
   private static final String TAG = "LoginActivity";
   ActivityLoginBinding mActivityLoginBinding;
   EditText mUserNameInput;
@@ -36,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
   ModerateLivingDAO mModerateLivingDAO;
 
   List<UserID> mUserIDList;
-  UserID mUserID;
+  UserID mUser;
 
   public static Intent intentFactory(Context packageContext, Integer userHash) {
     Intent intent = new Intent(packageContext, LoginActivity.class);
@@ -66,8 +69,8 @@ public class LoginActivity extends AppCompatActivity {
       public void onClick(View view) {
 
         boolean isLoginSuccessful = submitUserCredentials();
-        if(isLoginSuccessful && mUserID != null) {
-          Intent intent = MainActivity.intentFactory(getApplicationContext(), mUserID.getHashPassword());
+        if(isLoginSuccessful && mUser != null) {
+          Intent intent = MainActivity.intentFactory(getApplicationContext(), mUser.getHashPassword());
           mUserNameInput.setText("");
           mPasswordInput.setText("");
           Log.d(TAG, "Switching to MainActivity View");
@@ -82,9 +85,8 @@ public class LoginActivity extends AppCompatActivity {
     mSignUpSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent intent = SignUpActivity.intentFactory(getApplicationContext());
+        Intent intent = SignUpActivity.intentFactory(getApplicationContext(), NO_USER);
         startActivity(intent);
-
       }
     });
   }
@@ -96,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
     //String password = mPasswordInput.getText().toString(); //TODO: Remove this if not needed for troubleshooting
     boolean isLoginSuccessful = Util.verifyCredentials(mModerateLivingDAO.getUserIDs(), userHash);
     if(isLoginSuccessful) {
-      mUserID = mModerateLivingDAO.getUserByUsername(username);
+      mUser = mModerateLivingDAO.getUserByUsername(username);
       SharedPreferences loginPreference = getSharedPreferences(SHARED_PREF_STRING, Context.MODE_PRIVATE);
       SharedPreferences.Editor loginEdit = loginPreference.edit();
       loginEdit.putInt(SHARED_PREF_STRING, userHash);

@@ -13,34 +13,39 @@
         android:theme="@style/Theme.ModerateLiving"
         tools:targetApi="31">
         <activity
-            android:name=".UserLogActivity"
+            android:name=".AndroidActivity.UserLogActivity"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SplurgeConfigActivity"
+            android:name=".AndroidActivity.SplurgeConfigActivity"
+            android:parentActivityName=".AndroidActivity.SplurgeActivity"
             android:exported="false" />
         <activity
-            android:name=".SplurgeActivity"
+            android:name=".AndroidActivity.SplurgeActivity"
+            android:parentActivityName=".MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AndroidActivity.UserManagementActivity"
+            android:parentActivityName=".AndroidActivity.AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".EntryHolder"
+            android:name=".AndroidActivity.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".UserManagementActivity"
+            android:name=".AndroidActivity.HealthActivity"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".AndroidActivity.AdminActivity"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".HealthActivity"
+            android:name=".AndroidActivity.HealthConfigActivity"
+            android:parentActivityName=".AndroidActivity.HealthActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HealthConfigActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
+            android:name=".AndroidActivity.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
