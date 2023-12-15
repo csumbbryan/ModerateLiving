@@ -6,6 +6,12 @@ import androidx.room.PrimaryKey;
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.ModerateLivingEntries;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: Splurges table entry Java object representation
+ */
 @Entity(tableName = AppDataBase.SPLURGES_TABLE,
     foreignKeys = {@ForeignKey(entity = UserID.class,
         parentColumns = "mUserID",

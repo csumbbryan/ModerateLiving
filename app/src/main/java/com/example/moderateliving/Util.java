@@ -22,7 +22,12 @@ import com.example.moderateliving.TableClasses.UserLog;
 import java.time.LocalDate;
 import java.util.List;
 
-//TODO: verify this can/should be abstract
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: centralized methods for support application
+ */
 public abstract class Util {
   public static final String LOG_CREATED = "created";
   public static final String LOG_COMPLETED = "completed";
@@ -60,7 +65,6 @@ public abstract class Util {
     return user;
   }
 
-  //TODO: This works! startActivities from non-activity -- stitch into other activities for logoff
   public static void logOutUser(Context context) {
     Intent intent = MainActivity.intentFactory(context, -1);
     startActivity(context, intent, new Bundle());
@@ -72,7 +76,6 @@ public abstract class Util {
     String activityType;
     if(activityEntry instanceof HealthActivities) {
       activityType = TYPE_HEALTH_ACTIVITY;
-      //TODO: If statement may not be needed as this should be handled in Activity Class
       if (description.equals(LOG_CREATED)) {
         int activityLogID = mModerateLivingDAO.getMaxHealthActivityLogID() + 1;
         HealthActivityLog healthActivityLog = new HealthActivityLog(
@@ -85,11 +88,10 @@ public abstract class Util {
             activityEntry.getPoints()
         );
         mModerateLivingDAO.insert(healthActivityLog);
-        logToUserLog(context, userID, Util.LOG_CREATED, healthActivityLog); //TODO: need to manually set primary key
+        logToUserLog(context, userID, Util.LOG_CREATED, healthActivityLog);
       }
     } else if (activityEntry instanceof Splurges) {
       activityType = TYPE_SPLURGE;
-      //TODO: If statement may not be needed as this should be handled in Activity Class
       if (description.equals(LOG_CREATED) || description.equals(LOG_REDEEMED)) {
         int splurgeLogID = mModerateLivingDAO.getMaxSplurgeLogID() + 1;
         SplurgeLog splurgeLog = new SplurgeLog(
@@ -102,14 +104,13 @@ public abstract class Util {
             activityEntry.getPoints()
         );
         mModerateLivingDAO.insert(splurgeLog);
-        logToUserLog(context, userID, description, splurgeLog); //TODO: need to manually set primary key
+        logToUserLog(context, userID, description, splurgeLog);
       }
     }
     return true;
   }
 
-  //TODO: Decouple logToUserLog from ActivityLog and SplurgeLog
-  //TODO: Refactor to use logID instead?
+  //TODO: future exploration: decouple logToUserLog from ActivityLog and SplurgeLog
   public static boolean logToUserLog(Context context, int userID, String description, LogInterface logEntry) {
     getDatabase(context);
     LocalDate date = LocalDate.now();
@@ -134,7 +135,7 @@ public abstract class Util {
         mModerateLivingDAO.update(splurgeLog);
       }
     } else {
-      //TODO: Stuff to do if no types match
+      //Additional checks for differing TYPE here
     }
     UserLog userLog = new UserLog(
         userID,
@@ -150,7 +151,6 @@ public abstract class Util {
   }
 
   public static boolean undoRedeem(Context context, int userID, SplurgeLog splurgeLog) {
-    //TODO: Splurge Log should be deleted because each splurge redeem has a separate log
     getDatabase(context);
     if(splurgeLog == null) {
       Toast.makeText(context, "Splurge Log does not exist. Splurge may have been deleted.", Toast.LENGTH_LONG).show();
@@ -184,7 +184,6 @@ public abstract class Util {
   }
 
   public static boolean undoCompleteHealthActivity(Context context, int userID, HealthActivityLog healthActivityLog) {
-    //TODO: Setup condition for null log entry
     getDatabase(context);
     if(healthActivityLog == null) {
       Toast.makeText(context, "Health Activity Log does not exist. Health Activity may have been deleted.", Toast.LENGTH_LONG).show();

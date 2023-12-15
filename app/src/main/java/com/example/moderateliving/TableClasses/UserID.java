@@ -4,7 +4,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.example.moderateliving.DB.AppDataBase;
-import com.example.moderateliving.LoggedInToken;
 
 import java.util.Objects;
 

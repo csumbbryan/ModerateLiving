@@ -27,6 +27,14 @@ import com.example.moderateliving.databinding.ActivityMainBinding;
 
 import java.util.List;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: driver activity.
+ * Provides access to HealthActivity, SplurgeActivity, UserLog, and EditSettings
+ * Allows access to Admin Tools if user isAdmin
+ */
 public class MainActivity extends AppCompatActivity {
 
   private static final String USER_PASSWORD_HASH =
@@ -84,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
       Intent intent = LoginActivity.intentFactory(getApplicationContext(), 0); //Update userHash
       Log.d(TAG, "Switching to LoginActivity View");
       startActivity(intent);
+      finish();
     }
 
     if(userHash == -1) {
@@ -93,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
     /**
      * initialize logged in user variables and setup environment based on user values.
      */
-    //TODO: Method: wireUpDisplay?
     if(mLoggedInUser != null) {
       refreshDisplay();
       Log.d(TAG, "User " + mLoggedInUser.getName() + " is logged in and isAdmin is " + mLoggedInUser.getIsAdmin());
@@ -125,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     mViewLogSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent intent = UserLogActivity.intentFactory(getApplicationContext(), mLoggedInUser.getUserID());
+        Intent intent = UserLogActivity.intentFactory(getApplicationContext(), mLoggedInUser.getUserID(), false);
         Log.d(TAG, "Switching to User Log Activity View");
         startActivity(intent);
       }
@@ -134,14 +142,13 @@ public class MainActivity extends AppCompatActivity {
     mAdminToolsSelect.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //TODO: Update for passing Extra in AdminActivity
         Intent intent = AdminActivity.intentFactory(getApplicationContext(), mLoggedInUser.getUserID()); //Update userHash
         Log.d(TAG, "Switching to AdminActivity View");
         startActivity(intent);
       }
     });
 
-    //TODO: Determine if other actions should be taken during MainActivity Close. Separate Method?
+    //TODO: feature enhancement: determine if other actions should be taken during MainActivity Close. Separate Method?
     mButtonMainClose.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -172,13 +179,12 @@ public class MainActivity extends AppCompatActivity {
     loginSharedEditor.apply();
     mLoggedInUser = null;
     getIntent().putExtra(USER_PASSWORD_HASH, 0);
-    //TODO: update better checking of sharedPreferences being cleared for below log
+    //TODO: feature enhancement: update better checking of sharedPreferences being cleared for below log
     Log.d(TAG, "Shared Preferences have been cleared. Closing MainActivity.");
     finish();
   }
 
-  //TODO: use code returns instead of boolean
-  //TODO: have a value of -1 in indicate logout
+  //TODO: feature enhancement: use code returns instead of boolean
   private boolean checkUserStatus(ModerateLivingDAO mModerateLivingDAO) {
     SharedPreferences loginSharedPref = getSharedPreferences(SHARED_PREF_STRING, Context.MODE_PRIVATE);
     int loginSharedPrefHash = loginSharedPref.getInt(SHARED_PREF_STRING, 0);
@@ -192,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     if(userPassHash != 0 ) {
-      //TODO: build in more checks to ensure success before returning true
       mLoggedInUser = Util.findUserByHash(mUserIDList,userPassHash);
       if(mLoggedInUser != null) {
         return true;
@@ -201,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
       }
     }
     if(loginSharedPrefHash != 0) {
-      //TODO: build in more checks to ensure success before returning true
       mLoggedInUser = Util.findUserByHash(mUserIDList,loginSharedPrefHash);
       if(mLoggedInUser != null){
         return true;
@@ -233,7 +237,6 @@ public class MainActivity extends AppCompatActivity {
     return false;
   }
 
-  //TODO: Update this upon completion of other methods. Need to update points textView.
   private void refreshDisplay() {
     int userPoints = mLoggedInUser.getPoints();
     String name = mLoggedInUser.getName();

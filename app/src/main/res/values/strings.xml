@@ -31,14 +31,14 @@
     <string name="userManagementColName">Name</string>
     <string name="userManagementColWeight">Weight</string>
     <string name="userManagementColBirthday">Birthday</string>
-    <string name="buttonUserManagement">Return Home</string>
+    <string name="buttonUserManagement">Go Back</string>
     <string name="textViewHealthActivityText">Moderate Living: Health Activities</string>
     <string name="buttonHealthActivityCreate">Create Health Activity</string>
     <string name="buttonHealthActivityCollCreate">Create Health Activity Collection</string>
     <string name="textViewHealthActivityIncomplete">Complete</string>
     <string name="textViewHealthActivityDescription">Description</string>
     <string name="textViewHealthActivityPoints">"Points"</string>
-    <string name="buttonHealthActivityHome">Return Home</string>
+    <string name="buttonHealthActivityHome">Go Back</string>
     <string name="textViewHealthEntryName">Name</string>
     <string name="textViewHealthEntryPoints">Points</string>
     <string name="buttonHealthConfigComplete">Complete Activity</string>
@@ -54,7 +54,7 @@
     <string name="textViewSplurgeActRedeem">Redeem</string>
     <string name="textViewSplurgeActivityDescription">Description</string>
     <string name="textViewSplurgeActivityPoints">Points</string>
-    <string name="buttonSplurgeActivityHome">Return Home</string>
+    <string name="buttonSplurgeActivityHome">Go Back</string>
     <string name="editTextSplurgeName">Splurge Name</string>
     <string name="editTextSplurgeDescription">Splurge Description</string>
     <string name="editTextSplurgePoints">Points Cost</string>
@@ -89,4 +89,8 @@
     <string name="textViewUserManagementMainText">Moderate Living: User Management</string>
     <string name="checkBoxSignUpIsAdmin">Is Admin</string>
     <string name="buttonSignUpDiscard">Discard Changes</string>
+    <string name="buttonUserLogReturn">Go Back</string>
+    <string name="stringSignUpSubmit">Submit</string>
+    <string name="stringSignUpUpdate">Update User Settings Below</string>
+    <string name="stringSignUpNewUser">New User</string>
 </resources>

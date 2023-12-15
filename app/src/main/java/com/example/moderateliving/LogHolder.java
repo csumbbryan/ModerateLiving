@@ -10,6 +10,12 @@ import com.example.moderateliving.TableClasses.UserLog;
 
 import java.util.List;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: view holder for user log items
+ */
 public class LogHolder extends RecyclerView.ViewHolder{
 
   public static final int DEFAULT_COLOR = 0xFFFFFFFF;

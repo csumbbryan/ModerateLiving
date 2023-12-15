@@ -20,6 +20,14 @@ import com.example.moderateliving.MainActivity;
 import com.example.moderateliving.R;
 import com.example.moderateliving.databinding.ActivityAdminBinding;
 
+/**
+ * @author: Bryan Zanoli
+ * @since: 11/26/2023
+ *
+ * Abstract: Android Activity to support admin tasks
+ * </p>
+ * Supports functionality including User Management and Full User log review.
+ */
 public class AdminActivity extends AppCompatActivity {
 
   public static final String TAG = "AdminActivity";
@@ -30,6 +38,7 @@ public class AdminActivity extends AppCompatActivity {
 
   private Button mButtonDatabaseReset;
   private Button mButtonUserManagement;
+  private Button mButtonFullUserLog;
   private ImageButton mButtonAdminClose;
   private ModerateLivingDAO mModerateLivingDAO;
   private int mLoggedInUserID;
@@ -51,9 +60,19 @@ public class AdminActivity extends AppCompatActivity {
     mButtonDatabaseReset = mActivityAdminBinding.buttonAdminActivityDatabaseReset;
     mButtonAdminClose = mActivityAdminBinding.buttonAdminClose;
     mButtonUserManagement = mActivityAdminBinding.buttonAdminActivityUserManagement;
+    mButtonFullUserLog = mActivityAdminBinding.buttonAdminActivityFullUserLog;
 
     getDatabase();
     checkUserLoggedIn();
+
+    mButtonFullUserLog.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Log.d(TAG, "Switching to User Log Activity view for full log management");
+        Intent intent = UserLogActivity.intentFactory(getApplicationContext(), mLoggedInUserID, true);
+        startActivity(intent);
+      }
+    });
 
     mButtonAdminClose.setOnClickListener(new View.OnClickListener() {
       @Override

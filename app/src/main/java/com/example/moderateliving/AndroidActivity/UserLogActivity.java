@@ -29,12 +29,17 @@ import com.example.moderateliving.databinding.ActivityUserLogBinding;
 
 import java.util.List;
 
-//TODO: Code Delete functionality
-//TODO: Code Undo functionality
-//TODO: Wire in for admin support (can see all users)
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: View of User logs. Includes Completion, Creation, and Redemption tasks status.
+ * Allows undo of certain tasks based on task type and object state of Health Activity or Splurge
+ */
 public class UserLogActivity extends AppCompatActivity implements LogRecyclerViewInterface {
 
   private static final String USER_ID = "com.example.moderateliving.UserLogActivity_USER_ID";
+  private static final String SHOW_ALL_USERS_LOGS = "com.example.moderateliving.UserLogActivity_SHOW_ALL_USERS_LOGS";
   public static final int DEFAULT_COLOR = 0xFFFFFFFF;
   public static final int SELECTED_COLOR = 0xAAEEEEEE;
   private static final int NO_USER = 0;
@@ -51,12 +56,15 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
   private TextView mTextViewUserLogUsername;
   private int mLoggedInUserID;
   private int mSelectedItemPosition;
+  private boolean isAdminLoggedIn = false;
+  private boolean mShowAllUsersLogs = false;
 
   List<UserLog> userLogs;
 
-  public static Intent intentFactory(Context packageContext, int mLoggedInUserID) {
+  public static Intent intentFactory(Context packageContext, int mLoggedInUserID, boolean showAllUsersLogs) {
     Intent intent = new Intent(packageContext, UserLogActivity.class);
     intent.putExtra(USER_ID, mLoggedInUserID);
+    intent.putExtra(SHOW_ALL_USERS_LOGS, showAllUsersLogs);
     return intent;
   }
   @Override
@@ -68,6 +76,7 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
     setContentView(mUserLogBinding.getRoot());
 
     getDatabase();
+    getExtras();
     checkUserLoggedIn();
     populateEntries();
 
@@ -81,7 +90,7 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
     mButtonUserLogReturnHome.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        returnToMainActivity(mModerateLivingDAO.getUserByID(mLoggedInUserID).getHashPassword());
+        returnToMainActivity();
       }
     });
 
@@ -92,7 +101,6 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
           mModerateLivingDAO.delete(userLogs.get(mSelectedItemPosition));
           userLogs.remove(mSelectedItemPosition);
           mLogRecyclerAdapter.notifyItemRemoved(mSelectedItemPosition);
-          //TODO: complete alertdialog and removal from database
         }
       }
     });
@@ -100,11 +108,10 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
     mImageButtonUserLogUndo.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //TODO: check for null item IDs
+        //TODO: enhancement request: better check for null item IDs
         if(userLogs.size() > mSelectedItemPosition) {
           UserLog userLog = userLogs.get(mSelectedItemPosition);
           boolean userLogUndid = false;
-          //TODO: if Health Activity and CREATED...
           if (userLog.getActivityType().equals(Util.TYPE_HEALTH_ACTIVITY)) {
             int userItemID = userLog.getItemID();
             HealthActivityLog healthActivityLog = mModerateLivingDAO.getHealthActivityLogByLogID(userItemID);
@@ -117,7 +124,7 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
             }
           } else if (userLog.getActivityType().equals(Util.TYPE_SPLURGE)) {
             int userItemID = userLog.getItemID();
-            SplurgeLog splurgeLog = mModerateLivingDAO.getSplurgeLogByLogID(userItemID); //TODO: Item ID is now based on log -- check this
+            SplurgeLog splurgeLog = mModerateLivingDAO.getSplurgeLogByLogID(userItemID);
             if (userLog.getDescription().equals(Util.LOG_CREATED)) {
               userLogUndid = Util.undoCreateSplurge(getApplicationContext(), mLoggedInUserID, splurgeLog);
             } else if (userLog.getDescription().equals(Util.LOG_REDEEMED)) {
@@ -140,10 +147,9 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
 
   }
 
-  @Override
-  protected void onPause() {
-    super.onPause();
-    finish();
+  private void getExtras() {
+    mLoggedInUserID = getIntent().getIntExtra(USER_ID, NO_USER);
+    mShowAllUsersLogs = getIntent().getBooleanExtra(SHOW_ALL_USERS_LOGS, false);
   }
 
   private void getDatabase() {
@@ -154,7 +160,7 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
   }
 
   private void checkUserLoggedIn() {
-    mLoggedInUserID = getIntent().getIntExtra(USER_ID, NO_USER);
+
     if (mLoggedInUserID == 0) {
       Toast notLoggedIn = Toast.makeText(this, "You are not logged in. Exiting the app.", Toast.LENGTH_SHORT);
       notLoggedIn.show();
@@ -165,20 +171,25 @@ public class UserLogActivity extends AppCompatActivity implements LogRecyclerVie
 
         @Override
         public void onFinish() {
-          returnToMainActivity(LOGOUT_USER);
+          returnToMainActivity();
         }
       }.start();
+    } else {
+      isAdminLoggedIn = mModerateLivingDAO.getUserByID(mLoggedInUserID).getIsAdmin();
     }
   }
 
-  private void returnToMainActivity(int userPassHash) {
-    Intent intent = MainActivity.intentFactory(getApplicationContext(), userPassHash);
+  private void returnToMainActivity() {
     Log.d(TAG, "Returning to Main Activity");
-    startActivity(intent);
+    finish();
   }
 
   private void populateEntries() {
-    userLogs = mModerateLivingDAO.getUserLogByUserID(mLoggedInUserID);
+    if(isAdminLoggedIn && mShowAllUsersLogs) {
+      userLogs = mModerateLivingDAO.getUserLogs();
+    } else {
+      userLogs = mModerateLivingDAO.getUserLogByUserID(mLoggedInUserID);
+    }
     recyclerView = findViewById(R.id.recyclerViewUserLog);
     if (userLogs != null) {
       mLogRecyclerAdapter = new LogRecyclerAdapter(this, userLogs, this);

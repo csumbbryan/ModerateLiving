@@ -31,8 +31,13 @@ import com.example.moderateliving.databinding.ActivityHealthBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: Support creation, review, and completion of "Health Activities" tasks
+ */
 //TODO: Consider LiveData?
-//TODO: add functionality to limit health-activity creation for unique names
 public class HealthActivity extends AppCompatActivity implements RecyclerViewInterface {
 
   private static final String USER_ID = "com.example.moderateliving.HealthActivity_USER_ID";
@@ -55,6 +60,7 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   private List<ModerateLivingEntries> mLivingEntries = new ArrayList<>();
   private int mLoggedInUserID = NO_USER;
   private boolean mShowAll = false;
+  int mSelectedItemPosition = RecyclerView.NO_POSITION;
 
   public static Intent intentFactory(Context packageContext, int mLoggedInUserID) {
     Intent intent = new Intent(packageContext, HealthActivity.class);
@@ -109,6 +115,27 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
         populateEntries();
       }
     });
+  }
+
+  @Override
+  protected void onRestart() {
+    super.onRestart();
+    //The Easy Way:
+    //The hard way:
+    mShowAll = false;
+    int healthActivityCount = mModerateLivingDAO.getHealthActivitiesByUser(mLoggedInUserID).size();
+    if(healthActivityCount > 0 && healthActivityCount > mLivingEntries.size()) {
+      int index = mLivingEntries.size();
+      List<HealthActivities> newHealthActivities = mModerateLivingDAO.getHealthActivitiesByUser(mLoggedInUserID);
+      for(int i = index; i < healthActivityCount; i++) {
+        mLivingEntries.add(i, newHealthActivities.get(i));
+        mEntryRecyclerAdapter.notifyItemInserted(i);
+      }
+    }
+    if(healthActivityCount > 0 && healthActivityCount < mLivingEntries.size()) {
+      mLivingEntries.remove(mSelectedItemPosition);
+      mEntryRecyclerAdapter.notifyItemRemoved(mSelectedItemPosition);
+    }
   }
 
   private void returnToMainActivity() {
@@ -204,7 +231,6 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
                 mLivingEntries.remove(position);
                 mEntryRecyclerAdapter.notifyItemRemoved(position);
                 int completedPoints = healthActivity.getActivityPoints();
-                //TODO: Update Health Activity Log
                 HealthActivityLog healthActivityLog = mModerateLivingDAO.getHealthActivityLogByID(healthActivity.getActivityID());
                 Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_COMPLETED, healthActivityLog);
                 healthActivity.setIsComplete(true);
@@ -234,6 +260,7 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
 
   @Override
   public void onEntryLongClick(int position) {
+    mSelectedItemPosition = position;
     ModerateLivingEntries livingEntry = mLivingEntries.get(position);
     HealthActivities healthActivity = mModerateLivingDAO.getHealthActivitiesByID(livingEntry.getID());
     Intent intent = HealthConfigActivity.intentFactory(getApplicationContext(), healthActivity.getActivityID(), mLoggedInUserID);

@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
@@ -33,6 +35,14 @@ import com.example.moderateliving.databinding.ActivityUserManagementBinding;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: administrative view for managing users.
+ * Enables admins to create, edit, and delete user acounts. Includes support for enabling
+ * admin rights through user edit.
+ */
 public class UserManagementActivity extends AppCompatActivity implements UserRecyclerViewInterface {
 
   private static final String USER_ID = "com.example.moderateliving.UserManagement_USER_ID";
@@ -53,13 +63,8 @@ public class UserManagementActivity extends AppCompatActivity implements UserRec
   private int mLoggedInUserID;
   private int mSelectedPosition;
 
-  //TODO: Modify to be used with Fragments and Recycler view - this may not be done
-  //TODO: Functionality: include ability to add new user with admin rights
-  //TODO: Functionality: include ability to grant admin rights to user
-  //TODO: Functionality: include ability to delete user
-  //TODO: Functionality: include ability to reset user password
-  //TODO: Functionality: include ability to edit user settings
-  //TODO: onClick for Return Home
+  //TODO: feature enhancement: Modify to be used with Fragments and Recycler view
+  //TODO: feature enhancement: include ability to reset user password
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -85,14 +90,16 @@ public class UserManagementActivity extends AppCompatActivity implements UserRec
     mButtonUserManagementAdd.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-
+        Intent intent = SignUpActivity.intentFactory(getApplicationContext(), NO_USER);
+        Log.d(TAG, "Switching to SignUp User Activity to add new user.");
+        startActivity(intent);
       }
     });
 
     mButtonUserManagementDelete.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-
+        deleteUser();
       }
     });
 
@@ -101,8 +108,8 @@ public class UserManagementActivity extends AppCompatActivity implements UserRec
       public void onClick(View v) {
         if(mUsers.size() > mSelectedPosition) {
           Intent intent = SignUpActivity.intentFactory(getApplicationContext(), mUsers.get(mSelectedPosition).getUserID());
+          Log.d(TAG, "Switching to SignUp Activity View to edit user: " + mUsers.get(mSelectedPosition).getUserID());
           startActivity(intent);
-          mUserRecyclerAdapter.notifyItemChanged(mSelectedPosition);
         }
       }
     });
@@ -115,10 +122,43 @@ public class UserManagementActivity extends AppCompatActivity implements UserRec
     });
   }
 
+  private void deleteUser() {
+    if(mUsers.size() > mSelectedPosition) {
+      UserID user = mUsers.get(mSelectedPosition);
+      AlertDialog.Builder alertBuilder = new AlertDialog.Builder(UserManagementActivity.this);
+      final AlertDialog alertDialog = alertBuilder.create();
+      alertBuilder.setMessage("Are you sure you wish to delete user " + user.getUsername() + " ?");
+      alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+        }
+      });
+      alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+          mUsers.remove(user);
+          mModerateLivingDAO.delete(user);
+          mUserRecyclerAdapter.notifyItemRemoved(mSelectedPosition);
+          Log.d(TAG, "Deleting user " + user.getUsername() + " from UserID database.");
+        }
+      });
+      AlertDialog deleteUser = alertBuilder.create();
+      deleteUser.show();
+    }
+  }
+
   @Override
   protected void onRestart() {
     super.onRestart();
-    if(mUsers.size() > mSelectedPosition) {
+    int userIDCount = mModerateLivingDAO.getUserIDs().size();
+    //getCreatedItem
+    if(mUsers.size() < userIDCount) {
+      mUsers.add(mModerateLivingDAO.getUserByID(mModerateLivingDAO.getMaxUserID()));
+      mUserRecyclerAdapter.notifyItemInserted(userIDCount-1);
+    }
+    //getUpdatedItem
+    if(mUsers.size() == userIDCount && mUsers.size() > mSelectedPosition) {
       UserID mUser = mUsers.get(mSelectedPosition);
       mUsers.remove(mSelectedPosition);
       mUser = mModerateLivingDAO.getUserByID(mUser.getUserID());

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,13 @@ import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.Util;
 import com.example.moderateliving.databinding.ActivityHealthConfigBinding;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: View for filling in "Health Activity" information. Allows submission with
+ * conditional checks.
+ */
 public class HealthConfigActivity extends AppCompatActivity {
 
   private static final String ACTIVITY_ID = "com.example.moderateliving_ACTIVITY_ID";
@@ -46,7 +54,6 @@ public class HealthConfigActivity extends AppCompatActivity {
   private boolean createNew = true;
   private Integer mActivityID;
   private Integer mLoggedInUserID;
-
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +90,7 @@ public class HealthConfigActivity extends AppCompatActivity {
               "Please fill out all fields with proper values and resubmit.", Toast.LENGTH_LONG).show();
           clearDisplay();
         } else {
-          AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getApplicationContext());
-          final AlertDialog alertDialog = alertBuilder.create();
+          Log.d(TAG, "New health activity successfully submitted");
         }
 
       }
@@ -180,11 +186,6 @@ public class HealthConfigActivity extends AppCompatActivity {
     }
   }
 
-  @Override
-  protected void onPause() {
-    super.onPause();
-    finish();
-  }
   private void clearDisplay() {
     mCheckBoxHealthActivityIsRecurring.setChecked(false);
     mEditTextHealthActivityDescription.setText("");
@@ -237,7 +238,16 @@ public class HealthConfigActivity extends AppCompatActivity {
         alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-            returnToHealthActivity();
+            new CountDownTimer(1000, 1000) {
+              @Override
+              public void onTick(long millisUntilFinished) {
+              }
+
+              @Override
+              public void onFinish() {
+                returnToHealthActivity();
+              }
+            }.start();
           }
         });
 
@@ -252,18 +262,35 @@ public class HealthConfigActivity extends AppCompatActivity {
         mModerateLivingDAO.update(mHealthActivity);
 
         Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_UPDATED, healthActivityLog);
-        returnToHealthActivity();
+        new CountDownTimer(1000, 1000) {
+          @Override
+          public void onTick(long millisUntilFinished) {
+          }
+
+          @Override
+          public void onFinish() {
+            returnToHealthActivity();
+          }
+        }.start();
       }
     } else {
       Toast.makeText(getApplicationContext(), "Please fill out all fields with proper values and resubmit.", Toast.LENGTH_LONG);
     }
+    new CountDownTimer(1000, 1000) {
+      @Override
+      public void onTick(long millisUntilFinished) {
+      }
+
+      @Override
+      public void onFinish() {
+      }
+    }.start();
     return readyToSubmit;
   }
 
   private void returnToHealthActivity() {
-    Intent intent = HealthActivity.intentFactory(getApplicationContext(), mLoggedInUserID);
-    Log.d(TAG, "Switching to Health Activity");
-    startActivity(intent);
+    Log.d(TAG, "Returning to Health Activity");
+    finish();
   }
 
   private void setLoggedInUser() {

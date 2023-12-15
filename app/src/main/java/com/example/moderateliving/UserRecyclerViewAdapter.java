@@ -13,6 +13,12 @@ import com.example.moderateliving.TableClasses.UserID;
 
 import java.util.List;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: Handles RecyclerView for user objects (UserID)
+ */
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.UserHolder> {
 
   View view;

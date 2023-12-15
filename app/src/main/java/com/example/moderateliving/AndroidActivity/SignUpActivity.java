@@ -64,12 +64,11 @@ public class SignUpActivity extends AppCompatActivity {
   int mLoggedInUserID;
   int mUserID;
   boolean mUpdateUser;
-  static Context previousContext; //TODO: Let's see if this works
+
 
   public static Intent intentFactory(Context packageContext, int mUserID) {
     Intent intent = new Intent(packageContext, SignUpActivity.class);
     intent.putExtra(USER_ID, mUserID);
-    previousContext = packageContext;
     return intent;
   }
   @Override
@@ -83,9 +82,8 @@ public class SignUpActivity extends AppCompatActivity {
     getDatabase();
     checkUserLoggedIn();
     initializeBindings();
-    if(checkForUpdateUser()) {
-      refreshDisplay();
-    }
+    checkForUpdateUser();
+    refreshDisplay();
 
 
 
@@ -114,7 +112,11 @@ public class SignUpActivity extends AppCompatActivity {
     SharedPreferences loginSharedPref = getSharedPreferences(SHARED_PREF_STRING, Context.MODE_PRIVATE);
     List<UserID> mUserIDList = mModerateLivingDAO.getUserIDs();
     int loggedInUserHash = loginSharedPref.getInt(SHARED_PREF_STRING, NO_USER);
-    mLoggedInUserID = Util.findUserByHash(mUserIDList, loggedInUserHash).getUserID();
+    if(loggedInUserHash == 0) {
+      mLoggedInUserID = 0;
+    } else {
+      mLoggedInUserID = Util.findUserByHash(mUserIDList, loggedInUserHash).getUserID();
+    }
   }
 
   private void initializeBindings() {
@@ -133,16 +135,28 @@ public class SignUpActivity extends AppCompatActivity {
 
 
   private void refreshDisplay() {
-    mEditTextUserSignUp.setText(mModerateLivingDAO.getUserByID(mUserID).getUsername());
-    mEditTextSignUpFullName.setText(mModerateLivingDAO.getUserByID(mUserID).getName());
-    mEditTextSignUpBirthday.setText(mModerateLivingDAO.getUserByID(mUserID).getBirthday());
-    mEditTextSignUpWeight.setText(String.valueOf(mModerateLivingDAO.getUserByID(mUserID).getWeight()));
-    if(mUpdateUser) {
-      mButtonSignUpSumbit.setText("Submit"); //TODO: Set constant value for change or use R.id
-      mTextViewMainText.setText("Update User Settings Below"); //TODO: Set constant value for change or use R.id
-      mButtonSignUpDiscard.setVisibility(Button.VISIBLE);
+    if(mLoggedInUserID > 0) {
+      if(mUpdateUser) {
+        mEditTextUserSignUp.setBackgroundColor(getResources().getColor(R.color.grayExtraDark, null));
+        mEditTextUserSignUp.setTextColor(getResources().getColor(R.color.white, null));
+        mEditTextUserSignUp.setText(mModerateLivingDAO.getUserByID(mUserID).getUsername());
+        mEditTextSignUpFullName.setText(mModerateLivingDAO.getUserByID(mUserID).getName());
+        mEditTextSignUpBirthday.setText(mModerateLivingDAO.getUserByID(mUserID).getBirthday());
+        mEditTextSignUpWeight.setText(String.valueOf(mModerateLivingDAO.getUserByID(mUserID).getWeight()));
+        mEditTextPasswordSignUp1.setVisibility(EditText.GONE);
+        mEditTextPasswordSignUp2.setVisibility(EditText.GONE);
+        mButtonSignUpSumbit.setText(getResources().getText(R.string.stringSignUpSubmit));
+        mTextViewMainText.setText(getResources().getText(R.string.stringSignUpUpdate));
+        mButtonSignUpDiscard.setVisibility(Button.VISIBLE);
+      } else {
+        mTextViewMainText.setText(getResources().getText(R.string.stringSignUpNewUser));
+        mButtonSignUpDiscard.setVisibility(Button.VISIBLE);
+      }
       if(mModerateLivingDAO.getUserByID(mLoggedInUserID).getIsAdmin()) {
         mCheckBoxSignUpIsAdmin.setVisibility(CheckBox.VISIBLE);
+        if(mUpdateUser) {
+          mCheckBoxSignUpIsAdmin.setChecked(mModerateLivingDAO.getUserByID(mUserID).getIsAdmin());
+        }
       }
     }
   }
@@ -183,11 +197,19 @@ public class SignUpActivity extends AppCompatActivity {
 
   private void submitFormExisting() {
     UserID existingUser = mModerateLivingDAO.getUserByID(mUserID);
-    existingUser.setName(mFullname);
-    existingUser.setBirthday(mBirthday);
-    existingUser.setWeight(mWeight);
-    mModerateLivingDAO.update(existingUser);
-    returnToPreviousActivity();
+    if(checkPasswordMatch() && checkBirthdayFormat()) {
+      existingUser.setName(mFullname);
+      existingUser.setBirthday(mBirthday);
+      existingUser.setWeight(mWeight);
+      if(mModerateLivingDAO.getUserByID(mLoggedInUserID).getIsAdmin()) {
+        existingUser.setIsAdmin(mCheckBoxSignUpIsAdmin.isChecked());
+      }
+      mModerateLivingDAO.update(existingUser);
+      returnToPreviousActivity();
+    } else {
+      refreshDisplay();
+    }
+
   }
 
   private void returnToPreviousActivity() {
@@ -203,6 +225,9 @@ public class SignUpActivity extends AppCompatActivity {
   private void submitFormNew() {
     int userPoints = 0;
     boolean isAdmin = false;
+    if(mLoggedInUserID > 0 && mModerateLivingDAO.getUserByID(mLoggedInUserID).getIsAdmin()) {
+      isAdmin = mCheckBoxSignUpIsAdmin.isChecked();
+    }
 
     if(checkUsername() && checkPasswordMatch() && checkBirthdayFormat()) {
       UserID newUser = new UserID(
@@ -214,14 +239,19 @@ public class SignUpActivity extends AppCompatActivity {
           mWeight,
           mBirthday);
       mModerateLivingDAO.insert(newUser);
-      Intent intent = MainActivity.intentFactory(getApplicationContext(), newUser.getHashPassword());
+
       Log.d(TAG, "New user created: " +
           "\nUsername: " + mUsername +
           "\nFullname: " + mFullname +
           "\nWeight: " + mWeight +
           "\nBirthday: " + mBirthday);
       Log.d(TAG, "Switching to Main Activity");
-      startActivity(intent);
+      if(mLoggedInUserID > 0) {
+        returnToPreviousActivity();
+      } else {
+        Intent intent = MainActivity.intentFactory(getApplicationContext(), newUser.getHashPassword());
+        startActivity(intent);
+      }
     } else {
       clearDisplay();
     }

@@ -89,6 +89,9 @@ public interface ModerateLivingDAO {
   @Query("SELECT * FROM " + AppDataBase.USERID_TABLE + " WHERE mUsername = :username")
   UserID getUserByUsername(String username);
 
+  @Query("SELECT MAX(mUserID) FROM " + AppDataBase.USERID_TABLE)
+  int getMaxUserID();
+
   @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE)
   List<HealthActivities> getHealthActivities();
 
@@ -98,10 +101,10 @@ public interface ModerateLivingDAO {
   @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mActivityID = :activityID")
   HealthActivities getHealthActivitiesByID(int activityID);
 
-  @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mUserID = :userID & mIsComplete = 0")
+  @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mUserID = :userID AND mIsComplete = 0 Order by mActivityID Asc")
   List<HealthActivities> getHealthActivitiesByUser(int userID);
 
-  @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mUserID = :userID")
+  @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_TABLE + " WHERE mUserID = :userID Order by mActivityID Asc")
   List<HealthActivities> getHealthActivitiesByUserAll(int userID);
 
   @Query("SELECT * FROM " + AppDataBase.HEALTHACTIVITIES_LOG_TABLE)
@@ -128,7 +131,7 @@ public interface ModerateLivingDAO {
   @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE + " WHERE mSplurgeID = :splurgeID")
   Splurges getSplurgeByID(int splurgeID);
 
-  @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE + " WHERE mSplurgeName = :splurgeName & mUserID = :userID")
+  @Query("SELECT * FROM " + AppDataBase.SPLURGES_TABLE + " WHERE mSplurgeName = :splurgeName AND mUserID = :userID")
   List<Splurges> getSplurgesByNameAndUserID(String splurgeName, int userID);
 
   @Query("SELECT * FROM " + AppDataBase.SPLURGES_LOG_TABLE)
@@ -143,7 +146,7 @@ public interface ModerateLivingDAO {
   @Query("SELECT * FROM " + AppDataBase.SPLURGES_LOG_TABLE + " WHERE mSplurgeID = :splurgeID")
   SplurgeLog getSplurgeLogByID(Integer splurgeID);
 
-  @Query("SELECT * FROM " + AppDataBase.USER_LOG_TABLE)
+  @Query("SELECT * FROM " + AppDataBase.USER_LOG_TABLE + " Order by mLogID Desc ")
   List<UserLog> getUserLogs();
 
   @Query("SELECT * FROM " + AppDataBase.USER_LOG_TABLE + " Where mUserID = :userID Order by mLogID Desc ")

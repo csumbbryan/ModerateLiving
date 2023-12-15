@@ -11,7 +11,13 @@ import com.example.moderateliving.TableClasses.UserLog;
 
 import java.util.List;
 
-//TODO: Consider Inner class for LogHolder?
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: Handles RecyclerView for user log entries
+ */
+//TODO: Consider Inner class for LogHolder? May be good but separate class is working.
 public class LogRecyclerAdapter extends RecyclerView.Adapter<LogHolder> {
 
   private View view;

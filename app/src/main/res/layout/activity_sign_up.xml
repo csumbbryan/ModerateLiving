@@ -92,7 +92,7 @@
         android:layout_marginTop="50dp"
         android:text="@string/textViewSignUpName"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/editTextPasswordSignUp2"
+        app:layout_constraintStart_toStartOf="@+id/editTextUserSignUp"
         app:layout_constraintTop_toBottomOf="@+id/editTextPasswordSignUp2" />
 
     <TextView
@@ -120,14 +120,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
         android:background="@color/material_dynamic_neutral95"
         android:gravity="center"
         android:hint="@string/editTextSignUpNameHint"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordSignUp2"
+        app:layout_constraintEnd_toEndOf="@+id/editTextUserSignUp"
         app:layout_constraintStart_toEndOf="@+id/textViewSignUpName"
-        app:layout_constraintTop_toBottomOf="@id/editTextPasswordSignUp2" />
+        app:layout_constraintTop_toTopOf="@+id/textViewSignUpName" />
 
     <EditText
         android:id="@+id/editTextSignUpWeightInput"
@@ -139,7 +138,7 @@
         android:gravity="center"
         android:hint="@string/editTextSignUpWeightInput"
         android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordSignUp2"
+        app:layout_constraintEnd_toEndOf="@+id/editTextSignUpFullNameInput"
         app:layout_constraintStart_toEndOf="@+id/textViewSignUpWeight"
         app:layout_constraintTop_toBottomOf="@id/editTextSignUpFullNameInput" />
 
@@ -153,7 +152,7 @@
         android:gravity="center"
         android:hint="@string/editTextSignUpBirthdayHint"
         android:inputType=""
-        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordSignUp2"
+        app:layout_constraintEnd_toEndOf="@+id/editTextSignUpFullNameInput"
         app:layout_constraintStart_toEndOf="@+id/textViewSignUpBirthday"
         app:layout_constraintTop_toBottomOf="@id/editTextSignUpWeightInput" />
 

@@ -13,9 +13,14 @@ import com.example.moderateliving.TableClasses.Splurges;
 
 import java.util.List;
 
-
-//TODO: Consider inner class for EntryHolder?
-//Source: https://www.youtube.com/watch?v=wViZsuCptt4
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: Handles RecyclerView for both HealthActivity and SplurgeActivity
+ */
+//TODO: Consider inner class for EntryHolder? May be good but separate class is working.
+//Source aid: https://www.youtube.com/watch?v=wViZsuCptt4
 public class EntryRecyclerAdapter extends RecyclerView.Adapter<EntryHolder> {
 
   View view;

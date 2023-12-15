@@ -18,10 +18,10 @@ import android.widget.Toast;
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.DB.ModerateLivingDAO;
 import com.example.moderateliving.EntryRecyclerAdapter;
-import com.example.moderateliving.MainActivity;
 import com.example.moderateliving.ModerateLivingEntries;
 import com.example.moderateliving.R;
 import com.example.moderateliving.RecyclerViewInterface;
+import com.example.moderateliving.TableClasses.HealthActivities;
 import com.example.moderateliving.TableClasses.Splurges;
 import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.Util;
@@ -30,6 +30,12 @@ import com.example.moderateliving.databinding.ActivitySplurgeBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: Support creation, review, and completion of "Splurge" type tasks.
+ */
 //TODO: Consider LiveData?
 public class SplurgeActivity extends AppCompatActivity implements RecyclerViewInterface {
 
@@ -41,12 +47,12 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
   private static final String LOG_REDEEMED = "redeemed";
   private ModerateLivingDAO mModerateLivingDAO;
   private RecyclerView recyclerView;
-  private EntryRecyclerAdapter mRecyclerAdapter;
+  private EntryRecyclerAdapter mEntryRecyclerAdapter;
   private ActivitySplurgeBinding mSplurgeActivityBinding;
   private Button mButtonSplurgeActivityHome;
   private Button mButtonSplurgeActivityCreate;
   private List<Splurges> mSplurges;
-  List<ModerateLivingEntries> mLivingEntries = new ArrayList<>();
+  private List<ModerateLivingEntries> mLivingEntries = new ArrayList<>();
   private int mLoggedInUserID = NO_USER;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +85,27 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
 
   }
 
+  @Override
+  protected void onRestart() {
+    super.onRestart();
+    int splurgeActivityCount = mModerateLivingDAO.getSplurgesByUserID(mLoggedInUserID).size();
+    if(splurgeActivityCount > 0 && splurgeActivityCount > mLivingEntries.size()) {
+      int index = mLivingEntries.size();
+      List<Splurges> newSplurges = mModerateLivingDAO.getSplurgesByUserID(mLoggedInUserID);
+      for(int i = index; i < splurgeActivityCount; i++) {
+        mLivingEntries.add(i, newSplurges.get(i));
+        mEntryRecyclerAdapter.notifyItemInserted(i);
+      }
+    }
+  }
+
   private void populateEntries() {
     recyclerView = findViewById(R.id.recyclerViewSplurge);
     mSplurges = mModerateLivingDAO.getSplurgesByUserID(mLoggedInUserID);
     if(mSplurges != null) {
       mLivingEntries.addAll(mSplurges);
-      mRecyclerAdapter = new EntryRecyclerAdapter(this, mLivingEntries, this);
-      recyclerView.setAdapter(mRecyclerAdapter);
+      mEntryRecyclerAdapter = new EntryRecyclerAdapter(this, mLivingEntries, this);
+      recyclerView.setAdapter(mEntryRecyclerAdapter);
     }
   }
 
@@ -146,7 +166,7 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
     alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialogInterface, int i) {
-        mRecyclerAdapter.notifyItemChanged(position);
+        mEntryRecyclerAdapter.notifyItemChanged(position);
         int redeemedPoints = splurge.getPointsCost();
         UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
         int userPoints = user.getPoints();
@@ -167,13 +187,13 @@ public class SplurgeActivity extends AppCompatActivity implements RecyclerViewIn
     alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int i) {
-        mRecyclerAdapter.notifyItemChanged(position);
+        mEntryRecyclerAdapter.notifyItemChanged(position);
       }
     });
     alertBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
       @Override
       public void onCancel(DialogInterface dialog) {
-        mRecyclerAdapter.notifyItemChanged(position);
+        mEntryRecyclerAdapter.notifyItemChanged(position);
       }
     });
     AlertDialog checkDelete = alertBuilder.create();

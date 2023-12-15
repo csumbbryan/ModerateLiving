@@ -8,6 +8,12 @@ import com.example.moderateliving.DB.AppDataBase;
 
 import java.time.LocalDate;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: UserLog table entry Java object representation
+ */
 //TODO: Consider LiveData?
 @Entity(tableName = AppDataBase.USER_LOG_TABLE,
     foreignKeys = {@ForeignKey(entity = UserID.class,
@@ -19,15 +25,6 @@ public class UserLog {
   @PrimaryKey (autoGenerate = true)
   private int mLogID;
   private int mItemID;
-
-  public int getLogID() {
-    return mLogID;
-  }
-
-  public void setLogID(int logID) {
-    mLogID = logID;
-  }
-
   private int mUserID;
   private String mLogEntryName;
   private String mUsername;
@@ -35,14 +32,6 @@ public class UserLog {
   private String mActivityType;
   private LocalDate mTransactionDate;
   private int mPoints;
-
-  public String getLogEntryName() {
-    return mLogEntryName;
-  }
-
-  public void setLogEntryName(String logEntryName) {
-    mLogEntryName = logEntryName;
-  }
 
   public UserLog(int userID, int itemID, String logEntryName, String username, String description, String activityType, LocalDate transactionDate, int points) {
     mUserID = userID;
@@ -53,6 +42,22 @@ public class UserLog {
     mActivityType = activityType;
     mTransactionDate = transactionDate;
     mPoints = points;
+  }
+
+  public int getLogID() {
+    return mLogID;
+  }
+
+  public void setLogID(int logID) {
+    mLogID = logID;
+  }
+
+  public String getLogEntryName() {
+    return mLogEntryName;
+  }
+
+  public void setLogEntryName(String logEntryName) {
+    mLogEntryName = logEntryName;
   }
 
   public int getItemID() {

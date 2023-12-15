@@ -6,6 +6,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: Converts between String and LocalDate
+ */
 public class LocalDateTypeConverter {
   @TypeConverter
   public String convertLocalDateToString(LocalDate date) {

@@ -24,6 +24,13 @@ import com.example.moderateliving.databinding.ActivityLoginBinding;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: User login Activity View.
+ * Checks whether username and password match entry in database before allowing login.
+ */
 public class LoginActivity extends AppCompatActivity {
 
   private static final String USER_PASSWORD_HASH = "com.example.moderateliving_Login_Activity";
@@ -91,11 +98,9 @@ public class LoginActivity extends AppCompatActivity {
     });
   }
 
-  //TODO: Complete method below
   private boolean submitUserCredentials() {
     String username = mUserNameInput.getText().toString();
     int userHash = Objects.hash(username, mPasswordInput.getText().toString());
-    //String password = mPasswordInput.getText().toString(); //TODO: Remove this if not needed for troubleshooting
     boolean isLoginSuccessful = Util.verifyCredentials(mModerateLivingDAO.getUserIDs(), userHash);
     if(isLoginSuccessful) {
       mUser = mModerateLivingDAO.getUserByUsername(username);

@@ -6,6 +6,12 @@ import androidx.room.PrimaryKey;
 import com.example.moderateliving.DB.AppDataBase;
 import com.example.moderateliving.ModerateLivingEntries;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: Health Activity table entry Java object representation
+ */
 @Entity(tableName = AppDataBase.HEALTHACTIVITIES_TABLE,
 foreignKeys = {@ForeignKey(entity = UserID.class,
 parentColumns = "mUserID",
@@ -126,7 +132,6 @@ public class HealthActivities implements ModerateLivingEntries {
         '}';
   }
 
-  //TODO: Keep eye on whether isComplete needs to be exposed in this copy method
   public HealthActivities copy(int activityID) {
     HealthActivities healthActivities = new HealthActivities(
         activityID,

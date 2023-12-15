@@ -8,6 +8,12 @@ import com.example.moderateliving.LogInterface;
 
 import java.time.LocalDate;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: Splurge Log table entry Java object representation
+ */
 @Entity(tableName = AppDataBase.SPLURGES_LOG_TABLE,
     foreignKeys = {
       @ForeignKey(entity = UserID.class, parentColumns = "mUserID", childColumns = "mUserID", onDelete = ForeignKey.CASCADE),

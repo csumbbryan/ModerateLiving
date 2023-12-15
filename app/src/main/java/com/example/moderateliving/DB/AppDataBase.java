@@ -14,6 +14,12 @@ import com.example.moderateliving.TableClasses.Splurges;
 import com.example.moderateliving.TableClasses.UserID;
 import com.example.moderateliving.TableClasses.UserLog;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: Room Database object abstraction for application
+ */
 @Database(entities = {UserID.class, UserLog.class, HealthActivities.class, Splurges.class, HealthActivityLog.class, SplurgeLog.class}, version = 1)
 @TypeConverters(LocalDateTypeConverter.class)
 public abstract class AppDataBase extends RoomDatabase {

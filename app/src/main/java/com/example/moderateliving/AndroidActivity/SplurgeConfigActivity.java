@@ -25,6 +25,12 @@ import com.example.moderateliving.Util;
 import com.example.moderateliving.databinding.ActivitySplurgeConfigBinding;
 import com.example.moderateliving.TableClasses.Splurges;
 
+/**
+ * @author Bryan Zanoli
+ * @since 11/26/2023
+ * </p>
+ * Abstract: view for filling in Splurge information. Allows submission with conditional checks.
+ */
 public class SplurgeConfigActivity extends AppCompatActivity {
 
   public static final String USER_ID = "com.example.moderateliving.SplurgeConfigActivity_USER_ID";
@@ -73,12 +79,9 @@ public class SplurgeConfigActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         if(!submitSplurge()) {
-          Toast.makeText(getApplicationContext(),
-              "Please fill out all fields with proper values and resubmit.", Toast.LENGTH_LONG).show(); //TODO: Is this needed?
           clearDisplay();
         } else {
-          AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getApplicationContext());
-          final AlertDialog alertDialog = alertBuilder.create();
+          Log.d(TAG, "Splurge item created and submitted");
         }
 
       }
@@ -107,12 +110,6 @@ public class SplurgeConfigActivity extends AppCompatActivity {
 
   }
 
-  @Override
-  protected void onPause() {
-    super.onPause();
-    finish();
-  }
-
   private void deleteSplurgeActivity() {
     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
     final AlertDialog alertDialog = alertBuilder.create();
@@ -129,7 +126,6 @@ public class SplurgeConfigActivity extends AppCompatActivity {
         Log.d(TAG, "User: " + mLoggedInUserID + " elected to delete Splurge " + mSplurge.getSplurgeName());
         mModerateLivingDAO.delete(mSplurge);
         returnToSplurgeActivity();
-        //TODO: setup to log(?) but do not record as complete
       }
     });
     AlertDialog deleteRecord = alertBuilder.create();
@@ -153,15 +149,13 @@ public class SplurgeConfigActivity extends AppCompatActivity {
         UserID user = mModerateLivingDAO.getUserByID(mLoggedInUserID);
         int userPoints = user.getPoints();
         userPoints = userPoints + redeemedPoints;
-        SplurgeLog splurgeLog = mModerateLivingDAO.getSplurgeLogByID(mSplurge.getSplurgeID()); //TODO: Review to make sure this works
+        SplurgeLog splurgeLog = mModerateLivingDAO.getSplurgeLogByID(mSplurge.getSplurgeID());
 
         user.setPoints(userPoints);
         mModerateLivingDAO.update(user);
         Log.d(TAG, "User: " + mLoggedInUserID + " redeemed Splurge " + mSplurge.getSplurgeName());
         Util.logToUserLog(getApplicationContext(), mLoggedInUserID, Util.LOG_REDEEMED, splurgeLog);
-        //mModerateLivingDAO.delete(mSplurge); //TODO: Review behavior for Splurge redemption
         returnToSplurgeActivity();
-        //TODO: log in SplurgeLog as complete
       }
     });
     AlertDialog completeRecord = alertBuilder.create();
@@ -176,7 +170,7 @@ public class SplurgeConfigActivity extends AppCompatActivity {
       Util.logOutUser(this);
       startActivity(intent);
     } else {
-      //TODO: Modify text to display username?
+      Log.d(TAG, "User " + mLoggedInUserID + " is logged in.");
     }
   }
 
@@ -187,13 +181,13 @@ public class SplurgeConfigActivity extends AppCompatActivity {
     if(splurgeID != 0) {
       mSplurge = mModerateLivingDAO.getSplurgeByID(splurgeID);
     } else {
-      //TODO: setup warning, log, etc.?
+      Log.d(TAG, "Splurge ID not found, leaving screen blank for assumed new entry.");
     }
   }
 
   private void setUpCurrent() {
     if(mSplurgeID == 0) {
-      //TODO: Warning, logs, etc.
+      Log.d(TAG, "Current Splurge edit request, but could not be found.");
     } else {
       mSplurge = mModerateLivingDAO.getSplurgeByID(mSplurgeID);
       mEditTextSplurgeActivityName.setText(mSplurge.getSplurgeName());
@@ -262,7 +256,6 @@ public class SplurgeConfigActivity extends AppCompatActivity {
       alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-          //TODO: Clean up these methods, call separate methods?
           mMaxSplurgeID = mModerateLivingDAO.getMaxSplurgeID() + 1;
           Splurges mSplurgeCopy = mSplurge.copy(mMaxSplurgeID);
           mModerateLivingDAO.insert(mSplurgeCopy);
@@ -332,8 +325,7 @@ public class SplurgeConfigActivity extends AppCompatActivity {
   }
 
   private void returnToSplurgeActivity() {
-    Intent intent = SplurgeActivity.intentFactory(getApplicationContext(), mLoggedInUserID);
     Log.d(TAG, "Returning to SplurgeActivity View");
-    startActivity(intent);
+    finish();
   }
 }
