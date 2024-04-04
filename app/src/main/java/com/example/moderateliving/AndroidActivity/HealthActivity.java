@@ -151,6 +151,7 @@ public class HealthActivity extends AppCompatActivity implements RecyclerViewInt
   }
 
   private void populateEntries() {
+    //todo: here is where certain date based functions should run (unless there is a better option)
     recyclerView = findViewById(R.id.recyclerViewHealth);
     if(mShowAll) {
       mHealthActivities = mModerateLivingDAO.getHealthActivitiesByUserAll(mLoggedInUserID);
